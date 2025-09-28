@@ -1,0 +1,265 @@
+[hints]
+#enabled = [{ <regex>, <hyperlinks>, <post_processing>,
+#<persist>, <action>, <command>, <binding>, <mouse> },]
+
+# opens links in firefox
+[[hints.enabled]]
+regex = "(https://|http://)[^\\s<>\"']+"
+hyperlinks = true
+post_processing = true
+persist = false
+command = { program = "firefox", args = [] }
+binding = { key = "U", mods = "Control|Shift" }
+mouse.enabled = true
+
+[keyboard]
+bindings = [
+  # { key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
+  # { key = "L", mods = "Control|Shift", chars = "l" },
+  #{ <key>, <mods>, <mode>, <command> | <chars> | <action> }
+  # can trigger multiple keybindings in key = "<string>"
+  # mods = "Command", "Control", "Option", "Super", "Shift", "Alt"
+  # bar to apply multiple
+  # mode = "AppCursor", "AppKeypad", "Search", "Alt", "Vi"
+  # ~ is not for mode, can be combined with |
+  #command = string | {program = string, args = [string]} #fork+execute
+  # chars = string #write cmd to terminal
+]
+
+# Action                | Description
+# ----------------------|------------------------------------------------------
+# ReceiveChar           | Allow receiving character input
+# None                  | Do nothing
+# Paste                 | Paste from system clipboard
+# Copy                  | Copy current selection to system clipboard
+# IncreaseFontSize      | Increase font size
+# DecreaseFontSize      | Decrease font size
+# ResetFontSize         | Reset font size to config value
+# ScrollPageUp          | Scroll one page up
+# ScrollPageDown        | Scroll one page down
+# ScrollHalfPageUp      | Scroll half a page up
+# ScrollHalfPageDown    | Scroll half a page down
+# ScrollLineUp          | Scroll one line up
+# ScrollLineDown        | Scroll one line down
+# ScrollToTop           | Scroll to top of scrollback buffer
+# ScrollToBottom        | Scroll to bottom of scrollback buffer
+# ClearHistory          | Clear scrollback history
+# ClearSelection        | Deselect active selection
+# ClearLogNotice        | Clear error/warning log notices
+# Hide                  | Hide the Alacritty window
+# Minimize              | Minimize the Alacritty window
+# Quit                  | Quit Alacritty
+# SpawnNewInstance      | Launch a new Alacritty instance
+# CreateNewWindow       | Launch a new Alacritty window
+# ToggleFullscreen      | Toggle fullscreen
+# ToggleMaximized       | Toggle maximized
+# ToggleViMode          | Toggle vi (cursor) mode
+# --------------------------|---------------------------------------------------
+# SearchForward            | Start forward search
+# SearchBackward           | Start backward search
+# SearchFocusNext          | Focus next search match
+# SearchFocusPrevious      | Focus previous search match
+# SearchConfirm            | Confirm active search
+# SearchCancel             | Cancel active search
+# SearchClear              | Clear search regex
+# SearchDeleteWord         | Delete last word from search input
+# SearchHistoryPrevious    | Go to previous regex in history
+# SearchHistoryNext        | Go to next regex in history
+# -----------------------------------------------------------
+# InlineSearchForward         | Search forward in current line
+# InlineSearchBackward        | Search backward in current line
+# InlineSearchForwardShort    | Like above, but stop short of char
+# InlineSearchBackwardShort   | Same, but in reverse
+# InlineSearchNext            | Jump to next inline match
+# InlineSearchPrevious        | Jump to previous inline match
+
+# ViMode Navigation
+# --------------------------|------------------------------------------
+# Up                       | Move up
+# Down                     | Move down
+# Left                     | Move left
+# Right                    | Move right
+# First                    | Move to first column/start of line
+# Last                     | Move to last column/end of line
+# FirstOccupied            | Move to first non-empty cell
+# High                     | Move to top of screen
+# Middle                   | Move to center of screen
+# Low                      | Move to bottom of screen
+# SemanticLeft             | Move to start of previous word
+# SemanticRight            | Move to start of next word
+# SemanticLeftEnd          | Move to end of previous word
+# SemanticRightEnd         | Move to end of next word
+# WordLeft                 | Move to start of whitespace-separated word
+# WordRight                | Move to next word
+# WordLeftEnd              | Move to end of previous word
+# WordRightEnd             | Move to end of next word
+# Bracket                  | Jump to matching bracket
+# CenterAroundViCursor     | Center view on vi cursor
+# Open                     | Launch URL at vi cursor
+#
+# ViMOde selections
+# ToggleNormalSelection     | Toggle normal selection
+# ToggleLineSelection       | Toggle line selection
+# ToggleBlockSelection      | Toggle block (rectangular) selection
+# ToggleSemanticSelection   | Toggle semantic unit selection
+#
+# ViMode Search Navigation
+# SearchNext                | Jump to beginning of next match
+# SearchPrevious            | Jump to beginning of previous match
+# SearchStart               | Jump to next match *start* to the left
+# SearchEnd                 | Jump to next match *end* to the right
+#
+# CopySelection             | Copy from selection buffer
+# PasteSelection            | Paste from selection buffer
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║                               Alacritty Help                             ║
+# ╠══════════════════════════════════════════════════════════════════════════╣
+# ║ General Options:                                                         ║
+# ║   -h, --help                     Prints help information.                ║
+# ║   --hold                         Remain open after child exits.         ║
+# ║   --daemon                       Do not spawn initial window.           ║
+# ║   --print-events                 Print events to STDOUT.                ║
+# ║   -q, -qq                        Reduce verbosity.                       ║
+# ║   --ref-test                     Generates ref test.                     ║
+# ║   -v, -vvv                       Increase verbosity.                     ║
+# ║   -V, --version                  Print version.                          ║
+# ║                                                                        ║
+# ║ Launch Options:                                                         ║
+# ║   --class <GEN>[,<INST>]        Set window class (X11/Wayland).         ║
+# ║   -e, --command <CMD>...        Run command (last arg).                 ║
+# ║   --config-file <FILE>          Use alternative config file.            ║
+# ║   --embed <WIN_ID>              Embed in X11 window.                    ║
+# ║   -o, --option <OPT>...         Override config options.                ║
+# ║   --socket <PATH>               IPC socket path.                        ║
+# ║   -T, --title <TITLE>           Set window title.                       ║
+# ║   --working-directory <DIR>     Start in directory.                     ║
+# ╠══════════════════════════════════════════════════════════════════════════╣
+# ║ Subcommands:                                                             ║
+# ║   msg                             Send IPC messages.                    ║
+# ║   migrate                         Migrate config file.                  ║
+# ║     -c, --config-file <FILE>      Path to config file.                 ║
+# ║     -d, --dry-run                 Output TOML to STDOUT.               ║
+# ║     -i, --skip-imports            Skip import recursion.               ║
+# ║     --skip-renames                Don’t rename fields.                 ║
+# ║     -s, --silent                  Suppress output.                     ║
+# ╠══════════════════════════════════════════════════════════════════════════╣
+# ║ IPC Tool (alacritty-msg):                                               ║
+# ║   -s, --socket <SOCKET>         IPC socket path                         ║
+# ║                                                                        ║
+# ║   create-window:                 Open new window                         ║
+# ║     --hold                      Keep open after child exits             ║
+# ║     -T, --title <TITLE>         Set window title                        ║
+# ║     -o, --option <OPT>...       Override config                         ║
+# ║     -e, --command <CMD>...      Run command                             ║
+# ║                                                                        ║
+# ║   config:                        Update runtime config                  ║
+# ║     <OPTIONS>                   E.g. 'cursor.style="Beam"'             ║
+# ║     -r, --reset                 Clear all runtime changes              ║
+# ║     -w, --window-id <ID>        Apply to specific window               ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+
+# ## Alacritty Default Keybindings Overview
+
+# MOUSE BINDINGS
+# mouse 	mods 	action
+# "Right" 		"ExpandSelection"
+# "Right" 	"Control" 	"ExpandSelection"
+# "Middle" 	"~Vi" 	"PasteSelection"
+# KEY BINDINGS
+# key 	mods 	mode 	action / chars
+# "Paste" 			"Paste"
+# "Copy" 			"Copy"
+# "L" 	"Control" 		"ClearLogNotice"
+# "Paste" 		"Vi|Search" 	"Paste"
+# "L" 	"Control" 	"~Vi|~Search" 	chars: "\u000c"
+# "PageUp" 	"Shift" 	"~Alt" 	"ScrollPageUp"
+# "PageDown" 	"Shift" 	"~Alt" 	"ScrollPageDown"
+# "Home" 	"Shift" 	"~Alt" 	"ScrollToTop"
+# "End" 	"Shift" 	"~Alt" 	"ScrollToBottom"
+# Vi Mode
+# key 	mods 	mode 	action
+# "Space" 	"Shift|Control" 	"~Search" 	"ToggleViMode"
+# "Space" 	"Shift|Control" 	"Vi|~Search" 	"ScrollToBottom"
+# "Escape" 		"Vi|~Search" 	"ClearSelection"
+# "I" 		"Vi|~Search" 	"ToggleViMode"
+# "I" 		"Vi|~Search" 	"ScrollToBottom"
+# "C" 	"Control" 	"Vi|~Search" 	"ToggleViMode"
+# "Y" 	"Control" 	"Vi|~Search" 	"ScrollLineUp"
+# "E" 	"Control" 	"Vi|~Search" 	"ScrollLineDown"
+# "G" 		"Vi|~Search" 	"ScrollToTop"
+# "G" 	"Shift" 	"Vi|~Search" 	"ScrollToBottom"
+# "B" 	"Control" 	"Vi|~Search" 	"ScrollPageUp"
+# "F" 	"Control" 	"Vi|~Search" 	"ScrollPageDown"
+# "U" 	"Control" 	"Vi|~Search" 	"ScrollHalfPageUp"
+# "D" 	"Control" 	"Vi|~Search" 	"ScrollHalfPageDown"
+# "Y" 		"Vi|~Search" 	"Copy"
+# "Y" 		"Vi|~Search" 	"ClearSelection"
+# "Copy" 		"Vi|~Search" 	"ClearSelection"
+# "V" 		"Vi|~Search" 	"ToggleNormalSelection"
+# "V" 	"Shift" 	"Vi|~Search" 	"ToggleLineSelection"
+# "V" 	"Control" 	"Vi|~Search" 	"ToggleBlockSelection"
+# "V" 	"Alt" 	"Vi|~Search" 	"ToggleSemanticSelection"
+# "Enter" 		"Vi|~Search" 	"Open"
+# "Z" 		"Vi|~Search" 	"CenterAroundViCursor"
+# "F" 		"Vi|~Search" 	"InlineSearchForward"
+# "F" 	"Shift" 	"Vi|~Search" 	"InlineSearchBackward"
+# "T" 		"Vi|~Search" 	"InlineSearchForwardShort"
+# "T" 	"Shift" 	"Vi|~Search" 	"InlineSearchBackwardShort"
+# ";" 		"Vi|~Search" 	"InlineSearchNext"
+# "," 		"Vi|~Search" 	"InlineSearchPrevious"
+# "K" 		"Vi|~Search" 	"Up"
+# "J" 		"Vi|~Search" 	"Down"
+# "H" 		"Vi|~Search" 	"Left"
+# "L" 		"Vi|~Search" 	"Right"
+# "ArrowUp" 		"Vi|~Search" 	"Up"
+# "ArrowDown" 		"Vi|~Search" 	"Down"
+# "ArrowLeft" 		"Vi|~Search" 	"Left"
+# "ArrowRight" 		"Vi|~Search" 	"Right"
+# "0" 		"Vi|~Search" 	"First"
+# "$" 	"Shift" 	"Vi|~Search" 	"Last"
+# "Home" 		"Vi|~Search" 	"First"
+# "End" 		"Vi|~Search" 	"Last"
+# "^" 	"Shift" 	"Vi|~Search" 	"FirstOccupied"
+# "H" 	"Shift" 	"Vi|~Search" 	"High"
+# "M" 	"Shift" 	"Vi|~Search" 	"Middle"
+# "L" 	"Shift" 	"Vi|~Search" 	"Low"
+# "B" 		"Vi|~Search" 	"SemanticLeft"
+# "W" 		"Vi|~Search" 	"SemanticRight"
+# "E" 		"Vi|~Search" 	"SemanticRightEnd"
+# "B" 	"Shift" 	"Vi|~Search" 	"WordLeft"
+# "W" 	"Shift" 	"Vi|~Search" 	"WordRight"
+# "E" 	"Shift" 	"Vi|~Search" 	"WordRightEnd"
+# "%" 	"Shift" 	"Vi|~Search" 	"Bracket"
+# "/" 		"Vi|~Search" 	"SearchForward"
+# "?" 	"Shift" 	"Vi|~Search" 	"SearchBackward"
+# "N" 		"Vi|~Search" 	"SearchNext"
+# "N" 	"Shift" 	"Vi|~Search" 	"SearchPrevious"
+# Search Mode
+# key 	mods 	mode 	action
+# "Enter" 		"Search|Vi" 	"SearchConfirm"
+# "Escape" 		"Search" 	"SearchCancel"
+# "C" 	"Control" 	"Search" 	"SearchCancel"
+# "U" 	"Control" 	"Search" 	"SearchClear"
+# "W" 	"Control" 	"Search" 	"SearchDeleteWord"
+# "P" 	"Control" 	"Search" 	"SearchHistoryPrevious"
+# "N" 	"Control" 	"Search" 	"SearchHistoryNext"
+# "ArrowUp" 		"Search" 	"SearchHistoryPrevious"
+# "ArrowDown" 		"Search" 	"SearchHistoryNext"
+# "Enter" 		"Search|~Vi" 	"SearchFocusNext"
+# Windows, Linux, and BSD only
+# key 	mods 	mode 	action
+# "V" 	"Control|Shift" 	"~Vi" 	"Paste"
+# "V" 	"Control|Shift" 	"Vi|Search" 	"Paste"
+# "C" 	"Control|Shift" 		"Copy"
+# "F" 	"Control|Shift" 	"~Search" 	"SearchForward"
+# "B" 	"Control|Shift" 	"~Search" 	"SearchBackward"
+# "C" 	"Control|Shift" 	"Vi|~Search" 	"ClearSelection"
+# "Insert" 	"Shift" 		"PasteSelection"
+# "0" 	"Control" 		"ResetFontSize"
+# "=" 	"Control" 		"IncreaseFontSize"
+# "+" 	"Control" 		"IncreaseFontSize"
+# "NumpadAdd" 	"Control" 		"IncreaseFontSize"
+# "-" 	"Control" 		"DecreaseFontSize"
+# "NumpadSubtract" 	"Control" 		"DecreaseFontSize"
