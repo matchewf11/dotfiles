@@ -1,0 +1,131 @@
+local function config()
+  require('config.autocmds').lsp()
+
+  vim.diagnostic.config {
+    severity_sort = true,
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = '󰅚 ',
+        [vim.diagnostic.severity.WARN] = '󰀪 ',
+        [vim.diagnostic.severity.INFO] = '󰋽 ',
+        [vim.diagnostic.severity.HINT] = '󰌶 ',
+      },
+    },
+  }
+
+  local mason_servers = {
+    lua_ls = {
+      --   capabilities = {},
+      --   cmd = {},
+      --   filetype = {},
+      --   settings = {},
+    },
+    stylua = {},
+    luacheck = {},
+    gopls = {},
+    goimports = {},
+    gofumpt = {},
+    ['golangci-lint'] = {},
+    clangd = {},
+    ['clang-format'] = {},
+    rust_analyzer = {},
+    bacon = {},
+    taplo = {},
+    checkmake = {},
+    zls = {},
+    -- arduino_language_server = {
+    --   cmd = {
+    --     'arduino-language-server',
+    --     '-cli',
+    --     '/usr/bin/arduino-cli',
+    --     '-fqbn',
+    --     'arduino:avr:uno',
+    --     '-clangd',
+    --     '/home/matchew/.local/share/nvim/mason/bin/clangd',
+    --   },
+    --   filetypes = { 'arduino', 'c', 'cpp' },
+    -- },
+  }
+
+  require('mason-tool-installer').setup {
+    ensure_installed = vim.tbl_keys(mason_servers),
+    auto_update = true,
+  }
+
+  local capabilities = require('blink.cmp').get_lsp_capabilities()
+  require('mason-lspconfig').setup {
+    auto_installation = false,
+    handlers = {
+      function(server_name)
+        local server = mason_servers[server_name] or {}
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        -- call `vim.lsp.config(…)` instead of `require'lspconfig'[…]`.
+        -- Change `require'lspconfig'[…]` to `vim.lsp.config(…)`.
+        -- require('lspconfig')[server_name].setup(server) -- old
+        vim.lsp.config(server_name, server) -- is server being read?
+        -- vim.lsp.enable('foo_ls')
+      end,
+    },
+  }
+end
+
+return {
+  'neovim/nvim-lspconfig',
+  lazy = false,
+  -- lazy = true,                            -- does lazy work in this context
+  -- event = { 'BufReadPre', 'BufNewFile' }, -- get rid of vary lazy?
+  dependencies = {
+    { 'mason-org/mason.nvim', opts = {} },
+    'mason-org/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    'saghen/blink.cmp',
+  },
+  config = config,
+}
+
+-- config stuff that i add
+-- lookm more into stuff i added
+-- plugins for each lang
+-- config the mason stuff and otehr tools
+
+--LSP
+-- ast-grep, autotools-ls, bacon_ls, bashls, basicsls, cspell, diagnosticsls, dockercompose langauge server,
+-- docker-lagnuage-server, dockerls, dprint, efm,
+-- emmylua_ls, golangci-lint-langserver,
+-- grammerly-langugageserver, harper-ls, ltex-ls, systemd-ls,, termux-ls, textlsp, tombi(is mine better or both)
+
+-- C
+-- debugger (more for C, C++, Rust)
+-- bash-debug-dapteer, codelldb, delve, go-debug-dabter, ocamlearlybird
+-- mock and local lua
+
+-- linter
+-- ast-grep, codespell, commitlint, cpplint, cspell, dotenv-linter, gitlint,
+-- gospel, hadolint, misspell, revive, selene, shellcheck,
+-- shellharden, semgrep, staticcheck, systemdlint, textlint, typos
+
+-- formatter
+--beautysh, crlfmt, gci, goimports-reviser, golines, go modify tages,
+--gotests, luaformatter, ocaml_format, shellharden, shfmt, tombi, yamlfix, yamlfmt
+
+-- docker
+-- 'dockerls',
+-- 'hadolint',
+
+-- LSPs
+--   "rust_analyzer", -- Rust
+--   "jsonls",        -- JSON
+--   "dockerls",      -- Docker
+--   "bashls",        -- Shell scripts
+--   "sqlls",         -- SQL
+
+-- Formatters
+--   "shfmt",         -- Shell
+--   "sql-formatter", -- SQL
+
+-- Linters
+--   "shellcheck",    -- Shell
+
+-- Debuggers (DAP)
+--   "delve",         -- Go
+--   "codelldb",      -- Rust, C/C++

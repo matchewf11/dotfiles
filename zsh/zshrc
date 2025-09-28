@@ -1,1 +1,1 @@
-[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc
+[ -f ~/dotfiles/omz/.zshrc ] && source ~/dotfiles/omz/.zshrc
