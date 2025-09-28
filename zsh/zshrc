@@ -63,7 +63,7 @@ fe() {
 bindkey -v # vimode
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.pk10.zsh
+[[ -f ~/dotfiles/zsh/p10k.zsh ]] && source ~/dotfiles/zsh/p10k.zsh
 
 
 #Plug-in list
@@ -76,12 +76,9 @@ bindkey -v # vimode
 # arcanist: this plugin adds many useful aliases for arcanist.
 # archlinux: this plugin adds some aliases and functions to work with Arch Linux.
 # argocd: this plugin adds completion for the Argo CD CLI.
-# asdf: adds integration with asdf, the extendable version manager, with support for Ruby, Node.js, Elixir, Erlang and more.
 # autoenv: this plugin loads the Autoenv.
 # autojump: this plugin loads the autojump navigation tool.
 # autopep8: this plugin adds completion for autopep8, a tool that automatically formats Python code to conform to the PEP 8 style guide.
-# aws: this plugin provides completion support for awscli v2 and a few utilities to manage AWS profiles/regions and display them in the prompt. awscli v1 is no longer supported.
-# azure: this plugin provides completion support for azure cli and a few utilities to manage azure subscriptions and display them in the prompt.
 # battery: this plugin adds some functions you can use to display battery information in your custom theme.
 # bazel: this plugin adds completion and aliases for bazel, an open-source build and test tool that scalably supports multi-language and multi-platform projects.
 # bbedit: plugin for BBEdit, an HTML and text editor for Mac OS X
@@ -91,16 +88,12 @@ bindkey -v # vimode
 # branch: this plugin displays the current Git or Mercurial branch, fast. If in a Mercurial repository, also display the current bookmark, if present.
 # bridgetown: this plugin adds some aliases and autocompletion for common Bridgetown commands.
 # bundler: this plugin adds completion for basic bundler commands, as well as aliases and helper functions for an easier experience with bundler.
-# cakephp3: the plugin adds aliases and autocompletion for cakephp3.
 # capistrano: this plugin provides completion for Capistrano.
 # catimg: plugin for displaying images on the terminal using the catimg.sh script provided by posva
 # celery: this plugin provides completion for Celery.
 # charm: this plugin adds completion for the charm CLI.
 # chezmoi: This plugin adds completion for chezmoi.
-# chruby: this plugin loads chruby, a tool that changes the current Ruby version, and completion and a prompt function to display the Ruby version. Supports brew and manual installation of chruby.
-# cloudfoundry: this plugin is intended to offer a few simple aliases for regular users of the [Cloud Foundry Cli][1]. Most are just simple aliases that will save a bit of typing. Others include mini functions and or accept parameters. Take a look at the table below for details.
 # codeclimate: this plugin adds autocompletion for the codeclimate CLI.
-# coffee: this plugin provides aliases for quickly compiling and previewing your coffeescript code.
 # colemak: this plugin remaps keys in zsh's vi-style navigation mode for a Colemak keyboard layout, to match the QWERTY position:
 # colored-man-pages: this plugin adds colors to man pages.
 # colorize: with this plugin you can syntax-highlight file contents of over 300 supported languages and other text formats.
