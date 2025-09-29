@@ -35,7 +35,7 @@ if [[ ! -f "$UPDATE_FILE" || $((NOW - $(cat "$UPDATE_FILE"))) -ge $ONE_WEEK ]]; 
 	echo "$NOW" > "$UPDATE_FILE"
 fi
 
-alias ff="firefox >/dev/null 2>&1 &"
+alias ff="firefox >/dev/null 2>&1 & disown"
 alias vim='nvim'
 
 alias ls='eza -alh --group-directories-first --icons'
