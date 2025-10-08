@@ -8,6 +8,9 @@ return {
     'jay-babu/mason-nvim-dap.nvim', -- (config these) -- installs debuggers
 
     -- add more debuggers here (config them)
+    -- add them  for all my langs
+    -- "c", "rust", "lua", "bash", "sql"
+    --
     -- 'leoluz/nvim-dap-go',
   },
   keys = {
@@ -240,3 +243,5 @@ return {
 --     pause
 --     evaluate expressions
 --     REPL (incl. commands to show threads, frames and scopes)
+--
+--

@@ -27,6 +27,7 @@ function M.global()
   set_spacing('make', false, 4, 0)
   set_spacing('rust', true, 4, 4)
   set_spacing('toml', true, 2, 2)
+  -- set up markddown too?
 end
 
 function M.lsp()

@@ -1,3 +1,6 @@
 #!/bin/sh
 setxkbmap -option caps:swapescape
 exec i3
+
+# start picom in here?
+# set up picom?

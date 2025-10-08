@@ -35,6 +35,9 @@ if [[ ! -f "$UPDATE_FILE" || $((NOW - $(cat "$UPDATE_FILE"))) -ge $ONE_WEEK ]]; 
 	echo "$NOW" > "$UPDATE_FILE"
 fi
 
+# make a function to write all arch downloads to a folder
+# make a up function that lets me go up n directories
+
 alias ff="firefox >/dev/null 2>&1 & disown"
 alias vim='nvim'
 
@@ -62,8 +65,13 @@ fe() {
 
 bindkey -v # vimode
 
+
+# unbind rm for trash-cli?
+
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/dotfiles/zsh/p10k.zsh ]] && source ~/dotfiles/zsh/p10k.zsh
+
 
 #Plug-in list
 # 1password: this plugin adds 1Password functionality to oh-my-zsh.

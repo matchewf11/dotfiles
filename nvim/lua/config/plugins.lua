@@ -64,3 +64,27 @@ require('lazy').setup {
 -- harpoon?
 -- marks plugin? marks.nvim?
 -- vim.slime again?
+--
+-- reset everyting up
+-- do i need keymaps?
+-- just do :Something
+--
+--guess-indent
+--todo comments
+--mini.ai
+--mini.surround
+--other mini stuff
+--
+--treesitter (incremental selection, context, textobjects)
+-- nvim -autopairs
+-- nvim -dap
+-- vim-line { 'markdownlint' } (look at set up in kickstart)
+--
+-- markview? nvim plugin
+-- set up for markdown
+--
+-- treesitter (make a thing to fold a function)
+--
+-- make no changes to plugin config options or features
+--
+-- look at render-markdown.nvim
