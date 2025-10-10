@@ -1,4 +1,3 @@
--- done with this
 return {
   'folke/which-key.nvim',
   event = 'VeryLazy',
@@ -8,7 +7,6 @@ return {
       { '<leader>s', group = '[s]earch' },
       { '<leader>g', group = '[g]it' },
       { '<leader>h', group = '[h]arpoon' },
-      { '<leader>d', group = '[d]ebug' },
     },
   },
 }

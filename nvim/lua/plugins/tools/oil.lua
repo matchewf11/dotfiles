@@ -1,8 +1,5 @@
--- all done!! I think i finished this
 return {
   'stevearc/oil.nvim',
-  ---@module 'oil'
-  ---@type oil.SetupOpts
   opts = {
     delete_to_trash = true,
     watch_for_changes = true,

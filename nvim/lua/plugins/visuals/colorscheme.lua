@@ -1,4 +1,3 @@
--- done with this
 return {
   'rebelot/kanagawa.nvim',
   name = 'kanagawa',
