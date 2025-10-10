@@ -1,26 +1,8 @@
 [keyboard]
-bindings = [
-  # look into all std keymaps too
+bindings = []
 
-  # { key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
-  # { key = "L", mods = "Control|Shift", chars = "l" },
-  #{ <key>, <mods>, <mode>, <command> | <chars> | <action> }
-  # can trigger multiple keybindings in key = "<string>"
-  # mods = "Command", "Control", "Option", "Super", "Shift", "Alt"
-  # bar to apply multiple
-  # mode = "AppCursor", "AppKeypad", "Search", "Alt", "Vi"
-  # ~ is not for mode, can be combined with |
-  #command = string | {program = string, args = [string]} #fork+execute
-  # chars = string #write cmd to terminal
-]
+## Alacritty Default Keybindings Overview
 
-# ## Alacritty Default Keybindings Overview
-
-# MOUSE BINDINGS
-# mouse 	mods 	action
-# "Right" 		"ExpandSelection"
-# "Right" 	"Control" 	"ExpandSelection"
-# "Middle" 	"~Vi" 	"PasteSelection"
 # KEY BINDINGS
 # key 	mods 	mode 	action / chars
 # "Paste" 			"Paste"
@@ -32,6 +14,7 @@ bindings = [
 # "PageDown" 	"Shift" 	"~Alt" 	"ScrollPageDown"
 # "Home" 	"Shift" 	"~Alt" 	"ScrollToTop"
 # "End" 	"Shift" 	"~Alt" 	"ScrollToBottom"
+
 # Vi Mode
 # key 	mods 	mode 	action
 # "Space" 	"Shift|Control" 	"~Search" 	"ToggleViMode"
@@ -90,6 +73,7 @@ bindings = [
 # "?" 	"Shift" 	"Vi|~Search" 	"SearchBackward"
 # "N" 		"Vi|~Search" 	"SearchNext"
 # "N" 	"Shift" 	"Vi|~Search" 	"SearchPrevious"
+
 # Search Mode
 # key 	mods 	mode 	action
 # "Enter" 		"Search|Vi" 	"SearchConfirm"
@@ -102,6 +86,7 @@ bindings = [
 # "ArrowUp" 		"Search" 	"SearchHistoryPrevious"
 # "ArrowDown" 		"Search" 	"SearchHistoryNext"
 # "Enter" 		"Search|~Vi" 	"SearchFocusNext"
+
 # Windows, Linux, and BSD only
 # key 	mods 	mode 	action
 # "V" 	"Control|Shift" 	"~Vi" 	"Paste"
@@ -117,6 +102,13 @@ bindings = [
 # "NumpadAdd" 	"Control" 		"IncreaseFontSize"
 # "-" 	"Control" 		"DecreaseFontSize"
 # "NumpadSubtract" 	"Control" 		"DecreaseFontSize"
+
+# MOUSE BINDINGS
+# mouse 	mods 	action
+# "Right" 		"ExpandSelection"
+# "Right" 	"Control" 	"ExpandSelection"
+# "Middle" 	"~Vi" 	"PasteSelection"
+
 
 # Action                | Description
 # ----------------------|------------------------------------------------------
@@ -250,3 +242,15 @@ bindings = [
 # ║     -r, --reset                 Clear all runtime changes              ║
 # ║     -w, --window-id <ID>        Apply to specific window               ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
+
+# look into all std keymaps too
+# { key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
+# { key = "L", mods = "Control|Shift", chars = "l" },
+#{ <key>, <mods>, <mode>, <command> | <chars> | <action> }
+# can trigger multiple keybindings in key = "<string>"
+# mods = "Command", "Control", "Option", "Super", "Shift", "Alt"
+# bar to apply multiple
+# mode = "AppCursor", "AppKeypad", "Search", "Alt", "Vi"
+# ~ is not for mode, can be combined with |
+#command = string | {program = string, args = [string]} #fork+execute
+# chars = string #write cmd to terminal
