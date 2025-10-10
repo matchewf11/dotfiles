@@ -12,13 +12,6 @@ bold = { family = "Hack Nerd Font Mono", style = "Bold" }
 italic = { family = "Hack Nerd Font Mono", style = "Italic" }
 bold_italic = { family = "Hack Nerd Font Mono", style = "Bold Italic" }
 size = 13.50
-builtin_box_drawing = false
 
 [selection]
 save_to_clipboard = true
-
-[terminal]
-shell = { program = "/usr/bin/zsh", args = ["-l"] }
-
-#[mouse]
-# bindings = [{ <mouse>, <mods>, <mode>, <command> | <chars> | <action> },]
