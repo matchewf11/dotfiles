@@ -22,10 +22,8 @@ require('lazy').setup {
 -- rellook at all config specs for plugins (clean and look for errs)
 -- config other stuff
 -- reasearch nvim basic keymaps and commands
--- config firefox as well
 -- add a bunch of the default keymaps of the plugins i added to the keymap file
 -- :help
--- conifg web-devicons
 -- get rid of defualt config if i dont change (get rid of config options to make simple)
 
 -- use harpoon, windows(buffers) or tabs? (or either), tabline(lualine as well)?
@@ -79,12 +77,8 @@ require('lazy').setup {
 -- nvim -autopairs
 -- nvim -dap
 -- vim-line { 'markdownlint' } (look at set up in kickstart)
---
 -- markview? nvim plugin
 -- set up for markdown
---
 -- treesitter (make a thing to fold a function)
---
 -- make no changes to plugin config options or features
---
 -- look at render-markdown.nvim
