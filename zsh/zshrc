@@ -14,7 +14,8 @@ ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
-plugins=(zsh-syntax-highlighting colored-man-pages)
+plugins=(zsh-syntax-highlighting colored-man-pages jsontools)
+# look into jsontools, get rid of this pp_json!!!
 
 # zoxide – smarter cd, jump to frequently used directories.
 # gitfast – Git aliases and completion (fast version with fewer zsh-specific features).
@@ -31,6 +32,9 @@ plugins=(zsh-syntax-highlighting colored-man-pages)
 # tmux – aliases and helpers for tmux.
 # web-search – quick search aliases for Google, Wiki, Bing, YouTube, etc
 # autocomplete, zsh completions
+# jq – command-line JSON processor
+# need fd, rg, delta, rendermarkdown or markview
+# do i need chafa, viu, or ueberzzupp
 
 source $ZSH/oh-my-zsh.sh
 
@@ -53,13 +57,32 @@ fi
 
 # make a function to write all arch downloads to a folder
 # make a up function that lets me go up n directories
+# minimize config and pacman install stuff
 
 alias ff="firefox >/dev/null 2>&1 & disown"
 alias vim='nvim'
 
-# minimize config and pacman install stuff
+alias ls='eza'
+# (learn how to use this)
+alias grep='rg'
+# (learn how to use this)
+alias top='htop'
+# (learn how to use this)
+alias cat='bat'
+# (learn how to use this)
 
-alias ls='eza -alh --group-directories-first --icons'
+# alias rm='trash'
+
+# (zioxide tool)
+# (fd tool)
+# (tmux tool)
+# (gh cli)
+# (doppler cli)
+# (pass)
+# (jq)
+# (stow)
+# (fzf)
+
 alias ga='git add'
 alias gc='git commit'
 alias gs='git status'
@@ -87,3 +110,40 @@ bindkey -v # vimode
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/dotfiles/zsh/p10k.zsh ]] && source ~/dotfiles/zsh/p10k.zsh
+
+# ncdu – disk usage analyzer for cleaning space
+# duf – human-readable df replacement
+# procs – colored ps replacement with tree view
+# httpie – human-friendly HTTP client
+# wget – classic downloader and site mirroring tool
+# dig – DNS lookup utility
+# nslookup – alternative DNS query tool
+# nmap – network scanner and host discovery
+# ping – test connectivity
+# mtr – combined ping and traceroute with live updates
+# traceroute – trace network route
+# iftop – real-time network traffic monitor
+# nload – live bandwidth usage monitor
+# ssh – secure remote login
+# mosh – mobile shell, smoother over flaky networks
+# scp – copy files over SSH
+# rsync – fast, resumable file transfer and sync
+# netcat (nc) – versatile TCP/UDP networking utility
+# entr – automatically rerun commands on file changes
+# tree – directory tree viewer
+# ctags – generate tags for code navigation
+# universal-ctags – modern ctags fork
+# bat-extras – suite of helpers for bat
+# taskwarrior – command-line task manager
+# gping – ping with live graph
+# glances – all-in-one system monitor
+# zip – archive utility
+# unzip – extract zip files
+# tar – create/extract tarballs
+# 7z – 7-Zip compression tool
+# aria2 – multi-protocol downloader supporting torrents and HTTP/FTP
+# broot – tree-view file manager with fuzzy navigation
+# atuin – searchable, synced shell history
+# chezmoi – manageandsyncdotfilesacrosssystemslookinto other cli things)
+
+# what do i install thru zsh vs oh-my-zsh (move off of omz)

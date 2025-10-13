@@ -1,5 +1,3 @@
--- ideally clean this file out and look into more plugins
--- look for alternatives
 return {
   'echasnovski/mini.nvim',
   version = false,

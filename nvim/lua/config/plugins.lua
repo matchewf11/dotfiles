@@ -82,3 +82,12 @@ require('lazy').setup {
 -- treesitter (make a thing to fold a function)
 -- make no changes to plugin config options or features
 -- look at render-markdown.nvim
+--
+-- get rid of mason
+-- install it on my own
+-- delete wherever it downloaded the current stuff
+--
+-- add lspconfig, then vim.lsp.enable({"lua_ls", "svelte", "rust_analyzer"})
+--
+-- look into the lsp's and stuff i wnat to keep
+-- which langs do i wnat it for
