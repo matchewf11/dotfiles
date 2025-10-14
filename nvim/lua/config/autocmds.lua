@@ -1,3 +1,15 @@
+local function set_spacing(pattern, expandtab, tabstop_shiftwidth, softtabstop)
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = pattern,
+    callback = function()
+      vim.bo.expandtab = expandtab
+      vim.bo.tabstop = tabstop_shiftwidth
+      vim.bo.shiftwidth = tabstop_shiftwidth
+      vim.bo.softtabstop = softtabstop
+    end,
+  })
+end
+
 local M = {}
 
 function M.global()
@@ -9,25 +21,12 @@ function M.global()
     end,
   })
 
-  local function set_spacing(pattern, expandtab, tabstop_shiftwidth, softtabstop)
-    vim.api.nvim_create_autocmd('FileType', {
-      pattern = pattern,
-      callback = function()
-        vim.bo.expandtab = expandtab
-        vim.bo.tabstop = tabstop_shiftwidth
-        vim.bo.shiftwidth = tabstop_shiftwidth
-        vim.bo.softtabstop = softtabstop
-      end,
-    })
-  end
-
   set_spacing('lua', true, 2, 2)
   set_spacing('go', false, 4, 4)
   set_spacing('c', true, 2, 2)
   set_spacing('make', false, 4, 0)
   set_spacing('rust', true, 4, 4)
   set_spacing('toml', true, 2, 2)
-  -- set up markddown too?
 end
 
 function M.lsp()
@@ -36,7 +35,6 @@ function M.lsp()
 
     callback = function(event)
       require('config.keymaps').lsp()
-
       local function client_supports_method(client, method, bufnr)
         if vim.fn.has 'nvim-0.11' == 1 then
           return client:supports_method(method, bufnr)

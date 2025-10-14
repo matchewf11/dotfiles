@@ -1,29 +1,22 @@
 require('lazy').setup {
   spec = { require 'plugins' },
-  -- install = { colorscheme = { 'kanagawa' } }, -- change this later?
+  install = { colorscheme = { 'kanagawa' } },
   change_detection = { notify = false },
   checker = { enabled = true, frequency = 604800 },
 }
 
--- opts --keycaps
--- func that changes working dir
-
 -- minial config and plugins and keymaps and max-lazy
 -- maybe use docker tools and shell and sql and other stuff
 
--- learn more about (config too)
---  go lsp/fmt's/linter/debugger
---  lua lsp/fmt/linter/debugger
+-- lsp/fmt/linter for
+-- lua, rust, bash
 
 -- look into tab feature?, also amek sure config matches (search tabs fzf, hide tabs and otehr stuff)
--- look into all my plugin configs to see if it affects anythign
 
---make sure to look at all plugins keymaps to write down
 -- rellook at all config specs for plugins (clean and look for errs)
--- config other stuff
--- reasearch nvim basic keymaps and commands
+
 -- add a bunch of the default keymaps of the plugins i added to the keymap file
--- :help
+
 -- get rid of defualt config if i dont change (get rid of config options to make simple)
 
 -- use harpoon, windows(buffers) or tabs? (or either), tabline(lualine as well)?
@@ -31,13 +24,8 @@ require('lazy').setup {
 -- lua-dev.nvim
 -- nlua.nvim (debugger)
 
--- i did some C stuff as well config it, and maybe debugger?
 -- look into lsp stuff and debuggers for all langauges
 -- ensure build tool fmting/lsp is installed
--- need pleanary.nvim for harpoon, do i config it?
-
--- look at my phone for notes, do i still need harpoon?
--- make marks look like harpoon?
 -- tabs, marks, and bnext, b#/<C-^>, jump list <C-o><C-i>
 
 -- custom marks
@@ -54,25 +42,24 @@ require('lazy').setup {
 -- b2/b3
 -- b#
 -- do i use tabs?
---or just use harpoon
---mason auto updates
---write down all plugin keympas
---
---
+-- or just use harpoon
+-- write down all plugin keympas
+
 -- harpoon?
 -- marks plugin? marks.nvim?
 -- vim.slime again?
---
--- reset everyting up
+
+-- set everyting up again
+
 -- do i need keymaps?
 -- just do :Something
---
+
 --guess-indent
 --todo comments
 --mini.ai
 --mini.surround
 --other mini stuff
---
+
 --treesitter (incremental selection, context, textobjects)
 -- nvim -autopairs
 -- nvim -dap
@@ -82,33 +69,22 @@ require('lazy').setup {
 -- treesitter (make a thing to fold a function)
 -- make no changes to plugin config options or features
 -- look at render-markdown.nvim
---
+
 -- get rid of mason
 -- install it on my own
 -- delete wherever it downloaded the current stuff
---
--- add lspconfig, then vim.lsp.enable({"lua_ls", "svelte", "rust_analyzer"})
---
--- look into the lsp's and stuff i wnat to keep
--- which langs do i wnat it for
---
--- return {
---   'echasnovski/mini.nvim',
---   version = false,
---   event = 'VeryLazy',
---   config = function()
---     -- mini.ai 	Extend and create a/i textobjects
---     -- mini.align 	Align text interactivel
---     -- mini.comment 	Comment lines
---     -- mini.move 	Move any selection in any direction
---     -- mini.operators 	Text edit operators
---     -- mini.snippets 	Manage and expand snippet
---     -- mini.splitjoin 	Split and join argument
---     -- mini.surround 	Surround action
---
---     -- mini.bracketed 	Go forward/backward with square brackets
---     -- mini.jump 	Jump to next/previous single character
---     -- mini.jump2d 	Jump within visible lines
---     -- mini.sessions 	Session management
---   end,
--- }
+
+-- add lspconfig,then vim.lsp.enable({"lua_ls", "svelte", "rust_analyzer"})
+
+-- mini.ai 	Extend and create a/i textobjects
+-- mini.align 	Align text interactivel
+-- mini.comment 	Comment lines
+-- mini.move 	Move any selection in any direction
+-- mini.operators 	Text edit operators
+-- mini.snippets 	Manage and expand snippet
+-- mini.splitjoin 	Split and join argument
+-- mini.surround 	Surround action
+-- mini.bracketed 	Go forward/backward with square brackets
+-- mini.jump 	Jump to next/previous single character
+-- mini.jump2d 	Jump within visible lines
+-- mini.sessions 	Session management

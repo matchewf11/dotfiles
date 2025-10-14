@@ -20,6 +20,7 @@ function M.global()
     { '<Esc><Esc>', '<C-\\><C-n>', 'Exit terminal mode', 't' },
     { '<leader>q', vim.diagnostic.setloclist, 'Open diagnostic [Q]uickfix list' },
   }
+  -- add something to run the code
 end
 
 function M.lsp()
@@ -36,5 +37,3 @@ function M.lsp()
 end
 
 return M
-
--- add something to run the code

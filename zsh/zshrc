@@ -71,22 +71,18 @@ alias top='htop'
 alias cat='bat'
 # (learn how to use this)
 
+# git shortcuts
+
 # alias rm='trash'
 
 # (zioxide tool)
 # (fd tool)
-# (tmux tool)
 # (gh cli)
 # (doppler cli)
 # (pass)
 # (jq)
 # (stow)
 # (fzf)
-
-alias ga='git add'
-alias gc='git commit'
-alias gs='git status'
-alias gp='git push'
 
 cdf() {
   local dir
