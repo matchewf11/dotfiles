@@ -71,10 +71,16 @@ alias top='htop'
 alias cat='bat'
 # (learn how to use this)
 
-# git shortcuts
+
+# can do this with git config?
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gs='git status'
+alias gd='git diff'
+# add others?
 
 # alias rm='trash'
-
 # (zioxide tool)
 # (fd tool)
 # (gh cli)
