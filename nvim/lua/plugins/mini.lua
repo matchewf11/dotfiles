@@ -11,6 +11,7 @@ return {
     require('mini.statusline').setup {}
     require('mini.icons').setup {}
     require('mini.pairs').setup {}
+    require('mini.files').setup {} -- keep this?
 
     local miniclue = require 'mini.clue'
     miniclue.setup {
@@ -54,6 +55,21 @@ return {
     }
   end,
 }
+
+-- return {
+-- 'stevearc/oil.nvim',
+-- opts = {
+--   delete_to_trash = true,
+--   watch_for_changes = true,
+--   view_options = {
+--     show_hidden = true,
+--     is_always_hidden = function(name, _)
+--       return name == '..'
+--     end,
+--   },
+-- },
+-- dependencies = { 'nvim-mini/mini.nvim' },
+-- }
 
 -- return {
 --   'folke/which-key.nvim',
