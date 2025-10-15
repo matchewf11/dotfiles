@@ -60,6 +60,8 @@ require('lazy').setup {
 --mini.surround
 --other mini stuff
 
+-- add back kickstart.debug w/ config
+
 --treesitter (incremental selection, context, textobjects)
 -- nvim -autopairs
 -- nvim -dap
@@ -76,15 +78,16 @@ require('lazy').setup {
 
 -- add lspconfig,then vim.lsp.enable({"lua_ls", "svelte", "rust_analyzer"})
 
--- mini.ai 	Extend and create a/i textobjects
--- mini.align 	Align text interactivel
--- mini.comment 	Comment lines
--- mini.move 	Move any selection in any direction
--- mini.operators 	Text edit operators
--- mini.snippets 	Manage and expand snippet
--- mini.splitjoin 	Split and join argument
--- mini.surround 	Surround action
--- mini.bracketed 	Go forward/backward with square brackets
--- mini.jump 	Jump to next/previous single character
--- mini.jump2d 	Jump within visible lines
--- mini.sessions 	Session management
+--  learn more into mini
+--  oil vs files
+--  obession vs session
+--  vim-startify -> starter (switched)
+--  cursurword?
+--  fugitive over minigit
+--  gitsigns -> diff
+--
+--  fidget
+--
+-- look into packer.nvim
+--
+-- rustaceannvim

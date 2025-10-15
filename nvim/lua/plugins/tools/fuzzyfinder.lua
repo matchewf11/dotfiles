@@ -1,6 +1,6 @@
 return {
   'ibhagwan/fzf-lua',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  dependencies = { 'nvim-mini/mini.nvim' },
   lazy = true,
   opts = {
     file_icon_padding = '',
