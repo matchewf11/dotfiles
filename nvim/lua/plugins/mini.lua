@@ -12,6 +12,7 @@ return {
   config = function()
     require('mini.statusline').setup {}
     require('mini.icons').setup {}
+    require('mini.pairs').setup {}
   end,
 }
 
