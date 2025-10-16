@@ -43,6 +43,7 @@ source $ZSH/oh-my-zsh.sh
 export MANPATH="/usr/local/man:$MANPATH"
 
 export PATH=$PATH:$HOME/go/bin # add go to path
+export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
 
 export LANG=en_US.UTF-8
 export EDITOR='nvim'
