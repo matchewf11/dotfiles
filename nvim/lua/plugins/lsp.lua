@@ -13,48 +13,42 @@ local function config()
     },
   }
 
-  local mason_servers = {
-    luacheck = {}, -- linter
-    goimports = {}, -- fmt
-    gofumpt = {}, -- fmt
-    ['golangci-lint'] = {}, -- linter
-    clangd = {}, -- lsp
-    ['clang-format'] = {}, -- fmter
-    taplo = {}, -- lsp?
-    checkmake = {}, -- linter
-    zls = {}, -- lsp
-  }
+  -- still use this?
+  -- local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-  require('mason-tool-installer').setup {
-    ensure_installed = vim.tbl_keys(mason_servers),
-    auto_update = true,
-  }
+  -- vim.lsp.config(name, {})
 
-  local capabilities = require('blink.cmp').get_lsp_capabilities()
-  require('mason-lspconfig').setup {
-    auto_installation = false,
-    handlers = {
-      function(server_name)
-        local server = mason_servers[server_name] or {}
-        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-        -- call `vim.lsp.config(…)` instead of `require'lspconfig'[…]`.
-        -- Change `require'lspconfig'[…]` to `vim.lsp.config(…)`.
-        -- require('lspconfig')[server_name].setup(server) -- old
-        vim.lsp.config(server_name, server) -- is server being read?
-        -- vim.lsp.enable('foo_ls')
-      end,
-    },
-  }
+  -- ensure all of these work
 
-  -- vim.lsp.config['lua_ls'] = {} to config it
-  -- do i need the bottom if i have this?
+  -- vim.lsp.config('lua_ls', {}) or '*'
 
   vim.lsp.enable {
     'rust_analyzer', -- rustup
     'lua_ls', -- pacman
     'gopls', -- go
+    'clangd', -- pacman
+    'taplo', -- cargo
+    'zls', -- pacman
   }
 
+  -- require('mason-lspconfig').setup {
+  --   auto_installation = false,
+  --   handlers = {
+  --     function(server_name)
+  --       local server = mason_servers[server_name] or {}
+  --       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+  --       -- call `vim.lsp.config(…)` instead of `require'lspconfig'[…]`.
+  --       -- Change `require'lspconfig'[…]` to `vim.lsp.config(…)`.
+  --       -- require('lspconfig')[server_name].setup(server) -- old
+  --       vim.lsp.config(server_name, server) -- is server being read?
+  --       -- vim.lsp.enable('foo_ls')
+  --     end,
+  --   },
+  -- }
+
+  -- vim.lsp.config['lua_ls'] = {} to config it (above it)
+  -- do i need the bottom if i have this?
+  --
   -- get rid of mason
   -- install it on my own
 end
@@ -62,13 +56,10 @@ end
 return {
   {
     'neovim/nvim-lspconfig',
-    lazy = false,
-    -- lazy = true,                            -- does lazy work in this context
-    -- event = { 'BufReadPre', 'BufNewFile' }, -- get rid of vary lazy?
     dependencies = {
-      { 'mason-org/mason.nvim', opts = {} },
-      'mason-org/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      -- { 'mason-org/mason.nvim', opts = {} },
+      -- 'mason-org/mason-lspconfig.nvim',
+      -- 'WhoIsSethDaniel/mason-tool-installer.nvim',
       'saghen/blink.cmp',
     },
     config = config,
@@ -94,8 +85,8 @@ return {
       },
       formatters_by_ft = {
         lua = { 'stylua' }, -- installed thru cargo
-        go = { 'gofumpt', 'goimports' },
-        c = { 'clang-format' },
+        go = { 'gofumpt', 'goimports' }, -- thru go (both)
+        c = { 'clang-format' }, -- sudo pacman
         rust = { 'rustfmt' },
         toml = { 'taplo' },
         --["*"] = { "codespell" },
@@ -116,10 +107,10 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
-        lua = { 'luacheck' },
-        go = { 'golangcilint' },
+        lua = { 'luacheck' }, -- luarocks
+        go = { 'golangcilint' }, -- pacman
         c = { 'clangtidy' },
-        make = { 'checkmake' },
+        make = { 'checkmake' }, -- go
         rust = { 'clippy' },
       }
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
@@ -165,7 +156,6 @@ return {
 -- 'hadolint',
 
 -- LSPs
---   "rust_analyzer", -- Rust
 --   "jsonls",        -- JSON
 --   "dockerls",      -- Docker
 --   "bashls",        -- Shell scripts
@@ -181,13 +171,12 @@ return {
 -- Debuggers (DAP)
 --   "delve",         -- Go
 --   "codelldb",      -- Rust, C/C++
---
---
+--   something for bash?
+--   something for lua
 --
 --   capabilities = {},
 --   cmd = {},
 --   filetype = {},
 --   settings = {},
---
 --
 --   look at lsp config stuff
