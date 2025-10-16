@@ -14,37 +14,15 @@ local function config()
   }
 
   local mason_servers = {
-    lua_ls = {
-      --   capabilities = {},
-      --   cmd = {},
-      --   filetype = {},
-      --   settings = {},
-    },
-    stylua = {},
-    luacheck = {},
-    gopls = {},
-    goimports = {},
-    gofumpt = {},
-    ['golangci-lint'] = {},
-    clangd = {},
-    ['clang-format'] = {},
-    rust_analyzer = {},
-    bacon = {},
-    taplo = {},
-    checkmake = {},
-    zls = {},
-    -- arduino_language_server = {
-    --   cmd = {
-    --     'arduino-language-server',
-    --     '-cli',
-    --     '/usr/bin/arduino-cli',
-    --     '-fqbn',
-    --     'arduino:avr:uno',
-    --     '-clangd',
-    --     '/home/matchew/.local/share/nvim/mason/bin/clangd',
-    --   },
-    --   filetypes = { 'arduino', 'c', 'cpp' },
-    -- },
+    luacheck = {}, -- linter
+    goimports = {}, -- fmt
+    gofumpt = {}, -- fmt
+    ['golangci-lint'] = {}, -- linter
+    clangd = {}, -- lsp
+    ['clang-format'] = {}, -- fmter
+    taplo = {}, -- lsp?
+    checkmake = {}, -- linter
+    zls = {}, -- lsp
   }
 
   require('mason-tool-installer').setup {
@@ -67,6 +45,18 @@ local function config()
       end,
     },
   }
+
+  -- vim.lsp.config['lua_ls'] = {} to config it
+  -- do i need the bottom if i have this?
+
+  vim.lsp.enable {
+    'rust_analyzer', -- rustup
+    'lua_ls', -- pacman
+    'gopls', -- go
+  }
+
+  -- get rid of mason
+  -- install it on my own
 end
 
 return {
@@ -103,7 +93,7 @@ return {
         lsp_format = 'fallback', -- try use lsp if no fmter
       },
       formatters_by_ft = {
-        lua = { 'stylua' },
+        lua = { 'stylua' }, -- installed thru cargo
         go = { 'gofumpt', 'goimports' },
         c = { 'clang-format' },
         rust = { 'rustfmt' },
@@ -191,3 +181,13 @@ return {
 -- Debuggers (DAP)
 --   "delve",         -- Go
 --   "codelldb",      -- Rust, C/C++
+--
+--
+--
+--   capabilities = {},
+--   cmd = {},
+--   filetype = {},
+--   settings = {},
+--
+--
+--   look at lsp config stuff

@@ -21,3 +21,4 @@ return {
     },
   },
 }
+-- add cargo.nvim back?

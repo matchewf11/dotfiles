@@ -94,3 +94,6 @@ require('lazy').setup {
 --
 -- look at maxmini config
 -- look into mini.deps and vim.pack
+--
+-- git workflow? how to handle merge confilcts
+-- can i make a merge conflits populate my quickfix list
