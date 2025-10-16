@@ -70,17 +70,79 @@ local function config()
 end
 
 return {
-  'neovim/nvim-lspconfig',
-  lazy = false,
-  -- lazy = true,                            -- does lazy work in this context
-  -- event = { 'BufReadPre', 'BufNewFile' }, -- get rid of vary lazy?
-  dependencies = {
-    { 'mason-org/mason.nvim', opts = {} },
-    'mason-org/mason-lspconfig.nvim',
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
-    'saghen/blink.cmp',
+  {
+    'neovim/nvim-lspconfig',
+    lazy = false,
+    -- lazy = true,                            -- does lazy work in this context
+    -- event = { 'BufReadPre', 'BufNewFile' }, -- get rid of vary lazy?
+    dependencies = {
+      { 'mason-org/mason.nvim', opts = {} },
+      'mason-org/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      'saghen/blink.cmp',
+    },
+    config = config,
   },
-  config = config,
+  {
+    'stevearc/conform.nvim',
+    lazy = true,
+    event = 'BufWritePre',
+    keys = {
+      {
+        '<leader>f',
+        function()
+          require('conform').format { lsp_format = 'fallback', async = true }
+        end,
+        desc = '[f]ormat buffer',
+      },
+    },
+    opts = {
+      notify_on_error = true,
+      format_on_save = { -- can later make fn that disables languages for this
+        timeout_ms = 500,
+        lsp_format = 'fallback', -- try use lsp if no fmter
+      },
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        go = { 'gofumpt', 'goimports' },
+        c = { 'clang-format' },
+        rust = { 'rustfmt' },
+        toml = { 'taplo' },
+        --["*"] = { "codespell" },
+        --["*"] = { "trimwhitespace" },
+      },
+    },
+    formatters = {
+      stylua = {},
+      goimports = {},
+      gofumpt = {},
+      ['clang-format'] = {},
+      rustfmt = {},
+    },
+  },
+  {
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      local lint = require 'lint'
+      lint.linters_by_ft = {
+        lua = { 'luacheck' },
+        go = { 'golangcilint' },
+        c = { 'clangtidy' },
+        make = { 'checkmake' },
+        rust = { 'clippy' },
+      }
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        group = lint_augroup,
+        callback = function()
+          if vim.bo.modifiable then
+            lint.try_lint()
+          end
+        end,
+      })
+    end,
+  },
 }
 
 -- config stuff that i add

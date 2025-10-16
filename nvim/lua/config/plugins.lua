@@ -91,3 +91,6 @@ require('lazy').setup {
 -- look into packer.nvim
 --
 -- rustaceannvim
+--
+-- look at maxmini config
+-- look into mini.deps and vim.pack
