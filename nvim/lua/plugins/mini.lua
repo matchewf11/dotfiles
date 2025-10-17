@@ -1,44 +1,1743 @@
+-- should i use mini.deps?
+-- set up creates a global table _G.MiniSurround (or other)
+-- config is stored in _G.MiniSurround.config
+-- can change fields on the fly
+-- MiniSurround.config.n_lines (can be changed @ runtime)
+-- also use buffer specific mini.nvim-buffer-local-config
+-- module-reulated buffers are named mini<module-name>://<buffer-number>/<useful-info> (may be empty)
+-- see disabling recipes to turn off for buffers
+-- config.silent = true (non-error feedback)
+-- can be controlled with ":h highlight-groups", ":highlight" or "vim.api.nvim_set_hl()"
+--
+
 return {
   'nvim-mini/mini.nvim',
   version = false,
   config = function()
-    require('mini.statusline').setup {}
-    require('mini.icons').setup {}
-    require('mini.pairs').setup {}
-    require('mini.files').setup {}
-    require('mini.diff').setup {}
-    require('mini.git').setup {} -- keep this or move to vim-fugative
+    -- ////////////////////////////////////////////////////////////
 
-    -- re-set this up
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    -- look at their tables
+    -- can extend :Pick w/ MiniPick.registry
+    -- `vim.ui.select()` implementation. To adjust, use `MiniPick.ui_select()` or save-restore `vim.ui.select` manually
+    -- after calling `MiniPick.setup()`.
+    -- `:h MiniPick-overview`
+    -- `:h MiniPick-source`
+    -- `:h MiniPick-actions`
+    -- `:h MiniPick-examples`
+    -- `:h MiniPick.builtin`
+    --
+    -- pick from an array
+    -- MiniPick.start() w/ opts.source defining source
+    -- Example: `MiniPick.start({ source = { items = vim.fn.readdir('.') } })`
+    --
+    -- can use any builtin directly
+    -- MiniPick.builtin.files { tool = 'git' }
+    --
+    -- Use `:Pick` command which uses customizable pickers from `MiniPick.registry`.
+    -- Example: `:Pick files tool='git'`
+    --
+    --
     local mini_pick = require 'mini.pick'
-    mini_pick.setup {}
+    mini_pick.setup {
+      -- this will be used automatically
+      --   -- Delays (in ms; should be at least 1)
+      --   delay = {
+      --     -- Delay between forcing asynchronous behavior
+      --     async = 10,
+      --
+      --     -- Delay between computation start and visual feedback about it
+      --     busy = 50,
+      --   },
+      --
+      --   -- Keys for performing actions. See `:h MiniPick-actions`.
+      --   mappings = {
+      --     caret_left  = '<Left>',
+      --     caret_right = '<Right>',
+      --
+      --     choose            = '<CR>',
+      --     choose_in_split   = '<C-s>',
+      --     choose_in_tabpage = '<C-t>',
+      --     choose_in_vsplit  = '<C-v>',
+      --     choose_marked     = '<M-CR>',
+      --
+      --     delete_char       = '<BS>',
+      --     delete_char_right = '<Del>',
+      --     delete_left       = '<C-u>',
+      --     delete_word       = '<C-w>',
+      --
+      --     mark     = '<C-x>',
+      --     mark_all = '<C-a>',
+      --
+      --     move_down  = '<C-n>',
+      --     move_start = '<C-g>',
+      --     move_up    = '<C-p>',
+      --
+      --     paste = '<C-r>',
+      --
+      --     refine        = '<C-Space>',
+      --     refine_marked = '<M-Space>',
+      --
+      --     scroll_down  = '<C-f>',
+      --     scroll_left  = '<C-h>',
+      --     scroll_right = '<C-l>',
+      --     scroll_up    = '<C-b>',
+      --
+      --     stop = '<Esc>',
+      --
+      --     toggle_info    = '<S-Tab>',
+      --     toggle_preview = '<Tab>',
+      --   },
+      --
+      --   -- General options
+      --   options = {
+      --     -- Whether to show content from bottom to top
+      --     content_from_bottom = false,
+      --
+      --     -- Whether to cache matches (more speed and memory on repeated prompts)
+      --     use_cache = false,
+      --   },
+      --
+      --   -- Source definition. See `:h MiniPick-source`.
+      --   source = {
+      --     items = nil,
+      --     name  = nil,
+      --     cwd   = nil,
+      --
+      --     match   = nil,
+      --     show    = nil,
+      --     preview = nil,
+      --
+      --     choose        = nil,
+      --     choose_marked = nil,
+      --   },
+      --
+      --   -- Window related options
+      --   window = {
+      --     -- Float window config (table or callable returning it)
+      --     config = nil,
+      --
+      --     -- String to use as caret in prompt
+      --     prompt_caret = '▏',
+      --
+      --     -- String to use as prefix in prompt
+      --     prompt_prefix = '> ',
+      --   },
+    }
     vim.keymap.set('n', '<leader>sb', mini_pick.builtin.buffers)
     vim.keymap.set('n', '<leader>sf', mini_pick.builtin.files)
+    vim.keymap.set('n', '<leader>sc', mini_pick.builtin.cli) -- w/ ripgrep, fd, git
+    vim.keymap.set('n', '<leader>sg', mini_pick.builtin.grep)
+    vim.keymap.set('n', '<leader>sl', mini_pick.builtin.grep_live)
+    vim.keymap.set('n', '<leader>sh', mini_pick.builtin.help)
+    vim.keymap.set('n', '<leader>sr', mini_pick.builtin.resume)
 
+    -- ### User interface
+    -- UI consists from a single window capable of displaying three different views:
+    -- - "Main" - where current query matches are shown.
+    -- - "Preview" - preview of current item (toggle with `<Tab>`).
+    -- - "Info" - general info about picker and its state (toggle with `<S-Tab>`).
+    --
+    -- Current prompt is displayed at the top left of the window border with vertical line indicating caret (current input position).
+    --
+    -- Bottom part of window border displays (in Neovim>=0.10) extra visual feedback:
+    --
+    -- - Left part is a picker name.
+    -- - Right part contains information in the format:
+    --
+    --     `<current index in matches> | <match count> | <marked count> / <total count>`
+    --
+    -- When picker is busy (like if there are no items yet set or matching is active) window border changes color to be `MiniPickBorderBusy` after `config.delay.busy` milliseconds of idle time.
+    --
+    -- ### Life cycle
+    --
+    -- - Type characters to filter and sort matches. It uses `MiniPick.default_match()` with `query` being an array of pressed characters. Overview of how it matches:
+    --     - If query starts with `'`, the match is exact.
+    --     - If query starts with `^`, the match is exact at start.
+    --     - If query ends with `$`, the match is exact at end.
+    --     - If query starts with `*`, the match is forced to be fuzzy.
+    --     - Otherwise match is fuzzy.
+    --     - Sorting is done to first minimize match width and then match start.
+    --       Nothing more: no favoring certain places in string, etc.
+    --
+    -- - Type special keys to perform actions. Here are some basic ones:
+    --     - `<C-n>` / `<Down>` moves down; `<C-p>` / `<Up>` moves up.
+    --     - `<Left>` / `<Right>` moves prompt caret left / right.
+    --     - `<S-Tab>` toggles information window with all available mappings.
+    --     - `<Tab>` toggles preview.
+    --     - `<C-x>` / `<C-a>` toggles current / all item(s) as (un)marked.
+    --     - `<C-Space>` / `<M-Space>` makes all matches or marked items as new picker.
+    --     - `<CR>` / `<M-CR>` chooses current/marked item(s).
+    --     - `<Esc>` / `<C-c>` stops picker.
+    --
+    --
+    --
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                                       *MiniPick*
+    -- Features:
+    --
+    -- - Single window general purpose interface for picking element from any array.
+    --
+    -- - On demand toggleable preview and info views.
+    --
+    -- - Interactive query matching (filter+sort) with fast non-blocking default
+    --   which does fuzzy matching and allows other modes (|MiniPick.default_match()|).
+    --
+    -- - Built-in pickers (see |MiniPick.builtin|):
+    --     - Files.
+    --     - Pattern match (for fixed pattern or with live feedback; both allow
+    --       file filtering via glob patterns).
+    --     - Buffers.
+    --     - Help tags.
+    --     - CLI output.
+    --     - Resume latest picker.
+    --
+    -- - |:Pick| command to work with extensible |MiniPick.registry|.
+    --
+    -- - |vim.ui.select()| implementation. To adjust, use |MiniPick.ui_select()|
+    --   or save-restore `vim.ui.select` manually after calling |MiniPick.setup()|.
+    --
+    -- - Rich and customizable built-in |MiniPick-actions| when picker is active:
+    --     - Manually change currently focused item.
+    --     - Scroll vertically and horizontally.
+    --     - Toggle preview or info view.
+    --     - Mark/unmark items to choose later.
+    --     - Refine current matches (make them part of a new picker).
+    --     - And many more.
+    --
+    -- - Minimal yet flexible |MiniPick-source| specification with:
+    --     - Items (array, callable, or manually set later).
+    --     - Source name.
+    --     - Working directory.
+    --     - Matching algorithm.
+    --     - Way matches are shown in main window.
+    --     - Item preview.
+    --     - "On choice" action for current and marked items.
+    --
+    -- - Custom actions/keys can be configured globally, per buffer, or per picker.
+    --
+    -- - Out of the box support for 'ignorecase' and 'smartcase'.
+    --
+    -- - Match caching to increase responsiveness on repeated prompts.
+    --
+    -- Notes:
+    -- - Works on all supported versions but Neovim>=0.10 will give more visual
+    --   feedback in floating window footer.
+    --
+    -- - For more pickers see |MiniExtra.pickers|.
+    --
+    -- Sources with more details:
+    -- - |MiniPick-overview|
+    -- - |MiniPick-source|
+    -- - |MiniPick-actions|
+    -- - |MiniPick-examples|
+    -- - |MiniPick.builtin|
+    --
+    -- # Dependencies ~
+    --
+    -- Suggested dependencies (provide extra functionality, will work without them):
+    --
+    -- - Enabled |mini.icons| module to show icons near the items for actual paths.
+    --   Falls back to 'nvim-tree/nvim-web-devicons' plugin or no icons will be used.
+    --
+    -- - *MiniPick-cli-tools* CLI tool(s) to power |MiniPick.builtin.files()|,
+    --   |MiniPick.builtin.grep()|, and |MiniPick.builtin.grep_live()| built-in pickers:
+    --     - `rg` (github.com/BurntSushi/ripgrep; enough for all three; recommended).
+    --     - `fd` (github.com/sharkdp/fd; for `files` only).
+    --     - `git` (github.com/git/git; enough for all three).
+    --
+    --   Note: CLI tools are called only with basic arguments needed to get items.
+    --   To customize the output, use their respective configuration approaches.
+    --   Here are some examples of where to start:
+    --     - github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
+    --     - github.com/sharkdp/fd#excluding-specific-files-or-directories
+    --     - git-scm.com/docs/gitignore
+    --
+    -- # Setup ~
+    --
+    -- This module needs a setup with `require('mini.pick').setup({})` (replace
+    -- `{}` with your `config` table). It will create global Lua table `MiniPick`
+    -- which you can use for scripting or manually (with `:lua MiniPick.*`).
+    --
+    -- See |MiniPick.config| for available config settings.
+    --
+    -- You can override runtime config settings locally to buffer inside
+    -- `vim.b.minipick_config` which should have same structure as `MiniPick.config`.
+    -- See |mini.nvim-buffer-local-config| for more details.
+    --
+    -- # Comparisons ~
+    --
+    -- - [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim):
+    --     - The main inspiration for this module, so there is significant overlap.
+    --     - Has three (or two) window UI (prompt, matches, preview), while this
+    --       module combines everything in one window. It allows more straightforward
+    --       customization for unusual scenarios.
+    --     - Default match algorithm is somewhat slow, while this module should
+    --       match relatively lag-free for at least 100K+ items.
+    --     - Has many built-in pickers, while this module has handful at its core
+    --       relying on other 'mini.nvim' modules to provide more (see |mini.extra|).
+    --
+    -- - [ibhagwan/fzf-lua](https://github.com/ibhagwan/fzf-lua):
+    --     - Mostly same comparison as with 'nvim-telescope/telescope.nvim'.
+    --     - Requires [junegunn/fzf](https://github.com/junegunn/fzf) installed to
+    --       power fuzzy matching, while this module provides built-in Lua matching.
+    --
+    -- # Highlight groups ~
+    --
+    -- - `MiniPickBorder` - window border.
+    -- - `MiniPickBorderBusy` - window border while picker is busy processing.
+    -- - `MiniPickBorderText` - non-prompt on border.
+    -- - `MiniPickCursor` - cursor during active picker (hidden by default).
+    -- - `MiniPickIconDirectory` - default icon for directory.
+    -- - `MiniPickIconFile` - default icon for file.
+    -- - `MiniPickHeader` - headers in info buffer and previews.
+    -- - `MiniPickMatchCurrent` - current matched item.
+    -- - `MiniPickMatchMarked` - marked matched items.
+    -- - `MiniPickMatchRanges` - ranges matching query elements.
+    -- - `MiniPickNormal` - basic foreground/background highlighting.
+    -- - `MiniPickPreviewLine` - target line in preview.
+    -- - `MiniPickPreviewRegion` - target region in preview.
+    -- - `MiniPickPrompt` - prompt.
+    -- - `MiniPickPromptCaret` - caret in prompt.
+    -- - `MiniPickPromptPrefix` - prefix of the prompt.
+    --
+    -- To change any highlight group, set it directly with |nvim_set_hl()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                                *MiniPick-events*
+    -- To allow user customization and integration of external tools, certain |User|
+    -- autocommand events are triggered under common circumstances:
+    --
+    -- - `MiniPickMatch` - just after updating query matches or setting items.
+    -- - `MiniPickStart` - just after picker has started.
+    -- - `MiniPickStop` - just before picker is stopped.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                              *MiniPick-overview*
+    -- General idea is to take array of objects, display them with interactive
+    -- filter/sort/navigate/preview, and allow to choose one or more items.
+    --
+    -- # How to start a picker ~
+    --
+    -- - Use |MiniPick.start()| with `opts.source` defining |MiniPick-source|.
+    --   Example: `MiniPick.start({ source = { items = vim.fn.readdir('.') } })`
+    --
+    -- - Use any of |MiniPick.builtin| pickers directly.
+    --   Example: `MiniPick.builtin.files({ tool = 'git' })`
+    --
+    -- - Use |:Pick| command which uses customizable pickers from |MiniPick.registry|.
+    --   Example: `:Pick files tool='git'`
+    --
+    -- # User interface ~
+    --
+    -- UI consists from a single window capable of displaying three different views:
+    -- - "Main" - where current query matches are shown.
+    -- - "Preview" - preview of current item (toggle with `<Tab>`).
+    -- - "Info" - general info about picker and its state (toggle with `<S-Tab>`).
+    --
+    -- Current prompt is displayed at the top left of the window border with vertical
+    -- line indicating caret (current input position).
+    --
+    -- Bottom part of window border displays (in Neovim>=0.10) extra visual feedback:
+    -- - Left part is a picker name.
+    -- - Right part contains information in the format >
+    --
+    --   <current index in matches> | <match count> | <marked count> / <total count>
+    -- <
+    -- When picker is busy (like if there are no items yet set or matching is active)
+    -- window border changes color to be `MiniPickBorderBusy` after `config.delay.busy`
+    -- milliseconds of idle time.
+    --
+    -- # Life cycle ~
+    --
+    -- - Type characters to filter and sort matches. It uses |MiniPick.default_match()|
+    --   with `query` being an array of pressed characters.
+    --   Overview of how it matches:
+    --     - If query starts with `'`, the match is exact.
+    --     - If query starts with `^`, the match is exact at start.
+    --     - If query ends with `$`, the match is exact at end.
+    --     - If query starts with `*`, the match is forced to be fuzzy.
+    --     - Otherwise match is fuzzy.
+    --     - Sorting is done to first minimize match width and then match start.
+    --       Nothing more: no favoring certain places in string, etc.
+    --
+    -- - Type special keys to perform |MiniPick-actions|. Here are some basic ones:
+    --     - `<C-n>` / `<Down>` moves down; `<C-p>` / `<Up>` moves up.
+    --     - `<Left>` / `<Right>` moves prompt caret left / right.
+    --     - `<S-Tab>` toggles information window with all available mappings.
+    --     - `<Tab>` toggles preview.
+    --     - `<C-x>` / `<C-a>` toggles current / all item(s) as (un)marked.
+    --     - `<C-Space>` / `<M-Space>` makes all matches or marked items as new picker.
+    --     - `<CR>` / `<M-CR>` chooses current/marked item(s).
+    --     - `<Esc>` / `<C-c>` stops picker.
+    --
+    -- # Implementation details ~
+    --
+    -- - Processing key typing is done via a dedicated key query process for more
+    --   control over their side effects. As a result, regular mappings don't work
+    --   here and picker's window needs to be current as long as it is shown.
+    --   Changing window focus leads to automatic picker stop (after small delay).
+    -- - Any picker is non-blocking but waits to return the chosen item. Example:
+    --   `file = MiniPick.builtin.files()` allows other actions to be executed when
+    --   picker is shown while still assigning `file` with value of the chosen item.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                                *MiniPick-source*
+    -- Source is defined as a `source` field inside one of (in increasing priority):
+    -- - |MiniPick.config| - has global effect.
+    -- - `vim.b.minipick_config` - has buffer-local effect.
+    -- - `opts.source` in picker call - has effect for that particular call.
+    --
+    -- Example of source to choose from |arglist|: >lua
+    --
+    --   { items = vim.fn.argv, name = 'Arglist' }
+    -- <
+    -- Note: this is mostly useful for writing pickers. Can safely skip if you
+    -- want to just use provided pickers.
+    --
+    -- # Items ~
+    -- *MiniPick-source.items*
+    --
+    -- `source.items` defines items to choose from. It should be one of the following:
+    -- - Array of objects which can have different types. Any type is allowed.
+    -- - `nil`. Picker waits for explicit |MiniPick.set_picker_items()| call.
+    -- - Callable returning any of the previous types. Will be called once on start
+    --   with source's `cwd` set as |current-directory|.
+    --
+    -- *MiniPick-source.items-stritems*
+    -- Matching is done for items array based on the string representation of its
+    -- elements (here called "stritems"). For single item it is computed as follows:
+    -- - Callable is called once with output used in next steps.
+    -- - String item is used as is.
+    -- - String <text> field of table item is used (if present).
+    -- - Use output of |vim.inspect()|.
+    --
+    -- Example: >lua
+    --
+    --   items = { 'aaa.txt', { text = 'bbb' }, function() return 'ccc' end }
+    --   -- corresponding stritems are { 'aaa.txt', 'bbb', 'ccc' }
+    -- <
+    -- Default value is `nil`, assuming it always be supplied by the caller.
+    --
+    -- *MiniPick-source.items-common*
+    -- There are some recommendations for common item types in order for them to work
+    -- out of the box with |MiniPick.default_show()|, |MiniPick.default_preview()|,
+    -- |MiniPick.default_choose()|, |MiniPick.default_choose_marked()|:
+    --
+    -- - Path (file or directory). Use string or `path` field of a table. Path can
+    --   be either absolute, relative to the `source.cwd`, or have a general URI format
+    --   (only if supplied as table field).
+    --   Examples: `'aaa.txt'`, `{ path = 'aaa.txt' }`
+    --
+    -- - Buffer. Use buffer id as number, string, or `bufnr` / `buf_id` / `buf`
+    --   field of a table (any name is allowed).
+    --   Examples: `1`, `'1'`, `{ bufnr = 1 }`, `{ buf_id = 1 }`, `{ buf = 1 }`
+    --
+    -- - Line in file or buffer. Use table representation with `lnum` field with line
+    --   number (starting from 1) or string in "<path>\0<line>" format (`\0` is
+    --   an actual null character; don't escape the slash; may need to be `\000`).
+    --   Examples: >lua
+    --
+    --     { path = 'aaa.txt', lnum = 2 }, 'aaa.txt\0002', { bufnr = 1, lnum = 3 }
+    -- <
+    -- - Position in file or buffer. Use table representation with `lnum` and `col`
+    --   fields with line and column numbers (starting from 1) or string in
+    --   "<path>\0<line>\0<col>" format (`\0` is an actual null character, don't
+    --   escape the slash; may need to be `\000`).
+    --   Examples: >lua
+    --
+    --     { path = 'aaa.txt', lnum = 2, col = 3 }, 'aaa.txt\0' .. '2\0003',
+    --     { bufnr = 1, lnum = 3, col = 4 }
+    -- <
+    -- - Region in file or buffer. Use table representation with `lnum`, `col`,
+    --   `end_lnum`, `end_col` fields for start and end line/column. All numbers
+    --   start from 1, end line is inclusive, end column is exclusive.
+    --   This naming is similar to |getqflist()| and |diagnostic-structure|.
+    --   Examples: >lua
+    --
+    --     { path = 'aaa.txt', lnum = 2, col = 3, end_lnum = 4, end_col = 5 },
+    --     { bufnr = 1, lnum = 3, col = 4, end_lnum = 5, end_col = 6 }
+    -- <
+    -- Note: all table items will benefit from having `text` field for better matching.
+    --
+    -- # Name ~
+    -- *MiniPick-source.name*
+    --
+    -- `source.name` defines the name of the picker to be used for visual feedback.
+    --
+    -- Default value is "<No name>".
+    --
+    -- # Current working directory ~
+    -- *MiniPick-source.cwd*
+    --
+    -- `source.cwd` is a string defining the current working directory in which
+    -- picker operates. It should point to a valid actually present directory path.
+    -- This is a part of source to allow persistent way to use relative paths,
+    -- i.e. not depend on current directory being constant after picker start.
+    -- It also makes the |MiniPick.builtin.resume()| picker more robust.
+    --
+    -- It will be set as local |current-directory| (|:lcd|) of picker's main window
+    -- to allow simpler code for "in window" functions (choose/preview/custom/etc.).
+    --
+    -- Default value is |current-directory|.
+    --
+    -- # Match ~
+    -- *MiniPick-source.match*
+    --
+    -- `source.match` is a callable defining how stritems
+    -- (see |MiniPick-source.items-stritems|) are matched (filtered and sorted) based
+    -- on the query.
+    --
+    -- It will be called with the following arguments:
+    -- - `stritems` - all available stritems for current picker.
+    -- - `inds` - array of `stritems` indexes usually pointing at current matches.
+    --   It does point to current matches in the case of interactively appending
+    --   character at the end of the query. It assumes that matches for such bigger
+    --   query is a subset of previous matches (implementation can ignore it).
+    --   This can be utilized to increase performance by checking fewer stritems.
+    -- - `query` - array of strings. Usually (like is common case of user interactively
+    --   typing query) each string represents one character. However, any strings are
+    --   allowed, as query can be set with |MiniPick.set_picker_query()|.
+    --
+    -- It should either return array of match indexes for stritems elements matching
+    -- the query (synchronous) or explicitly use |MiniPick.set_picker_match_inds()|
+    -- to set them (may be asynchronous).
+    --
+    -- Notes:
+    -- - The result can be any array of `stritems` indexes, i.e. not necessarily
+    --   a subset of input `inds`.
+    --
+    -- - Both `stritems` and `query` depend on values of 'ignorecase' and 'smartcase'.
+    --   If query shows "ignore case" properties (only 'ignorecase' is set or both
+    --   'ignorecase' / 'smartcase' are set and query has only lowercase characters),
+    --   then `stritems` and `query` will have only lowercase characters.
+    --   This allows automatic support for case insensitive matching while being
+    --   faster and having simpler match function implementation.
+    --
+    -- - Writing custom `source.match` usually means also changing |MiniPick-source.show|
+    --   because it is used to highlight stritems parts actually matching the query.
+    --
+    -- Example of simple "exact" `match()` preserving initial order: >lua
+    --
+    --   local match_exact = function(stritems, inds, query)
+    --     local prompt_pattern = vim.pesc(table.concat(query))
+    --     local f = function(i) return stritems[i]:find(prompt_pattern) ~= nil end
+    --     return vim.tbl_filter(f, inds)
+    --   end
+    --   -- For non-blocking version see `:h MiniPick.poke_is_picker_active()`
+    -- <
+    -- Default value is |MiniPick.default_match()|.
+    --
+    -- # Show ~
+    -- *MiniPick-source.show*
+    --
+    -- `source.show` is a callable defining how matched items are shown in the window.
+    --
+    -- It will be called with the following arguments:
+    -- - `buf_id` - identifier of the target buffer.
+    -- - `items_to_show` - array of actual items to be shown in `buf_id`. This is
+    --   a subset of currently matched items computed to fit in current window view.
+    -- - `query` - array of strings. Same as in `source.match`.
+    --
+    -- It should update buffer `buf_id` to visually represent `items_to_show`
+    -- __one item per line starting from line one__ (it shouldn't depend on
+    -- `options.content_from_bottom`). This also includes possible visualization
+    -- of which parts of stritem actually matched query.
+    --
+    -- Example (assuming string items; without highlighting): >lua
+    --
+    --   local show_prepend = function(buf_id, items_arr, query)
+    --     local lines = vim.tbl_map(function(x) return 'Item: ' .. x end, items_arr)
+    --     vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
+    --   end
+    -- <
+    -- Default value is |MiniPick.default_show()|.
+    --
+    -- # Preview ~
+    -- *MiniPick-source.preview*
+    --
+    -- `source.preview` is a callable defining how item preview is done.
+    --
+    -- It will be called with the following arguments:
+    -- - `buf_id` - identifier of the target buffer. Note: for every separate instance
+    --   of item previewing new scratch buffer is be created.
+    -- - `item` - item to preview.
+    --
+    -- It should update buffer `buf_id` to visually represent `item`.
+    --
+    -- Example: >lua
+    --
+    --   local preview_inspect = function(buf_id, item)
+    --     local lines = vim.split(vim.inspect(item), '\n')
+    --     vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, lines)
+    --   end
+    -- <
+    -- Default value is |MiniPick.default_preview()|.
+    --
+    -- # Choose an item ~
+    -- *MiniPick-source.choose*
+    --
+    -- `source.choose` is a callable defining what to do when an item is chosen.
+    --
+    -- It will be called with the following arguments:
+    -- - `item` - chosen item. Always non-`nil`.
+    --
+    -- It should perform any intended "choose" action for an item and return
+    -- a value indicating whether picker should continue (i.e. not stop):
+    -- `nil` and `false` will stop picker, other values will continue.
+    --
+    -- Notes:
+    -- - It is called when picker window is still current. Use `windows.target` value
+    --   from |MiniPick.get_picker_state()| output to do something with target window.
+    --
+    -- Example: >lua
+    --
+    --   local choose_file_continue = function(item)
+    --     if vim.fn.filereadable(item) == 0 then return end
+    --     vim.api.nvim_win_call(
+    --       MiniPick.get_picker_state().windows.main,
+    --       function() vim.cmd('edit ' .. item) end
+    --     )
+    --     return true
+    --   end
+    -- <
+    -- Default value is |MiniPick.default_choose()|.
+    --
+    -- # Choose marked items ~
+    -- *MiniPick-source.choose_marked*
+    --
+    -- `source.choose_marked` is a callable defining what to do when marked items
+    -- (see |MiniPick-actions-mark|) are chosen. Serves as a companion to
+    -- `source.choose` which can choose several items.
+    --
+    -- It will be called with the following arguments:
+    -- - `items_marked` - array of marked items. Can be empty.
+    --
+    -- It should perform any intended "choose" action for several items and return
+    -- a value indicating whether picker should continue (i.e. not stop):
+    -- `nil` and `false` will stop picker, other values will continue.
+    --
+    -- Notes:
+    -- - It is called when picker window is still current. Use `windows.target` value
+    --   from |MiniPick.get_picker_state()| output to do something with target window.
+    --
+    -- Example: >lua
+    --
+    --   local choose_marked_print = function(items) print(vim.inspect(items)) end
+    -- <
+    -- Default value is |MiniPick.default_choose_marked()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                               *MiniPick-actions*
+    -- When picker is active, `mappings` table defines a set of special keys which when
+    -- pressed will execute certain actions. Those can be of two types:
+    -- - Built-in: actions present in default `config.mappings`. Can be only overridden
+    --   with a different key.
+    -- - Custom: user defined actions. Should be a table with `char` and `func` fields.
+    --
+    --
+    -- # Built-in ~
+    --
+    -- ## Caret ~
+    -- *MiniPick-actions-caret*
+    --
+    -- User can add character not only at query end, but more generally at caret.
+    --
+    -- - `mappings.caret_left` - move caret to left.
+    -- - `mappings.caret_right` - move caret to right.
+    --
+    -- ## Choose ~
+    -- *MiniPick-actions-choose*
+    --
+    -- Choose is a fundamental action that actually implements the intent of
+    -- calling a picker, i.e. pick an item.
+    --
+    -- - `mappings.choose` - choose as is, i.e. apply `source.choose` for current item.
+    -- - `mappings.choose_in_split` - make horizontal split at target window, update
+    --   target window to the new split, and choose.
+    -- - `mappings.choose_in_tabpage` - same as `choose_in_split`, but create tabpage.
+    -- - `mappings.choose_in_vsplit` - same as `choose_in_split`, but split vertically.
+    -- - `mappings.choose_marked` - choose marked items as is, i.e.
+    --   apply `source.choose_marked` at current marked items.
+    --
+    -- ## Delete ~
+    -- *MiniPick-actions-delete*
+    --
+    -- Delete actions are for deleting elements from query.
+    --
+    -- - `mappings.delete_char` - delete one character to the left.
+    -- - `mappings.delete_char_right` - delete one character to the right.
+    -- - `mappings.delete_left` - delete everything to the left (like |i_CTRL-U|).
+    -- - `mappings.delete_word` - delete word to the left (like |i_CTRL-W|).
+    --
+    -- ## Mark ~
+    -- *MiniPick-actions-mark*
+    --
+    -- Marking is an action of adding certain items to a separate list which then can
+    -- be chosen with `mappings.choose_marked` (for example, sent to quickfix list).
+    -- This is a companion to a regular choosing which can pick only one item.
+    --
+    -- - `mappings.mark` - toggle marked/unmarked state of current item.
+    -- - `mappings.mark_all` - toggle marked/unmarked state (mark all if not all
+    --   marked; unmark all otherwise) of all currently matched items.
+    --
+    -- Notes:
+    -- - Marks persist across queries and matches. For example, user can make a query
+    --   with marking all matches several times and marked items from all queries
+    --   will be preserved.
+    --
+    -- ## Move ~
+    -- *MiniPick-actions-move*
+    --
+    -- Move is a fundamental action of changing which item is current.
+    --
+    -- - `mappings.move_down` - change focus to the item below.
+    -- - `mappings.move_start` change focus to the first currently matched item
+    -- - `mappings.move_up` - change focus to the item above.
+    --
+    -- Notes:
+    -- - Up and down wrap around edges: `move_down` on last item moves to first,
+    --   `move_up` on first moves to last.
+    -- - Moving when preview or info view is shown updates the view with new item.
+    -- - These also work with non-overridable alternatives:
+    --     - `<Down>` moves down.
+    --     - `<Home>` moves to first matched.
+    --     - `<Up>` moves up.
+    --
+    -- ## Paste ~
+    -- *MiniPick-actions-paste*
+    --
+    -- Paste is an action to paste content of |registers| at caret.
+    --
+    -- - `mappings.paste` - paste from register defined by the next key press.
+    --
+    -- Notes:
+    -- - Does not support expression register `=`.
+    -- - Supports special cases of register: <C-f> (as |c_CTRL-R_CTRL-F|),
+    --   <C-w> (as |c_CTRL-R_CTRL-W|), <C-a> (as |c_CTRL-R_CTRL-A|),
+    --   <C-l> (as |c_CTRL-R_CTRL-L|).
+    --
+    -- ## Refine ~
+    -- *MiniPick-actions-refine*
+    --
+    -- Refine is an action that primarily executes the following:
+    -- - Takes certain items and makes them be all items (in order they are present).
+    -- - Resets query.
+    -- - Updates `source.match` to be the one from config.
+    --
+    -- - `mappings.refine` - refine currently matched items.
+    -- - `mappings.refine_marked` - refine currently marked items.
+    --
+    -- This action is useful in at least two cases:
+    -- - Perform consecutive "narrowing" queries. Example: to get items that contain
+    --   both "hello" and "world" exact matches (in no particular order) with default
+    --   matching, type "'hello" (notice "'" at the start) followed by `<C-Space>` and
+    --   another "'world".
+    -- - Reset `match` to default. Particularly useful in |MiniPick.builtin.grep_live()|.
+    --
+    -- ## Scroll ~
+    -- *MiniPick-actions-scroll*
+    --
+    -- Scroll is an action to either move current item focus further than to the
+    -- neighbor item or adjust window view to see more information.
+    --
+    -- - `mappings.scroll_down` - when matches are shown, go down by the amount of
+    --   visible matches. In preview and info view - scroll down as with |CTRL-F|.
+    -- - `mappings.scroll_left` - scroll left as with |zH|.
+    -- - `mappings.scroll_right` - scroll right as with |zL|.
+    -- - `mappings.scroll_up` - when matches are shown, go up by the amount of
+    --   visible matches. In preview and info view - scroll up as with |CTRL-B|.
+    --
+    -- ## Stop ~
+    -- *MiniPick-actions-stop*
+    --
+    -- `mappings.stop` stops the picker. <C-c> also always stops the picker.
+    --
+    --
+    -- ## Toggle ~
+    -- *MiniPick-actions-toggle*
+    --
+    -- Toggle action is a way to change view: show if target is not shown, reset to
+    -- main view otherwise.
+    --
+    -- - `mappings.toggle_info` - toggle info view.
+    -- - `mappings.toggle_preview` - toggle preview.
+    --
+    -- Note:
+    -- - Updating query in any way resets window view to show matches.
+    -- - Moving current item focus keeps preview or info view with updated item.
+    --
+    -- # Custom ~
+    -- *MiniPick-actions-custom*
+    --
+    -- Along with built-in actions, users can define custom actions. This can be
+    -- done by supplying custom elements to `mappings` table. The field defines action
+    -- name (used to infer an action description in info view). The value is a table
+    -- with the following fields:
+    -- - <char> `(string)` - single character acting as action trigger.
+    -- - <func> `(function)` - callable to be executed without arguments after
+    --   user presses <char>. Its return value is treated as "should stop picker
+    --   after execution", i.e. returning nothing, `nil`, or `false` continues
+    --   picker while everything else (prefer `true`) stops it.
+    --
+    -- Example of `execute` custom mapping: >lua
+    --
+    --   execute = {
+    --     char = '<C-e>',
+    --     func = function() vim.cmd(vim.fn.input('Execute: ')) end,
+    --   }
+    -- <
+    -- ------------------------------------------------------------------------------
+    --                                                              *MiniPick-examples*
+    -- # Disable icons ~
+    --
+    -- Disable icons in |MiniPick.builtin| pickers related to paths: >lua
+    --
+    --   local pick = require('mini.pick')
+    --   pick.setup({ source = { show = pick.default_show } })
+    -- <
+    -- # Switch toggle and move keys ~
+    -- >lua
+    --
+    --   require('mini.pick').setup({
+    --     mappings = {
+    --       toggle_info    = '<C-k>',
+    --       toggle_preview = '<C-p>',
+    --       move_down      = '<Tab>',
+    --       move_up        = '<S-Tab>',
+    --     }
+    --   })
+    -- <
+    -- # Different window styles: ~
+    -- >lua
+    --
+    --   -- Different border
+    --   { window = { config = { border = 'double' } } }
+    --
+    --   -- "Cursor tooltip"
+    --   {
+    --     window = {
+    --       config = {
+    --         relative = 'cursor', anchor = 'NW',
+    --         row = 0, col = 0, width = 40, height = 20,
+    --       },
+    --     },
+    --   }
+    --
+    --   -- Centered on screen
+    --   local win_config = function()
+    --     local height = math.floor(0.618 * vim.o.lines)
+    --     local width = math.floor(0.618 * vim.o.columns)
+    --     return {
+    --       anchor = 'NW', height = height, width = width,
+    --       row = math.floor(0.5 * (vim.o.lines - height)),
+    --       col = math.floor(0.5 * (vim.o.columns - width)),
+    --     }
+    --   end
+    --   { window = { config = win_config } }
+    -- <
+    -- ------------------------------------------------------------------------------
+    --                                                               *MiniPick.setup()*
+    --                            `MiniPick.setup`({config})
+    -- Module setup
+    --
+    -- # :Pick ~
+    -- *:Pick*
+    --
+    -- Calling this function creates a `:Pick` user command. It takes picker name
+    -- from |MiniPick.registry| as mandatory first argument and executes it with
+    -- following (expanded, |expandcmd()|) |<f-args>| combined in a single table.
+    -- To add custom pickers, update |MiniPick.registry|.
+    --
+    -- Example: >vim
+    --
+    --   :Pick files tool='git'
+    --   :Pick grep pattern='<cword>'
+    -- <
+    --
+    -- It also sets custom |vim.ui.select()| implementation to use the module.
+    -- See |MiniPick.ui_select()|.
+    --
+    -- Parameters ~
+    -- {config} `(table|nil)` Module config table. See |MiniPick.config|.
+    --
+    -- Usage ~
+    -- >lua
+    --   require('mini.pick').setup() -- use default config
+    --   -- OR
+    --   require('mini.pick').setup({}) -- replace {} with your config table
+    -- <
+    -- ------------------------------------------------------------------------------
+    --                                                                *MiniPick.config*
+    --                                `MiniPick.config`
+    -- Defaults ~
+    -- >lua
+    --   MiniPick.config = {
+    --     -- Delays (in ms; should be at least 1)
+    --     delay = {
+    --       -- Delay between forcing asynchronous behavior
+    --       async = 10,
+    --
+    --       -- Delay between computation start and visual feedback about it
+    --       busy = 50,
+    --     },
+    --
+    --     -- Keys for performing actions. See `:h MiniPick-actions`.
+    --     mappings = {
+    --       caret_left  = '<Left>',
+    --       caret_right = '<Right>',
+    --
+    --       choose            = '<CR>',
+    --       choose_in_split   = '<C-s>',
+    --       choose_in_tabpage = '<C-t>',
+    --       choose_in_vsplit  = '<C-v>',
+    --       choose_marked     = '<M-CR>',
+    --
+    --       delete_char       = '<BS>',
+    --       delete_char_right = '<Del>',
+    --       delete_left       = '<C-u>',
+    --       delete_word       = '<C-w>',
+    --
+    --       mark     = '<C-x>',
+    --       mark_all = '<C-a>',
+    --
+    --       move_down  = '<C-n>',
+    --       move_start = '<C-g>',
+    --       move_up    = '<C-p>',
+    --
+    --       paste = '<C-r>',
+    --
+    --       refine        = '<C-Space>',
+    --       refine_marked = '<M-Space>',
+    --
+    --       scroll_down  = '<C-f>',
+    --       scroll_left  = '<C-h>',
+    --       scroll_right = '<C-l>',
+    --       scroll_up    = '<C-b>',
+    --
+    --       stop = '<Esc>',
+    --
+    --       toggle_info    = '<S-Tab>',
+    --       toggle_preview = '<Tab>',
+    --     },
+    --
+    --     -- General options
+    --     options = {
+    --       -- Whether to show content from bottom to top
+    --       content_from_bottom = false,
+    --
+    --       -- Whether to cache matches (more speed and memory on repeated prompts)
+    --       use_cache = false,
+    --     },
+    --
+    --     -- Source definition. See `:h MiniPick-source`.
+    --     source = {
+    --       items = nil,
+    --       name  = nil,
+    --       cwd   = nil,
+    --
+    --       match   = nil,
+    --       show    = nil,
+    --       preview = nil,
+    --
+    --       choose        = nil,
+    --       choose_marked = nil,
+    --     },
+    --
+    --     -- Window related options
+    --     window = {
+    --       -- Float window config (table or callable returning it)
+    --       config = nil,
+    --
+    --       -- String to use as caret in prompt
+    --       prompt_caret = '▏',
+    --
+    --       -- String to use as prefix in prompt
+    --       prompt_prefix = '> ',
+    --     },
+    --   }
+    -- <
+    -- # Delays ~
+    --
+    -- `config.delay` defines plugin delays (in ms). All should be strictly positive.
+    --
+    -- `delay.async` is a delay between forcing asynchronous behavior. This usually
+    -- means making screen redraws and utilizing |MiniPick.poke_is_picker_active()|
+    -- (for example, to stop current matching if query has updated).
+    -- Smaller values give smoother user experience at the cost of more computations.
+    --
+    -- `delay.busy` is a delay between when some computation starts and showing
+    -- visual feedback about it by making window border to have `MiniPickBorderBusy`
+    -- highlight group.
+    -- Smaller values will give feedback faster at the cost of feeling like flicker.
+    --
+    -- # Mappings ~
+    --
+    -- `config.mappings` defines keys for special actions to be triggered after certain
+    -- keys. See |MiniPick-actions| for more information.
+    --
+    -- # Options ~
+    --
+    -- `config.options` contains some general purpose options.
+    --
+    -- `options.content_from_bottom` is a boolean indicating whether content should be
+    -- shown from bottom to top. That means that best matches will be shown at
+    -- the bottom. Note: for better experience use Neovim>=0.10, which has floating
+    -- window footer capability. Default: `false`.
+    --
+    -- `options.use_cache` is a boolean indicating whether match results should be
+    -- cached per prompt (i.e. concatenated query). This results into faster response
+    -- on repeated prompts (like when deleting query entries) at the cost of using
+    -- more memory. Default: `false`.
+    --
+    -- # Source ~
+    --
+    -- `config.source` defines fallbacks for source specification. For example, this
+    -- can be used to change default `match` to use different implementation or `show`
+    -- to not show icons for some |MiniPick.builtin| pickers (see |MiniPick-examples|).
+    -- See |MiniPick-source| for more information.
+    --
+    -- # Window ~
+    --
+    -- `config.window` contains window specific configurations.
+    --
+    -- `window.config` defines a (parts of) default floating window config for the main
+    -- picker window. This can be either a table overriding some parts or a callable
+    -- returning such table. See |MiniPick-examples| for some examples.
+    --
+    -- `window.prompt_caret` defines how caret is displayed in window's prompt.
+    -- Default: '▏'.
+    --
+    -- `window.prompt_prefix` defines what prefix is used in window's prompt.
+    -- Default: '> '.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                               *MiniPick.start()*
+    --                             `MiniPick.start`({opts})
+    -- Start picker
+    --
+    -- Notes:
+    -- - If there is currently an active picker, it is properly stopped and new one
+    --   is started "soon" in the main event-loop (see |vim.schedule()|).
+    -- - Current window at the moment of this function call is treated as "target".
+    --   It will be set back as current after |MiniPick.stop()|.
+    --   See |MiniPick.get_picker_state()| and |MiniPick.set_picker_target_window()|.
+    --
+    -- Parameters ~
+    -- {opts} `(table|nil)` Options. Should have same structure as |MiniPick.config|.
+    --   Default values are inferred from there.
+    --   Usually should have proper |MiniPick-source.items| defined.
+    --
+    -- Return ~
+    -- `(any)` Item which was current when picker is stopped; `nil` if aborted.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                                *MiniPick.stop()*
+    --                                `MiniPick.stop`()
+    -- Stop active picker
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                             *MiniPick.refresh()*
+    --                               `MiniPick.refresh`()
+    -- Refresh active picker
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                       *MiniPick.default_match()*
+    --          `MiniPick.default_match`({stritems}, {inds}, {query}, {opts})
+    -- Default match
+    --
+    -- Filter target stritems to contain query and sort from best to worst matches.
+    --
+    -- Implements default value for |MiniPick-source.match|.
+    --
+    -- By default (if no special modes apply) it does the following fuzzy matching:
+    --
+    -- - Stritem contains query if it contains all its elements verbatim in the same
+    --   order (possibly with gaps, i.e. not strictly one after another).
+    --   Note: empty query and empty string element is contained in any string.
+    --
+    -- - Sorting is done with the following ordering (same as in |mini.fuzzy|):
+    --     - The smaller the match width (end column minus start column) the better.
+    --     - Among same match width, the smaller start column the better.
+    --     - Among same match width and start column, preserve original order.
+    --
+    -- Notes:
+    -- - Most common interactive usage results into `query` containing one typed
+    --   character per element.
+    --
+    -- # Special modes ~
+    --
+    -- - Forced modes:
+    --     - Query starts with "*": match the rest fuzzy (without other modes).
+    --     - Query starts with "'": match the rest exactly (without gaps).
+    --
+    -- - Place modes:
+    --     - Query starts with '^': match the rest exactly at start.
+    --     - Query ends with '$': match the rest exactly at end.
+    --     - Both modes can be used simultaneously.
+    --
+    -- - Grouped: query contains at least one whitespace element. Output is computed
+    --   as if query is split at whitespace indexes with concatenation between them.
+    --
+    -- Precedence of modes:
+    --   "forced exact" = "forced fuzzy" > "place start/end" > "grouped" > "default"
+    --
+    -- # Examples ~
+    --
+    -- Assuming `stritems` are `{ '_abc', 'a_bc', 'ab_c', 'abc_' }`, here are some
+    -- example matches based on prompt (concatenated query): >
+    --
+    --   | Prompt | Matches                |
+    --   |--------|------------------------|
+    --   | abc    | All                    |
+    --   | *abc   | All                    |
+    --   |        |                        |
+    --   | 'abc   | abc_, _abc             |
+    --   | *'abc  | None (no "'" in items) |
+    --   |        |                        |
+    --   | ^abc   | abc_                   |
+    --   | *^abc  | None (no "^" in items) |
+    --   |        |                        |
+    --   | abc$   | _abc                   |
+    --   | *abc$  | None (no "$" in items) |
+    --   |        |                        |
+    --   | ab c   | abc_, _abc, ab_c       |
+    --   | *ab c  | None (no " " in items) |
+    -- <
+    -- Having query `{ 'ab', 'c' }` is the same as "ab c" prompt.
+    --
+    -- You can have a feel of how this works with this command: >lua
+    --
+    --   MiniPick.start({ source = { items = { '_abc', 'a_bc', 'ab_c', 'abc_' } } })
+    -- <
+    -- Parameters ~
+    -- {stritems} `(table)` Array of all stritems.
+    -- {inds} `(table)` Array of `stritems` indexes to match. All of them should point
+    --   at string elements of `stritems`. No check is done for performance reasons.
+    -- {query} `(table)` Array of strings.
+    -- {opts} `(table|nil)` Options. Possible fields:
+    --   - <sync> `(boolean)` - Whether to match synchronously. Default: `false`.
+    --   - <preserve_order> `(boolean)` - Whether to skip sort step. Default: `false`.
+    --
+    -- Return ~
+    -- `(table|nil)` Depending on whether computation is synchronous (either `opts.sync`
+    --   is `true` or there is an active picker):
+    --   - If yes, array of `stritems` indexes matching the `query` (from best to worst).
+    --   - If no, `nil` is returned with |MiniPick.set_picker_match_inds()| used later.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                        *MiniPick.default_show()*
+    --           `MiniPick.default_show`({buf_id}, {items}, {query}, {opts})
+    -- Default show
+    --
+    -- Show items in a buffer and highlight parts that actually match query (assuming
+    -- match is done with |MiniPick.default_match()|). Lines are computed based on
+    -- the |MiniPick-source.items-stritems|.
+    --
+    -- Implements default value for |MiniPick-source.show|.
+    --
+    -- Uses the following highlight groups (see |mini.pick| for their description):
+    --
+    -- - `MiniPickIconDirectory`
+    -- - `MiniPickIconFile`
+    -- - `MiniPickMatchCurrent`
+    -- - `MiniPickMatchMarked`
+    -- - `MiniPickMatchRanges`
+    --
+    -- Parameters ~
+    -- {buf_id} `(number)` Identifier of target buffer.
+    -- {items} `(table)` Array of items to show.
+    -- {query} `(table)` Array of strings representing query.
+    -- {opts} `(table|nil)` Options. Possible fields:
+    --   - <show_icons> `(boolean)` - whether to show icons for entries recognized as
+    --     valid actually present paths on disk (see |MiniPick-source.items-common|),
+    --     empty space otherwise. Tries to use `text` field as fallback for path.
+    --     Default: `false`. Note: |MiniPick.builtin| pickers showing file/directory
+    --     paths use `true` by default.
+    --   - <icons> `(table)` - table with fallback icons used if icon provider
+    --     does not itself supply default icons for category. Can have fields:
+    --       - <directory> `(string)` - icon for directory. Default: " ".
+    --       - <file> `(string)` - icon for file. Default: " ".
+    --       - <none> `(string)` - icon for non-valid path. Default: "  ".
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                     *MiniPick.default_preview()*
+    --               `MiniPick.default_preview`({buf_id}, {item}, {opts})
+    -- Default preview
+    --
+    -- Preview item. Logic follows the rules in |MiniPick-source.items-common|:
+    -- - File and buffer are shown at the start.
+    -- - Directory has its content listed.
+    -- - Line/position/region in file or buffer is shown at start.
+    -- - Others are shown directly with |vim.inspect()|.
+    --
+    -- Implements default value for |MiniPick-source.preview|.
+    --
+    -- Uses the following highlight groups (see |mini.pick| for their description):
+    --
+    -- - `MiniPickPreviewLine`
+    -- - `MiniPickPreviewRegion`
+    --
+    -- Parameters ~
+    -- {buf_id} `(number)` Identifier of target buffer.
+    -- {item} `(any)` Item to preview.
+    -- {opts} `(table|nil)` Options. Possible values:
+    --   - <n_context_lines> `(number)` - number of lines to load past target position
+    --     when reading from disk. Useful to explore context. Default: 'lines' twice.
+    --   - <line_position> `(string)` - where in the window to show item position.
+    --     One of "top", "center", "bottom". Default: "top".
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                      *MiniPick.default_choose()*
+    --                        `MiniPick.default_choose`({item})
+    -- Default choose
+    --
+    -- Choose item. Logic follows the rules in |MiniPick-source.items-common|:
+    -- - File uses |bufadd()| and sets cursor at the start of line/position/region.
+    -- - Buffer is set as current in target window and sets cursor similarly.
+    -- - Directory is called with |:edit| in the target window.
+    -- - Others have the output of |vim.inspect()| printed in Command line.
+    --
+    -- Implements default value for |MiniPick-source.choose|.
+    --
+    -- Parameters ~
+    -- {item} `(any)` Item to choose.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                               *MiniPick.default_choose_marked()*
+    --                `MiniPick.default_choose_marked`({items}, {opts})
+    -- Default choose marked items
+    --
+    -- Choose marked items. Logic follows the rules in |MiniPick-source.items-common|:
+    -- - If among items there is at least one file or buffer, quickfix list is opened
+    --   with all file or buffer lines/positions/regions.
+    -- - Otherwise, picker's `source.choose` is called on the first item.
+    --
+    -- Implements default value for |MiniPick-source.choose_marked|.
+    --
+    -- Parameters ~
+    -- {items} `(table)` Array of items to choose.
+    -- {opts} `(table|nil)` Options. Possible fields:
+    --   - <list_type> `(string)` - which type of list to open. One of "quickfix"
+    --     or "location". Default: "quickfix".
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                           *MiniPick.ui_select()*
+    --         `MiniPick.ui_select`({items}, {opts}, {on_choice}, {start_opts})
+    -- Select rewrite
+    --
+    -- Function which can be used to directly override |vim.ui.select()| to use
+    -- 'mini.pick' for any "select" type of tasks.
+    -- Set automatically in |MiniPick.setup()|.
+    --
+    -- Implements required by `vim.ui.select()` signature, with some differencies:
+    -- - Allows `opts.preview_item` that returns an array of lines for item preview.
+    -- - Allows fourth `start_opts` argument to customize |MiniPick.start()| call.
+    --
+    -- Notes:
+    -- - `on_choice` is called when target window is current.
+    --
+    -- Usage ~
+    -- >lua
+    --   -- Customize with fourth argument inside a function wrapper
+    --   vim.ui.select = function(items, opts, on_choice)
+    --     local start_opts = { window = { config = { width = vim.o.columns } } }
+    --     return MiniPick.ui_select(items, opts, on_choice, start_opts)
+    --   end
+    -- <
+    -- To preserve original `vim.ui.select()`: >lua
+    --
+    --   local ui_select_orig = vim.ui.select
+    --   require('mini.pick').setup()
+    --   vim.ui.select = ui_select_orig
+    -- <
+    -- ------------------------------------------------------------------------------
+    --                                                               *MiniPick.builtin*
+    --                                `MiniPick.builtin`
+    -- Table with built-in pickers
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                       *MiniPick.builtin.files()*
+    --                  `MiniPick.builtin.files`({local_opts}, {opts})
+    -- Pick from files
+    --
+    -- Lists all files recursively in all subdirectories. Tries to use one of the
+    -- CLI tools to create items (see |MiniPick-cli-tools|): `rg`, `fd`, `git`.
+    -- If none is present, uses fallback which utilizes |vim.fs.dir()|.
+    --
+    -- To customize CLI tool search, either use tool's global configuration approach
+    -- or directly |MiniPick.builtin.cli()| with specific command.
+    --
+    -- Parameters ~
+    -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
+    --   Possible fields:
+    --   - <tool> `(string)` - which tool to use. One of "rg", "fd", "git", "fallback".
+    --     Default: whichever tool is present, trying in that same order.
+    -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                        *MiniPick.builtin.grep()*
+    --                  `MiniPick.builtin.grep`({local_opts}, {opts})
+    -- Pick from pattern matches
+    --
+    -- Lists all pattern matches recursively in all subdirectories.
+    -- Tries to use one of the CLI tools to create items (see |MiniPick-cli-tools|):
+    -- `rg`, `git`. If none is present, uses fallback which utilizes |vim.fs.dir()| and
+    -- Lua pattern matches (NOT recommended in large directories).
+    --
+    -- To customize CLI tool search, either use tool's global configuration approach
+    -- or directly |MiniPick.builtin.cli()| with specific command.
+    --
+    -- Parameters ~
+    -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
+    --   Possible fields:
+    --   - <tool> `(string)` - which tool to use. One of "rg", "git", "fallback".
+    --     Default: whichever tool is present, trying in that same order.
+    --   - <pattern> `(string)` - string pattern to search. If not given, asks user
+    --     interactively with |input()|.
+    --   - <globs> `(table)` - array of string glob patterns to restrict search to
+    --     matching files. Supported only by "rg" and "git" tools, respects their
+    --     specific glob syntax and effects. Default: `{}` (no restriction).
+    --     Example: `{ '*.lua', 'lua/**' }` for Lua files and files in "lua" directory.
+    -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                   *MiniPick.builtin.grep_live()*
+    --                `MiniPick.builtin.grep_live`({local_opts}, {opts})
+    -- Pick from pattern matches with live feedback
+    --
+    -- Perform pattern matching treating prompt as pattern. Gives live feedback on
+    -- which matches are found. Use |MiniPick-actions-refine| to revert to regular
+    -- matching. Use `<C-o>` to restrict search to files matching glob patterns.
+    -- Tries to use one of the CLI tools to create items (see |MiniPick-cli-tools|):
+    -- `rg`, `git`. If none is present, error is thrown (for performance reasons).
+    --
+    -- To customize search, use tool's global configuration approach.
+    --
+    -- Parameters ~
+    -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
+    --   Possible fields:
+    --   - <tool> `(string)` - which tool to use. One of "rg", "git".
+    --     Default: whichever tool is present, trying in that same order.
+    --   - <globs> `(table)` - array of string glob patterns to restrict search to
+    --     matching files. Supported only by "rg" and "git" tools, respects their
+    --     specific glob syntax and effects. Default: `{}` (no restriction).
+    --     Example: `{ '*.lua', 'lua/**' }` for Lua files and files in "lua" directory.
+    --     Use `<C-o>` custom mapping to add glob to the array.
+    -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                        *MiniPick.builtin.help()*
+    --                  `MiniPick.builtin.help`({local_opts}, {opts})
+    -- Pick from help tags
+    --
+    -- Notes:
+    -- - On choose directly executes |:help| command with appropriate modifier
+    --   (none, |:vertical|, |:tab|). This is done through custom mappings named
+    --   `show_help_in_{split,vsplit,tab}`. Not `choose_in_{split,vsplit,tab}` because
+    --   there is no split guarantee (like if there is already help window opened).
+    --
+    -- Parameters ~
+    -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
+    --   Possible fields:
+    --   - <default_split> `(string)` - direction of a split for `choose` action.
+    --     One of "horizontal", "vertical", "tab". Default: "horizontal".
+    -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                     *MiniPick.builtin.buffers()*
+    --                 `MiniPick.builtin.buffers`({local_opts}, {opts})
+    -- Pick from buffers
+    --
+    -- Notes:
+    -- - There are not built-in mappings for buffer manipulation. Here is an example
+    --   of how to call this function with mapping to wipeout the current item: >lua
+    --
+    --   local wipeout_cur = function()
+    --     vim.api.nvim_buf_delete(MiniPick.get_picker_matches().current.bufnr, {})
+    --   end
+    --   local buffer_mappings = { wipeout = { char = '<C-d>', func = wipeout_cur } }
+    --   MiniPick.builtin.buffers(local_opts, { mappings = buffer_mappings })
+    -- <
+    -- Parameters ~
+    -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
+    --   Possible fields:
+    --   - <include_current> `(boolean)` - whether to include current buffer in
+    --     the output. Default: `true`.
+    --   - <include_unlisted> `(boolean)` - whether to include |unlisted-buffer|s in
+    --     the output. Default: `false`.
+    -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                         *MiniPick.builtin.cli()*
+    --                   `MiniPick.builtin.cli`({local_opts}, {opts})
+    -- Pick from CLI output
+    --
+    -- Executes command line tool and constructs items based on its output.
+    -- Uses |MiniPick.set_picker_items_from_cli()|.
+    --
+    -- Example: `MiniPick.builtin.cli({ command = { 'echo', 'a\nb\nc' } })`
+    --
+    -- Parameters ~
+    -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
+    --   Possible fields:
+    --   - <command> `(table)` - forwarded to `set_picker_items_from_cli()`.
+    --   - <postprocess> `(function)` - forwarded to `set_picker_items_from_cli()`.
+    --   - <spawn_opts> `(table)` - forwarded to `set_picker_items_from_cli()`.
+    --     Note: if `cwd` field is absent, it is inferred from |MiniPick-source.cwd|.
+    -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                      *MiniPick.builtin.resume()*
+    --                           `MiniPick.builtin.resume`()
+    -- Resume latest picker
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                              *MiniPick.registry*
+    --                               `MiniPick.registry`
+    -- Picker registry
+    --
+    -- Place for users and extensions to manage pickers with their commonly used
+    -- local options. By default contains all |MiniPick.builtin| pickers.
+    -- All entries should accept only a single `local_opts` table argument.
+    --
+    -- Serves as a source for |:Pick| command.
+    --
+    -- Customization examples: >lua
+    --
+    --   -- Adding custom picker to pick `register` entries
+    --   MiniPick.registry.registry = function()
+    --     local items = vim.tbl_keys(MiniPick.registry)
+    --     table.sort(items)
+    --     local source = {items = items, name = 'Registry', choose = function() end}
+    --     local chosen_picker_name = MiniPick.start({ source = source })
+    --     if chosen_picker_name == nil then return end
+    --     return MiniPick.registry[chosen_picker_name]()
+    --   end
+    --
+    --   -- Make `:Pick files` accept `cwd`
+    --   MiniPick.registry.files = function(local_opts)
+    --     local opts = { source = { cwd = local_opts.cwd } }
+    --     local_opts.cwd = nil
+    --     return MiniPick.builtin.files(local_opts, opts)
+    --   end
+    -- <
+    -- ------------------------------------------------------------------------------
+    --                                                    *MiniPick.get_picker_items()*
+    --                          `MiniPick.get_picker_items`()
+    -- Get items of active picker
+    --
+    -- Return ~
+    -- `(table|nil)` Picker items or `nil` if no active picker.
+    --
+    -- See also ~
+    -- |MiniPick.set_picker_items()| and |MiniPick.set_picker_items_from_cli()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                 *MiniPick.get_picker_stritems()*
+    --                         `MiniPick.get_picker_stritems`()
+    -- Get stritems of active picker
+    --
+    -- Return ~
+    -- `(table|nil)` Picker stritems (|MiniPick-source.items-stritems|) or `nil` if
+    --   no active picker.
+    --
+    -- See also ~
+    -- |MiniPick.set_picker_items()| and |MiniPick.set_picker_items_from_cli()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                  *MiniPick.get_picker_matches()*
+    --                         `MiniPick.get_picker_matches`()
+    -- Get matches of active picker
+    --
+    -- Return ~
+    -- `(table|nil)` Picker matches or `nil` if no active picker. Matches is a table
+    --   with the following fields:
+    --   - <all> `(table|nil)` - all currently matched items.
+    --   - <all_inds> `(table|nil)` - indexes of all currently matched items.
+    --   - <current> `(any)` - current matched item.
+    --   - <current_ind> `(number|nil)` - index of current matched item.
+    --   - <marked> `(table|nil)` - marked items.
+    --   - <marked_inds> `(table|nil)` - indexes of marked items.
+    --   - <shown> `(table|nil)` - shown items (from top to bottom).
+    --   - <shown_inds> `(table|nil)` - indexes of shown items (from top to bottom).
+    --
+    -- See also ~
+    -- |MiniPick.set_picker_match_inds()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                     *MiniPick.get_picker_opts()*
+    --                           `MiniPick.get_picker_opts`()
+    -- Get config of active picker
+    --
+    -- Return ~
+    -- `(table|nil)` Picker config (`start()`'s input `opts` table) or `nil` if
+    --   no active picker.
+    --
+    -- See also ~
+    -- |MiniPick.set_picker_opts()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                    *MiniPick.get_picker_state()*
+    --                          `MiniPick.get_picker_state`()
+    -- Get state data of active picker
+    --
+    -- Return ~
+    -- `(table|nil)` Table with picker state data or `nil` if no active picker.
+    --   State data is a table with the following fields:
+    --   - <buffers> `(table)` - table with `main`, `preview`, `info` fields representing
+    --     buffer identifier (or `nil`) for corresponding view.
+    --   - <windows> `(table)` - table with `main` and `target` fields representing
+    --     window identifiers for main and target windows.
+    --   - <caret> `(number)` - caret column.
+    --   - <is_busy> `(boolean)` - whether picker is busy with computations.
+    --
+    -- See also ~
+    -- |MiniPick.set_picker_target_window()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                    *MiniPick.get_picker_query()*
+    --                          `MiniPick.get_picker_query`()
+    -- Get query of active picker
+    --
+    -- Return ~
+    -- `(table|nil)` Array of picker query or `nil` if no active picker.
+    --
+    -- See also ~
+    -- |MiniPick.set_picker_query()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                    *MiniPick.set_picker_items()*
+    --                   `MiniPick.set_picker_items`({items}, {opts})
+    -- Set items for active picker
+    --
+    -- Note: sets items asynchronously in non-blocking fashion.
+    --
+    -- Parameters ~
+    -- {items} `(table)` Array of items.
+    -- {opts} `(table|nil)` Options. Possible fields:
+    --   - <do_match> `(boolean)` - whether to perform match after setting items.
+    --     Default: `true`.
+    --   - <querytick> `(number|nil)` - value of querytick (|MiniPick.get_querytick()|)
+    --     to periodically check against when setting items. If checked querytick
+    --     differs from supplied, no items are set.
+    --
+    -- See also ~
+    -- |MiniPick.get_picker_items()| and |MiniPick.get_picker_stritems()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                           *MiniPick.set_picker_items_from_cli()*
+    --             `MiniPick.set_picker_items_from_cli`({command}, {opts})
+    -- Set items for active picker based on CLI output
+    --
+    -- Asynchronously executes `command` and sets items to its postprocessed output.
+    --
+    -- Example: >lua
+    --
+    --   local items = vim.schedule_wrap(function()
+    --     MiniPick.set_picker_items_from_cli({ 'echo', 'a\nb\nc' })
+    --   end)
+    --   MiniPick.start({ source = { items = items, name = 'Echo abc' } })
+    -- <
+    -- Parameters ~
+    -- {command} `(table)` Array with (at least one) string command parts.
+    -- {opts} `(table|nil)` Options. Possible fields:
+    --   - <postprocess> `(function)` - callable performing postprocessing of output.
+    --     Will be called with array of lines as input, should return array of items.
+    --     Default: removes trailing empty lines and uses rest as string items.
+    --   - <spawn_opts> `(table)` - `options` for |uv.spawn()|, except `args` and `stdio`.
+    --     Note: relative `cwd` path is resolved against active picker's `cwd`.
+    --   - <set_items_opts> `(table)` - table forwarded to |MiniPick.set_picker_items()|.
+    --
+    -- See also ~
+    -- |MiniPick.get_picker_items()| and |MiniPick.get_picker_stritems()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                               *MiniPick.set_picker_match_inds()*
+    --           `MiniPick.set_picker_match_inds`({match_inds}, {match_type})
+    -- Set match indexes for active picker
+    --
+    -- There are two intended use cases:
+    -- - Inside custom asynchronous |MiniPick-source.match| function to set which of
+    --   picker's stritems match the query. See |MiniPick.poke_is_picker_active()|.
+    -- - To programmatically set current match and marked items.
+    --   See |MiniPick.get_picker_matches()|.
+    --
+    -- Parameters ~
+    -- {match_inds} `(table)` Array of numbers with picker's items indexes.
+    -- {match_type} `(string|nil)` Type of match indexes to set. One of:
+    --   - `"all"` (default) - indexes of items that match query.
+    --   - `"current"` - index of current match. Only first element is used and should
+    --     also be present among query matches.
+    --   - `"marked"` - indexes of marked items. Values can be not among query matches.
+    --     Will make only input indexes be marked, i.e. current marks are reset.
+    --   Note: no `"shown"` match type as those indexes are computed automatically.
+    --
+    -- See also ~
+    -- |MiniPick.get_picker_matches()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                     *MiniPick.set_picker_opts()*
+    --                        `MiniPick.set_picker_opts`({opts})
+    -- Set config for active picker
+    --
+    -- Parameters ~
+    -- {opts} `(table)` Table overriding initial `opts` input of |MiniPick.start()|.
+    --
+    -- See also ~
+    -- |MiniPick.get_picker_opts()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                            *MiniPick.set_picker_target_window()*
+    --                  `MiniPick.set_picker_target_window`({win_id})
+    -- Set target window for active picker
+    --
+    -- Parameters ~
+    -- {win_id} `(number)` Valid window identifier to be used as the new target window.
+    --
+    -- See also ~
+    -- |MiniPick.get_picker_state()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                    *MiniPick.set_picker_query()*
+    --                       `MiniPick.set_picker_query`({query})
+    -- Set query for active picker
+    --
+    -- Parameters ~
+    -- {query} `(table)` Array of strings to be set as the new picker query.
+    --
+    -- See also ~
+    -- |MiniPick.get_picker_query()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                       *MiniPick.get_querytick()*
+    --                            `MiniPick.get_querytick`()
+    -- Get query tick
+    --
+    -- Query tick is a unique query identifier. Intended to be used to detect user
+    -- activity during and between |MiniPick.start()| calls for efficient non-blocking
+    -- functionality. Updates after any query change, picker start and stop.
+    --
+    -- See |MiniPick.poke_is_picker_active()| for usage example.
+    --
+    -- Return ~
+    -- `(number)` Query tick.
+    --
+    -- ------------------------------------------------------------------------------
+    --                                                    *MiniPick.is_picker_active()*
+    --                          `MiniPick.is_picker_active`()
+    -- Check if there is an active picker
+    --
+    -- Return ~
+    -- `(boolean)` Whether there is currently an active picker.
+    --
+    -- See also ~
+    -- |MiniPick.poke_is_picker_active()|
+    --
+    -- ------------------------------------------------------------------------------
+    --                                               *MiniPick.poke_is_picker_active()*
+    --                        `MiniPick.poke_is_picker_active`()
+    -- Poke if picker is active
+    --
+    -- Intended to be used for non-blocking implementation of source methods.
+    -- Returns an output of |MiniPick.is_picker_active()|, but depending on
+    -- whether there is a coroutine running:
+    -- - If no, return it immediately.
+    -- - If yes, return it after `coroutine.yield()` with `coroutine.resume()`
+    --   called "soon" by the main event-loop (see |vim.schedule()|).
+    --
+    -- Example of non-blocking exact `match` (as demo; can be optimized further): >lua
+    --
+    --   local match_nonblock = function(match_inds, stritems, query)
+    --     local prompt, querytick = table.concat(query), MiniPick.get_querytick()
+    --     local f = function()
+    --       local res = {}
+    --       for _, ind in ipairs(match_inds) do
+    --         local should_stop = not MiniPick.poke_is_picker_active() or
+    --           MiniPick.get_querytick() ~= querytick
+    --         if should_stop then return end
+    --
+    --         if stritems[ind]:find(prompt) ~= nil then table.insert(res, ind) end
+    --       end
+    --
+    --       MiniPick.set_picker_match_inds(res)
+    --     end
+    --
+    --     coroutine.resume(coroutine.create(f))
+    --   end
+    -- <
+    -- Return ~
+    -- `(boolean)` Whether there is an active picker.
+    --
+    -- See also ~
+    -- |MiniPick.is_picker_active()|
+    --
+    --
+    --  vim:tw=78:ts=8:noet:ft=help:norl:
+
+    -- ////////////////////////////////////////////////////////////
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.surround').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.comment').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.align').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.ai').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.statusline').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.icons').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.pairs').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.files').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.diff').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.git').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
     local miniclue = require 'mini.clue'
     miniclue.setup {
       triggers = {
-        -- Leader triggers
         { mode = 'n', keys = '<Leader>' },
         { mode = 'x', keys = '<Leader>' },
-        -- Built-in completion
         { mode = 'i', keys = '<C-x>' },
-        -- `g` key
         { mode = 'n', keys = 'g' },
         { mode = 'x', keys = 'g' },
-        -- Marks
         { mode = 'n', keys = "'" },
         { mode = 'n', keys = '`' },
         { mode = 'x', keys = "'" },
         { mode = 'x', keys = '`' },
-        -- Registers
         { mode = 'n', keys = '"' },
         { mode = 'x', keys = '"' },
         { mode = 'i', keys = '<C-r>' },
         { mode = 'c', keys = '<C-r>' },
-        -- Window commands
         { mode = 'n', keys = '<C-w>' },
-        -- `z` key
         { mode = 'n', keys = 'z' },
         { mode = 'x', keys = 'z' },
       },
@@ -55,2087 +1754,127 @@ return {
         miniclue.gen_clues.z(),
       },
     }
+
+    -- - |mini.basics| - common configuration presets. Has configurable presets for
+    --   options, mappings, and autocommands. It doesn't change option or mapping
+    --   if it was manually created.
+    --
+    -- - |mini.bracketed| - go forward/backward with square brackets. Among others,
+    --   supports variety of non-trivial targets: comments, files on disk, indent
+    --   changes, tree-sitter nodes, linear undo states, yank history entries.
+    --
+    -- - |mini.bufremove| - buffer removing (unshow, delete, wipeout) while saving
+    --   window layout.
+    -- - |mini.completion| - async (with customizable 'debounce' delay) 'two-stage
+    --   chain completion': first builtin LSP, then configurable fallback. Also
+    --   has functionality for completion item info and function signature (both
+    --   in floating window appearing after customizable delay).
+    --
+    -- - |mini.cursorword| - automatic highlighting of word under cursor (displayed
+    --   after customizable delay). Current word under cursor can be highlighted
+    --   differently.
+    --
+    -- |mini.deps| - plugin manager for plugins outside of 'mini.nvim'. Uses Git and
+    -- built-in packages to install, update, clean, and snapshot plugins.
+    --
+    -- |mini.doc| - generation of help files from EmmyLua-like annotations.
+    -- Allows flexible customization of output via hook functions. Used for
+    -- documenting this plugin.
+    --
+    -- - |mini.extra| - extra 'mini.nvim' functionality. Contains 'mini.pick' pickers,
+    --   'mini.ai' textobjects, and more.
+    --
+    -- - |mini.fuzzy| - functions for fast and simple fuzzy matching. It has
+    --   not only functions to perform fuzzy matching of one string to others, but
+    --   also a sorter for 'nvim-telescope/telescope.nvim'.
+    --
+    --
+    -- - |mini.hipatterns| - highlight patterns in text with configurable highlighters
+    --   (pattern and/or highlight group can be string or callable).
+    --   Works asynchronously with configurable debounce delay.
+    --
+    -- - |mini.hues| - generate configurable color scheme. Takes only background
+    --   and foreground colors as required arguments. Can adjust number of hues
+    --   for non-base colors, saturation, accent color, plugin integration.
+    --
+    -- - |mini.indentscope| - visualize and operate on indent scope. Supports
+    --   customization of debounce delay, animation style, and different
+    --   granularity of options for scope computing algorithm.
+    --
+    -- - |mini.jump| - minimal and fast module for smarter jumping to a single
+    --   character.
+    --
+    -- - |mini.jump2d| - minimal and fast Lua plugin for jumping (moving cursor)
+    --   within visible lines via iterative label filtering. Supports custom jump
+    --   targets (spots), labels, hooks, allowed windows and lines, and more.
+    --
+    -- - |mini.keymap| - utilities to make special key mappings: multi-step actions
+    --   (with built-in steps for "smart" <Tab>, <S-Tab>, <CR>, <BS>),
+    --   combos (more general version of "better escape" like behavior).
+    --
+    -- - |mini.map| - window with buffer text overview, scrollbar, and highlights.
+    --   Allows configurable symbols for line encode and scrollbar, extensible
+    --   highlight integration (with pre-built ones for builtin search, diagnostic,
+    --   git line status), window properties, and more.
+    --
+    -- - |mini.misc| - collection of miscellaneous useful functions. Like `put()`
+    --   and `put_text()` which print Lua objects to command line and current
+    --   buffer respectively.
+    --
+    -- - |mini.move| - move any selection in any direction. Supports any Visual
+    --   mode (charwise, linewise, blockwise) and Normal mode (current line) for
+    --   all four directions (left, right, down, up). Respects `count` and undo.
+    --
+    -- - |mini.notify| - show one or more highlighted notifications in a single window.
+    --   Provides both low-level functions (add, update, remove, clear) and maker
+    --   of |vim.notify()| implementation. Sets up automated LSP progress updates.
+    --
+    -- - |mini.operators| - various text edit operators: replace, exchange,
+    --   multiply, sort, evaluate. Creates mappings to operate on textobject,
+    --   line, and visual selection. Supports |[count]| and dot-repeat.
+    --
+    -- - |mini.sessions| - session management (read, write, delete) which works
+    --   using |:mksession|. Implements both global (from configured directory) and
+    --   local (from current directory) sessions.
+    --
+    -- - |mini.snippets| - manage and expand snippets. Supports only syntax from LSP
+    --   specification. Provides flexible loaders to manage snippet files, exact and
+    --   fuzzy prefix matching, interactive selection, and rich interactive snippet
+    --   session experience with dynamic tabstop visualization.
+    --
+    -- - |mini.splitjoin| - split and join arguments (regions inside brackets
+    --   between allowed separators). Has customizable pre and post hooks.
+    --   Works inside comments.
+    --
+    -- - |mini.starter| - minimal, fast, and flexible start screen. Displayed items
+    --   are fully customizable both in terms of what they do and how they look
+    --   (with reasonable defaults). Item selection can be done using prefix query
+    --   with instant visual feedback.
+    --
+    -- - |mini.test| - framework for writing extensive Neovim plugin tests.
+    --   Supports hierarchical tests, hooks, parametrization, filtering (like from
+    --   current file or cursor position), screen tests, "busted-style" emulation,
+    --   customizable reporters, and more. Designed to be used with provided
+    --   wrapper for managing child Neovim processes.
+    --
+    -- - |mini.tabline| - minimal tabline which always shows listed (see 'buflisted')
+    --   buffers. Allows showing extra information section in case of multiple vim
+    --   tabpages. For full experience needs enabled |mini.icons| module (but works
+    --   without it).
+    --
+    -- - |mini.trailspace| - automatic highlighting of trailing whitespace with
+    --   functionality to remove it.
+    --
+    -- - |mini.visits| - track and reuse file system visits. Tracks data about each
+    --   file/directory visit (after delay) and stores it (only) locally. This can be
+    --   used to get a list of "recent"/"frequent"/"frecent" visits.
+    --   Allows persistently adding labels to visits enabling flexible workflow.
+    --
+    -- - |mini.colors| - tweak and save any color scheme. Can create colorscheme
+    --   object with methods to invert/set/modify/etc.
+    --   lightness/saturation/hue/temperature/etc. of foreground/background/all
+    --   colors, infer cterm attributes, add transparency, save to a file and more.
+    --   Has functionality for interactive experiments and animation of
+    --   transition between color schemes.
   end,
 }
-
--- look at all
--- https://github.com/nvim-mini/mini.nvim/blob/main/doc/mini-nvim.txt
--- also the general ones
--- read more about mini ecosystem
--- read about plugins that i have
---
--- for mini.pick
--- start with ripgrep
--- start with fd
--- start with git
-
--- return {
--- 'stevearc/oil.nvim',
--- opts = {
---   delete_to_trash = true,
---   watch_for_changes = true,
---   view_options = {
---     show_hidden = true,
---     is_always_hidden = function(name, _)
---       return name == '..'
---     end,
---   },
--- },
--- dependencies = { 'nvim-mini/mini.nvim' },
--- }
-
--- return {
---   'folke/which-key.nvim',
---   event = 'VeryLazy',
---   opts = {
---     delay = 0,
---     spec = {
---       { '<leader>s', group = '[s]earch' },
---       { '<leader>g', group = '[g]it' },
---     },
---   },
--- }
-
--- get rid of status in left (use vim default)
--- get rid of mode on bottom line?
-
--- vim.o.laststatus = 3
---
--- function _G.statusline()
---   ---@generic T, R
---   ---@param tbl T[]
---   ---@param fn fun(acc: R, v: T): R
---   ---@param init R
---   ---@return R
---   local function tbl_reduce(tbl, fn, init)
---     local acc = init
---     for _, v in ipairs(tbl) do
---       acc = fn(acc, v)
---     end
---     return acc
---   end
---
---   local severity = vim.diagnostic.severity
---
---   local counts = tbl_reduce(vim.diagnostic.get(0), function(acc, d)
---     acc[d.severity] = acc[d.severity] + 1
---     return acc
---   end, { 0, 0, 0, 0 })
---
---   return ' '
---     .. table.concat(
---       vim.tbl_filter(function(s)
---         return s ~= ''
---       end, {
---         -- file name
---         '%f',
---         -- git updates
---         (function()
---           if vim.b.gitsigns_head and vim.b.gitsigns_head ~= '' then
---             local git_section = vim.b.gitsigns_head
---             if vim.b.gitsigns_status and vim.b.gitsigns_status ~= '' then
---               git_section = git_section .. ' ' .. vim.b.gitsigns_status
---             end
---             return git_section
---           elseif vim.b.gitsigns_status and vim.b.gitsigns_status ~= '' then
---             return vim.b.gitsigns_status
---           end
---         end)(),
---         -- middle
---         '%=',
---         -- Warnings
---         table.concat(
---           vim.tbl_filter(
---             function(v)
---               return v
---             end,
---             vim.tbl_map(function(sev_tbl)
---               if counts[sev_tbl[1]] > 0 then
---                 return sev_tbl[2] .. ':' .. counts[sev_tbl[1]]
---               end
---             end, {
---               { severity.ERROR, 'E' },
---               { severity.WARN, 'W' },
---               { severity.INFO, 'I' },
---               { severity.HINT, 'H' },
---             })
---           ),
---           ' '
---         ),
---         -- file type
---         '[%M%R%H%W%Y]%q',
---         -- line numbers
---         '%l/%L:%c',
---       }),
---       ' | '
---     )
---     .. ' '
--- end
---
--- vim.o.statusline = '%!v:lua.statusline()'
---
---
---
---   'ibhagwan/fzf-lua',
---   dependencies = { 'nvim-mini/mini.nvim' },
---   lazy = true,
---   opts = {
---     file_icon_padding = '',
---     winopts = {
---       treesitter = {
---         enabled = true,
---       },
---       preview = {
---         wrap = true,
---         scrollbar = false,
---       },
---     },
---     keymap = {
---       builtin = {
---         ['<C-n>'] = 'preview-page-down',
---         ['<C-p>'] = 'preview-page-up',
---       },
---     },
---     previewers = {
---       builtin = {
---         treesitter = {
---           enabled = true,
---         },
---       },
---     },
---   },
---   keys = {
---     {
---       '<leader>sb',
---       function()
---         require('fzf-lua').buffers()
---       end,
---       desc = '[s]earch [b]uffer',
---     },
---     {
---       '<leader>sf',
---       function()
---         require('fzf-lua').files()
---       end,
---       desc = '[s]earch [f]ile',
---     },
---     {
---       '<leader>so',
---       function()
---         require('fzf-lua').oldfiles()
---       end,
---       desc = '[s]earch [o]ld files',
---     },
---     {
---       '<leader>sl',
---       function()
---         require('fzf-lua').blines()
---       end,
---       desc = '[s]earch [l]ines (local)',
---     },
---     {
---       '<leader>sL',
---       function()
---         require('fzf-lua').lines()
---       end,
---       desc = '[s]earch [L]ines (buffers)',
---     },
---   },
--- }
-
--- {
---   '<leader>sq',
---   function()
---     require('fzf-lua').quickfix()
---   end,
---   desc = '[s]earch [q]uickfix',
--- },
-
---   :lua vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "FloatBorder" })
---
--- or via setup:
---
--- require('fzf-lua').setup {
---   hls = { border = "FloatBorder" }
--- }
---
--- or temporarily in the call:
---
--- :lua FzfLua.files({ hls={preview_title="IncSearch"} })
--- -- vimL equivalent
--- :FzfLua files hls.preview_title=IncSearch
-
--- Insert-mode completion
---
--- Fzf-lua comes with a set of completion functions for paths/files and lines from open buffers as well as custom completion, for example, set path/completion using <C-x><C-f>:
---
---
---vim.keymap.set({ "i" }, "<C-x><C-f>",
--- function()
---   FzfLua.complete_file({
---     cmd = "rg --files",
---     winopts = { preview = { hidden = true } }
---   })
--- end, { silent = true, desc = "Fuzzy complete file" })
---
---
--- vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>",
---   function() FzfLua.complete_path() end,
---   { silent = true, desc = "Fuzzy complete path" })
-
--- require("fzf-lua").setup {
---   -- MISC GLOBAL SETUP OPTIONS, SEE BELOW
---   -- fzf_bin = ...,
---   -- each of these options can also be passed as function that return options table
---   -- e.g. winopts = function() return { ... } end
---   winopts = { ...  },     -- UI Options
---   keymap = { ...  },      -- Neovim keymaps / fzf binds
---   actions = { ...  },     -- Fzf "accept" binds
---   fzf_opts = { ...  },    -- Fzf CLI flags
---   fzf_colors = { ...  },  -- Fzf `--color` specification
---   hls = { ...  },         -- Highlights
---   previewers = { ...  },  -- Previewers options
---   -- SPECIFIC COMMAND/PICKER OPTIONS, SEE BELOW
---   -- files = { ... },
--- }
-
--- -- Use skim (or a speccific fzf binary/version) instead of fzf?
--- -- fzf_bin = 'sk',
--- -- Padding can help kitty term users with double-width icon rendering
--- file_icon_padding = '',
--- -- Uncomment if your terminal/font does not support unicode character
--- -- 'EN SPACE' (U+2002), the below sets it to 'NBSP' (U+00A0) instead
--- -- nbsp = '\xc2\xa0',
--- -- Function override for opening the help window (default bound to `<F1>`)
--- -- Override this function if you want to customize window config of the
--- -- help window (location, width, border, etc.)
--- help_open_win = vim.api.nvim_open_win,
---
--- winopts = {
---     -- split = "belowright new",-- open in a split instead?
---             -- "belowright new"  : split below
---             -- "aboveleft new"   : split above
---             -- "belowright vnew" : split right
---             -- "aboveleft vnew   : split left
---     -- Only valid when using a float window
---     -- (i.e. when 'split' is not defined, default)
---     height           = 0.85,            -- window height
---     width            = 0.80,            -- window width
---     row              = 0.35,            -- window row position (0=top, 1=bottom)
---     col              = 0.50,            -- window col position (0=left, 1=right)
---     -- border argument passthrough to nvim_open_win()
---     border           = "rounded",
---     -- Backdrop opacity, 0 is fully opaque, 100 is fully transparent (i.e. disabled)
---     backdrop         = 60,
---     -- title         = "Title",
---     -- title_pos     = "center",        -- 'left', 'center' or 'right'
---     -- title_flags   = false,           -- uncomment to disable title flags
---     fullscreen       = false,           -- start fullscreen?
---     -- enable treesitter highlighting for the main fzf window will only have
---     -- effect where grep like results are present, i.e. "file:line:col:text"
---     -- due to highlight color collisions will also override `fzf_colors`
---     -- set `fzf_colors=false` or `fzf_colors.hl=...` to override
---     treesitter       = {
---       enabled    = true,
---       fzf_colors = { ["hl"] = "-1:reverse", ["hl+"] = "-1:reverse" }
---     },
---     preview = {
---       -- default     = 'bat',           -- override the default previewer?
---                                         -- default uses the 'builtin' previewer
---       border         = "rounded",       -- preview border: accepts both `nvim_open_win`
---                                         -- and fzf values (e.g. "border-top", "none")
---                                         -- native fzf previewers (bat/cat/git/etc)
---                                         -- can also be set to `fun(winopts, metadata)`
---       wrap           = false,           -- preview line wrap (fzf's 'wrap|nowrap')
---       hidden         = false,           -- start preview hidden
---       vertical       = "down:45%",      -- up|down:size
---       horizontal     = "right:60%",     -- right|left:size
---       layout         = "flex",          -- horizontal|vertical|flex
---       flip_columns   = 100,             -- #cols to switch to horizontal on flex
---       -- Only used with the builtin previewer:
---       title          = true,            -- preview border title (file/buf)?
---       title_pos      = "center",        -- left|center|right, title alignment
---       scrollbar      = "float",         -- `false` or string:'float|border'
---                                         -- float:  in-window floating border
---                                         -- border: in-border "block" marker
---       scrolloff      = -1,              -- float scrollbar offset from right
---                                         -- applies only when scrollbar = 'float'
---       delay          = 20,              -- delay(ms) displaying the preview
---                                         -- prevents lag on fast scrolling
---       winopts = {                       -- builtin previewer window options
---         number            = true,
---         relativenumber    = false,
---         cursorline        = true,
---         cursorlineopt     = "both",
---         cursorcolumn      = false,
---         signcolumn        = "no",
---         list              = false,
---         foldenable        = false,
---         foldmethod        = "manual",
---       },
---     },
---     on_create = function()
---       -- called once upon creation of the fzf main window
---       -- can be used to add custom fzf-lua mappings, e.g:
---       --   vim.keymap.set("t", "<C-j>", "<Down>", { silent = true, buffer = true })
---     end,
---     -- called once _after_ the fzf interface is closed
---     -- on_close = function() ... end
--- }
-
--- no prefix 	Files
--- $ 	Buffers
--- @ 	LSP Symbols (current buffer)
--- # 	LSP Symbols (workspace/project)
-
--- to look at config
--- :lua FzfLua.files({ cwd = '~/.config'})
-
--- lua Fzflua.resume()
--- Fzf resume
---
--- :FzfLua file resume = true or lua FzfLua.files({ resume = true })
-
--- combining pickers
--- :lua FzfLua.combine({ pickers = "oldfiles;git_files" })
--- or using the `FzfLua` vim command:
--- :FzfLua combine pickers=oldfiles;git_files
-
--- tags 	search project tags
--- btags 	search buffer tags
--- tags_grep 	grep project tags
--- tags_grep_cword 	tags_grep word under cursor
--- tags_grep_cWORD 	tags_grep WORD under cursor
--- tags_grep_visual 	tags_grep visual selection
--- tags_live_grep 	live grep project tags
-
--- git_files 	git ls-files
--- git_status 	git status
--- git_diff 	git diff {ref}
--- git_hunks 	git hunks {ref}
--- git_commits 	git commit log (project)
--- git_bcommits 	git commit log (buffer)
--- git_blame 	git blame (buffer)
--- git_branches 	git branches
--- git_tags 	git tags
--- git_stash 	git stash
-
--- lsp_references 	References
--- lsp_definitions 	Definitions
--- lsp_declarations 	Declarations
--- lsp_typedefs 	Type Definitions
--- lsp_implementations 	Implementations
--- lsp_document_symbols 	Document Symbols
--- lsp_workspace_symbols 	Workspace Symbols
--- lsp_live_workspace_symbols 	Workspace Symbols (live query)
--- lsp_incoming_calls 	Incoming Calls
--- lsp_outgoing_calls 	Outgoing Calls
--- lsp_code_actions 	Code Actions
--- lsp_finder 	All LSP locations, combined view
--- diagnostics_document 	Document Diagnostics diagnostics_workspace 	Workspace Diagnostics lsp_document_diagnostics 	alias to diagnostics_document
--- lsp_workspace_diagnostics 	alias to diagnostics_workspace
-
--- register_ui_select 	register fzf-lua as the UI interface for vim.ui.select
--- deregister_ui_select 	de-register fzf-lua with vim.ui.select
-
--- dap_commands 	list,run nvim-dap builtin commands
--- dap_configurations 	list,run debug configurations
--- dap_breakpoints 	list,delete breakpoints
--- dap_variables 	active session variables
--- dap_frames 	active session jump to frame
-
--- tmux_buffers 	list tmux paste buffers
-
--- zoxide 	list recent directories
-
--- complete_path 	complete path under cursor (incl dirs)
--- complete_file 	complete file under cursor (excl dirs)
--- complete_line 	complete line (all open buffers)
--- complete_bline 	complete line (current buffer only)
-
--- quickfix -- qf list
--- quickfix_stack  -- qf stack
--- loclist -- locations list
--- loclist_stack -- location stack
--- treesitter -- treesitter symbols
-
--- grep
--- grep_last -- last patter
--- grep_cword -- word under cursor
--- grep_cWORD -- search WORD under cursotr
--- grep_visual -- search visual selection
--- grep_project -- search all project lines
--- grep_curbuf 	search current buffer lines
--- grep_quickfix 	search the quickfix list
--- grep_loclist 	search the location list
--- lgrep_curbuf 	live grep current buffer
--- lgrep_quickfix 	live grep the quickfix list
--- lgrep_loclist 	live grep the location list
--- live_grep 	live grep current project
--- live_grep_resume 	live grep continue last search
--- live_grep_glob 	live_grep with rg --glob support
--- live_grep_native 	performant version of live_grep
-
--- buffers 	open buffers
--- files 	find or fd on a path
--- oldfiles 	opened files history
--- quickfix 	quickfix list
--- quickfix_stack 	quickfix stack
--- loclist 	location list
--- loclist_stack 	location stack
--- lines 	open buffers lines
--- blines 	current buffer lines
--- treesitter 	current buffer treesitter symbols
--- tabs 	open tabs
--- args 	argument list
-
--- grep 	search for a pattern with grep or rg
--- grep_last 	run search again with the last pattern
--- grep_cword 	search word under cursor
--- grep_cWORD 	search WORD under cursor
--- grep_visual 	search visual selection
--- grep_project 	search all project lines (fzf.vim's :Rg)
--- grep_curbuf 	search current buffer lines
--- grep_quickfix 	search the quickfix list
--- grep_loclist 	search the location list
--- lgrep_curbuf 	live grep current buffer
--- lgrep_quickfix 	live grep the quickfix list
--- lgrep_loclist 	live grep the location list
--- live_grep 	live grep current project
--- live_grep_resume 	live grep continue last search
--- live_grep_glob 	live_grep with rg --glob support
--- live_grep_native 	performant version of live_grep
-
--- Command 	List
--- tags 	search project tags
--- btags 	search buffer tags
--- tags_grep 	grep project tags
--- tags_grep_cword 	tags_grep word under cursor
--- tags_grep_cWORD 	tags_grep WORD under cursor
--- tags_grep_visual 	tags_grep visual selection
--- tags_live_grep 	live grep project tags
-
--- git_files 	git ls-files
--- git_status 	git status
--- git_diff 	git diff {ref}
--- git_hunks 	git hunks {ref}
--- git_commits 	git commit log (project)
--- git_bcommits 	git commit log (buffer)
--- git_blame 	git blame (buffer)
--- git_branches 	git branches
--- git_tags 	git tags
--- git_stash 	git stash
-
---  	List
--- lsp_references 	References
--- lsp_definitions 	Definitions
--- lsp_declarations 	Declarations
--- lsp_typedefs 	Type Definitions
--- lsp_implementations 	Implementations
--- lsp_document_symbols 	Document Symbols
--- lsp_workspace_symbols 	Workspace Symbols
--- lsp_live_workspace_symbols 	Workspace Symbols (live query)
--- lsp_incoming_calls 	Incoming Calls
--- lsp_outgoing_calls 	Outgoing Calls
--- lsp_code_actions 	Code Actions
--- lsp_finder 	All LSP locations, combined view
--- diagnostics_document 	Document Diagnostics
--- diagnostics_workspace 	Workspace Diagnostics
--- lsp_document_diagnostics 	alias to diagnostics_document
--- lsp_workspace_diagnostics 	alias to diagnostics_workspace
-
--- resume 	resume last command/query
--- builtin 	fzf-lua builtin commands
--- combine 	combine different fzf-lua pickers
--- global 	global picker for files,buffers and symbols
--- profiles 	fzf-lua configuration profiles
--- helptags 	help tags
--- manpages 	man pages
--- colorschemes 	color schemes
--- awesome_colorschemes 	Awesome Neovim color schemes
--- highlights 	highlight groups
--- commands 	neovim commands
--- command_history 	command history
--- search_history 	search history
--- marks 	:marks
--- jumps 	:jumps
--- changes 	:changes
--- registers 	:registers
--- tagstack 	:tags
--- autocmds 	:autocmd
--- nvim_options 	neovim options
--- keymaps 	key mappings
--- filetypes 	filetypes
--- menus 	menus
--- spellcheck 	misspelled words in buffer
--- spell_suggest 	spelling suggestions
--- packadd 	:packadd
-
--- register_ui_select 	register fzf-lua as the UI interface for vim.ui.select
--- deregister_ui_select 	de-register fzf-lua with vim.ui.select
-
--- dap_commands 	list,run nvim-dap builtin commands
--- dap_configurations 	list,run debug configurations
--- dap_breakpoints 	list,delete breakpoints
--- dap_variables 	active session variables
--- dap_frames 	active session jump to frame
-
--- tmux_buffers 	list tmux paste buffers
--- zoxide 	list recent directories
-
--- complete_path 	complete path under cursor (incl dirs)
--- complete_file 	complete file under cursor (excl dirs)
--- complete_line 	complete line (all open buffers)
--- complete_bline 	complete line (current buffer only)
---keymap = {
--- Below are the default binds, setting any value in these tables will override
--- the defaults, to inherit from the defaults change [1] from `false` to `true`
---     builtin = {
---       -- neovim `:tmap` mappings for the fzf win
---       -- true,        -- uncomment to inherit all the below in your custom config
---       ["<M-Esc>"]     = "hide",     -- hide fzf-lua, `:FzfLua resume` to continue
---       ["<F1>"]        = "toggle-help",
---       ["<F2>"]        = "toggle-fullscreen",
---       -- Only valid with the 'builtin' previewer
---       ["<F3>"]        = "toggle-preview-wrap",
---       ["<F4>"]        = "toggle-preview",
---       -- Rotate preview clockwise/counter-clockwise
---       ["<F5>"]        = "toggle-preview-cw",
---       -- Preview toggle behavior default/extend
---       ["<F6>"]        = "toggle-preview-behavior",
---       -- `ts-ctx` binds require `nvim-treesitter-context`
---       ["<F7>"]        = "toggle-preview-ts-ctx",
---       ["<F8>"]        = "preview-ts-ctx-dec",
---       ["<F9>"]        = "preview-ts-ctx-inc",
---       ["<S-Left>"]    = "preview-reset",
---       ["<S-down>"]    = "preview-page-down",
---       ["<S-up>"]      = "preview-page-up",
---       ["<M-S-down>"]  = "preview-down",
---       ["<M-S-up>"]    = "preview-up",
---     },
---     fzf = {
---       -- fzf '--bind=' options
---       -- true,        -- uncomment to inherit all the below in your custom config
---       ["ctrl-z"]      = "abort",
---       ["ctrl-u"]      = "unix-line-discard",
---       ["ctrl-f"]      = "half-page-down",
---       ["ctrl-b"]      = "half-page-up",
---       ["ctrl-a"]      = "beginning-of-line",
---       ["ctrl-e"]      = "end-of-line",
---       ["alt-a"]       = "toggle-all",
---       ["alt-g"]       = "first",
---       ["alt-G"]       = "last",
---       -- Only valid with fzf previewers (bat/cat/git/etc)
---       ["f3"]          = "toggle-preview-wrap",
---       ["f4"]          = "toggle-preview",
---       ["shift-down"]  = "preview-page-down",
---       ["shift-up"]    = "preview-page-up",
---     },
--- },
--- actions = {
---     -- Below are the default actions, setting any value in these tables will override
---     -- the defaults, to inherit from the defaults change [1] from `false` to `true`
---     files = {
---       -- true,        -- uncomment to inherit all the below in your custom config
---       -- Pickers inheriting these actions:
---       --   files, git_files, git_status, grep, lsp, oldfiles, quickfix, loclist,
---       --   tags, btags, args, buffers, tabs, lines, blines
---       -- `file_edit_or_qf` opens a single selection or sends multiple selection to quickfix
---       -- replace `enter` with `file_edit` to open all files/bufs whether single or multiple
---       -- replace `enter` with `file_switch_or_edit` to attempt a switch in current tab first
---       ["enter"]       = FzfLua.actions.file_edit_or_qf,
---       ["ctrl-s"]      = FzfLua.actions.file_split,
---       ["ctrl-v"]      = FzfLua.actions.file_vsplit,
---       ["ctrl-t"]      = FzfLua.actions.file_tabedit,
---       ["alt-q"]       = FzfLua.actions.file_sel_to_qf,
---       ["alt-Q"]       = FzfLua.actions.file_sel_to_ll,
---       ["alt-i"]       = FzfLua.actions.toggle_ignore,
---       ["alt-h"]       = FzfLua.actions.toggle_hidden,
---       ["alt-f"]       = FzfLua.actions.toggle_follow,
---     },
---   }
-
--- fzf_opts = {
---     -- options are sent as `<left>=<right>`
---     -- set to `false` to remove a flag
---     -- set to `true` for a no-value flag
---     -- for raw args use `fzf_args` instead
---     ["--ansi"]           = true,
---     ["--info"]           = "inline-right", -- fzf < v0.42 = "inline"
---     ["--height"]         = "100%",
---     ["--layout"]         = "reverse",
---     ["--border"]         = "none",
---     ["--highlight-line"] = true,           -- fzf >= v0.53
---   }
---
--- -- Only used when fzf_bin = "fzf-tmux", by default opens as a
--- -- popup 80% width, 80% height (note `-p` requires tmux > 3.2)
--- -- and removes the sides margin added by `fzf-tmux` (fzf#3162)
--- -- for more options run `fzf-tmux --help`
--- -- NOTE: since fzf v0.53 / sk v0.15 it is recommended to use
--- -- native tmux integration by adding the below to `fzf_opts`
--- -- fzf_opts = { ["--tmux"] = "center,80%,60%" }
--- fzf_tmux_opts = { ["-p"] = "80%,80%", ["--margin"] = "0,0" },
-
--- --
--- -- Set fzf's terminal colorscheme (optional)
--- --
--- -- Set to `true` to automatically generate an fzf's colorscheme from
--- -- Neovim's current colorscheme:
--- -- fzf_colors       = true,
--- --
--- -- Building a custom colorscheme, has the below specifications:
--- -- If rhs is of type "string" rhs will be passed raw, e.g.:
--- --   `["fg"] = "underline"` will be translated to `--color fg:underline`
--- -- If rhs is of type "table", the following convention is used:
--- --   [1] "what" field to extract from the hlgroup, i.e "fg", "bg", etc.
--- --   [2] Neovim highlight group(s), can be either "string" or "table"
--- --       when type is "table" the first existing highlight group is used
--- --   [3+] any additional fields are passed raw to fzf's command line args
--- -- Example of a "fully loaded" color option:
--- --   `["fg"] = { "fg", { "NonExistentHl", "Comment" }, "underline", "bold" }`
--- -- Assuming `Comment.fg=#010101` the resulting fzf command line will be:
--- --   `--color fg:#010101:underline:bold`
--- -- NOTE: to pass raw arguments `fzf_opts["--color"]` or `fzf_args`
--- -- NOTE: below is an example, not the defaults:
--- fzf_colors = {
---     true,   -- inherit fzf colors that aren't specified below from
---             -- the auto-generated theme similar to `fzf_colors=true`
---     ["fg"]          = { "fg", "CursorLine" },
---     ["bg"]          = { "bg", "Normal" },
---     ["hl"]          = { "fg", "Comment" },
---     ["fg+"]         = { "fg", "Normal", "underline" },
---     ["bg+"]         = { "bg", { "CursorLine", "Normal" } },
---     ["hl+"]         = { "fg", "Statement" },
---     ["info"]        = { "fg", "PreProc" },
---     ["prompt"]      = { "fg", "Conditional" },
---     ["pointer"]     = { "fg", "Exception" },
---     ["marker"]      = { "fg", "Keyword" },
---     ["spinner"]     = { "fg", "Label" },
---     ["header"]      = { "fg", "Comment" },
---     ["gutter"]      = "-1",
--- },
-
--- hls = {
---     normal = "Normal"          -- highlight group for normal fg/bg
---     preview_normal = "Normal"  -- highlight group for preview fg/bg
---     ...
--- }
-
--- previewers = {
---     cat = {
---       cmd             = "cat",
---       args            = "-n",
---     },
---     bat = {
---       cmd             = "bat",
---       args            = "--color=always --style=numbers,changes",
---     },
---     head = {
---       cmd             = "head",
---       args            = nil,
---     },
---     git_diff = {
---       -- if required, use `{file}` for argument positioning
---       -- e.g. `cmd_modified = "git diff --color HEAD {file} | cut -c -30"`
---       cmd_deleted     = "git diff --color HEAD --",
---       cmd_modified    = "git diff --color HEAD",
---       cmd_untracked   = "git diff --color --no-index /dev/null",
---       -- git-delta is automatically detected as pager, set `pager=false`
---       -- to disable, can also be set under 'git.status.preview_pager'
---     },
---     man = {
---       -- NOTE: remove the `-c` flag when using man-db
---       -- replace with `man -P cat %s | col -bx` on OSX
---       cmd             = "man -c %s | col -bx",
---     },
---     builtin = {
---       syntax          = true,         -- preview syntax highlight?
---       syntax_limit_l  = 0,            -- syntax limit (lines), 0=nolimit
---       syntax_limit_b  = 1024*1024,    -- syntax limit (bytes), 0=nolimit
---       limit_b         = 1024*1024*10, -- preview limit (bytes), 0=nolimit
---       -- previewer treesitter options:
---       -- enable specific filetypes with: `{ enabled = { "lua" } }
---       -- exclude specific filetypes with: `{ disabled = { "lua" } }
---       -- disable `nvim-treesitter-context` with `context = false`
---       -- disable fully with: `treesitter = false` or `{ enabled = false }`
---       treesitter      = {
---         enabled = true,
---         disabled = {},
---         -- nvim-treesitter-context config options
---         context = { max_lines = 1, trim_scope = "inner" }
---       },
---       -- By default, the main window dimensions are calculated as if the
---       -- preview is visible, when hidden the main window will extend to
---       -- full size. Set the below to "extend" to prevent the main window
---       -- from being modified when toggling the preview.
---       toggle_behavior = "default",
---       -- Title transform function, by default only displays the tail
---       -- title_fnamemodify = function(s) return vim.fn.fnamemodify(s, ":t") end,
---       -- preview extensions using a custom shell command:
---       -- for example, use `viu` for image previews
---       -- will do nothing if `viu` isn't executable
---       extensions      = {
---         -- neovim terminal only supports `viu` block output
---         ["png"]       = { "viu", "-b" },
---         -- by default the filename is added as last argument
---         -- if required, use `{file}` for argument positioning
---         ["svg"]       = { "chafa", "{file}" },
---         ["jpg"]       = { "ueberzug" },
---       },
---       -- if using `ueberzug` in the above extensions map
---       -- set the default image scaler, possible scalers:
---       --   false (none), "crop", "distort", "fit_contain",
---       --   "contain", "forced_cover", "cover"
---       -- https://github.com/seebye/ueberzug
---       ueberzug_scaler = "cover",
---       -- render_markdown.nvim integration, enabled by default for markdown
---       render_markdown = { enabled = true, filetypes = { ["markdown"] = true } },
---       -- snacks.images integration, enabled by default
---       snacks_image = { enabled = true, render_inline = true },
---     },
---     -- Code Action previewers, default is "codeaction" (set via `lsp.code_actions.previewer`)
---     -- "codeaction_native" uses fzf's native previewer, recommended when combined with git-delta
---     codeaction = {
---       -- options for vim.diff(): https://neovim.io/doc/user/lua.html#vim.diff()
---       diff_opts = { ctxlen = 3 },
---     },
---     codeaction_native = {
---       diff_opts = { ctxlen = 3 },
---       -- git-delta is automatically detected as pager, set `pager=false`
---       -- to disable, can also be set under 'lsp.code_actions.preview_pager'
---       -- recommended styling for delta
---       --pager = [[delta --width=$COLUMNS --hunk-header-style="omit" --file-style="omit"]],
---     },
--- }
---
--- --  -- use `defaults` (table or function) if you wish to set "global-picker" defaults
---   -- for example, using "mini.icons" globally and open the quickfix list at the top
---   --   defaults = {
---   --     file_icons   = "mini",
---   --     copen        = "topleft copen",
---   --   },
---   files = {
---     -- previewer      = "bat",          -- uncomment to override previewer
---                                         -- (name from 'previewers' table)
---                                         -- set to 'false' to disable
---     prompt            = 'Files❯ ',
---     multiprocess      = true,           -- run command in a separate process
---     git_icons         = false,          -- show git icons?
---     file_icons        = true,           -- show file icons (true|"devicons"|"mini")?
---     color_icons       = true,           -- colorize file|git icons
---     -- path_shorten   = 1,              -- 'true' or number, shorten path?
---     -- Uncomment for custom vscode-like formatter where the filename is first:
---     -- e.g. "fzf-lua/previewer/fzf.lua" => "fzf.lua previewer/fzf-lua"
---     -- formatter      = "path.filename_first",
---     -- executed command priority is 'cmd' (if exists)
---     -- otherwise auto-detect prioritizes `fd`:`rg`:`find`
---     -- default options are controlled by 'fd|rg|find|_opts'
---     -- cmd            = "rg --files",
---     find_opts         = [[-type f \! -path '*/.git/*']],
---     rg_opts           = [[--color=never --hidden --files -g "!.git"]],
---     fd_opts           = [[--color=never --hidden --type f --type l --exclude .git]],
---     dir_opts          = [[/s/b/a:-d]],
---     -- by default, cwd appears in the header only if {opts} contain a cwd
---     -- parameter to a different folder than the current working directory
---     -- uncomment if you wish to force display of the cwd as part of the
---     -- query prompt string (fzf.vim style), header line or both
---     -- cwd_header = true,
---     cwd_prompt             = true,
---     cwd_prompt_shorten_len = 32,        -- shorten prompt beyond this length
---     cwd_prompt_shorten_val = 1,         -- shortened path parts length
---     toggle_ignore_flag = "--no-ignore", -- flag toggled in `actions.toggle_ignore`
---     toggle_hidden_flag = "--hidden",    -- flag toggled in `actions.toggle_hidden`
---     toggle_follow_flag = "-L",          -- flag toggled in `actions.toggle_follow`
---     hidden             = true,          -- enable hidden files by default
---     follow             = false,         -- do not follow symlinks by default
---     no_ignore          = false,         -- respect ".gitignore"  by default
---     actions = {
---       -- inherits from 'actions.files', here we can override
---       -- or set bind to 'false' to disable a default action
---       -- uncomment to override `actions.file_edit_or_qf`
---       --   ["enter"]     = actions.file_edit,
---       -- custom actions are available too
---       --   ["ctrl-y"]    = function(selected) print(selected[1]) end,
---     }
---   },
---   git = {
---     files = {
---       prompt        = 'GitFiles❯ ',
---       cmd           = 'git ls-files --exclude-standard',
---       multiprocess  = true,           -- run command in a separate process
---       git_icons     = true,           -- show git icons?
---       file_icons    = true,           -- show file icons (true|"devicons"|"mini")?
---       color_icons   = true,           -- colorize file|git icons
---       -- force display the cwd header line regardless of your current working
---       -- directory can also be used to hide the header when not wanted
---       -- cwd_header = true
---     },
---     status = {
---       prompt        = 'GitStatus❯ ',
---       cmd           = "git -c color.status=false --no-optional-locks status --porcelain=v1 -u",
---       multiprocess  = true,           -- run command in a separate process
---       file_icons    = true,
---       color_icons   = true,
---       previewer     = "git_diff",
---       -- git-delta is automatically detected as pager, uncomment to disable
---       -- preview_pager = false,
---       actions = {
---         -- actions inherit from 'actions.files' and merge
---         ["right"]  = { fn = actions.git_unstage, reload = true },
---         ["left"]   = { fn = actions.git_stage, reload = true },
---         ["ctrl-x"] = { fn = actions.git_reset, reload = true },
---       },
---       -- If you wish to use a single stage|unstage toggle instead
---       -- using 'ctrl-s' modify the 'actions' table as shown below
---       -- actions = {
---       --   ["right"]   = false,
---       --   ["left"]    = false,
---       --   ["ctrl-x"]  = { fn = actions.git_reset, reload = true },
---       --   ["ctrl-s"]  = { fn = actions.git_stage_unstage, reload = true },
---       -- },
---     },
---     diff = {
---       cmd               = "git --no-pager diff --name-only {ref}",
---       ref               = "HEAD",
---       preview           = "git diff {ref} {file}",
---       -- git-delta is automatically detected as pager, uncomment to disable
---       -- preview_pager = false,
---       file_icons        = true,
---       color_icons       = true,
---       fzf_opts          = { ["--multi"] = true },
---     },
---     hunks = {
---       cmd               = "git --no-pager diff --color=always {ref}",
---       ref               = "HEAD",
---       file_icons        = true,
---       color_icons       = true,
---       fzf_opts          = {
---       ["--multi"] = true,
---       ["--delimiter"] = ":",
---       ["--nth"] = "3..",
---       },
---     },
---     commits = {
---       prompt        = 'Commits❯ ',
---       cmd           = [[git log --color --pretty=format:"%C(yellow)%h%Creset ]]
---           .. [[%Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset"]],
---       preview       = "git show --color {1}",
---       -- git-delta is automatically detected as pager, uncomment to disable
---       -- preview_pager = false,
---       actions = {
---         ["enter"]   = actions.git_checkout,
---         -- remove `exec_silent` or set to `false` to exit after yank
---         ["ctrl-y"]  = { fn = actions.git_yank_commit, exec_silent = true },
---       },
---     },
---     bcommits = {
---       prompt        = 'BCommits❯ ',
---       -- default preview shows a git diff vs the previous commit
---       -- if you prefer to see the entire commit you can use:
---       --   git show --color {1} --rotate-to={file}
---       --   {1}    : commit SHA (fzf field index expression)
---       --   {file} : filepath placement within the commands
---       cmd           = [[git log --color --pretty=format:"%C(yellow)%h%Creset ]]
---           .. [[%Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset" {file}]],
---       preview       = "git show --color {1} -- {file}",
---       -- git-delta is automatically detected as pager, uncomment to disable
---       -- preview_pager = false,
---       actions = {
---         ["enter"]   = actions.git_buf_edit,
---         ["ctrl-s"]  = actions.git_buf_split,
---         ["ctrl-v"]  = actions.git_buf_vsplit,
---         ["ctrl-t"]  = actions.git_buf_tabedit,
---         ["ctrl-y"]  = { fn = actions.git_yank_commit, exec_silent = true },
---       },
---     },
---     blame = {
---       prompt        = "Blame> ",
---       cmd           = [[git blame --color-lines {file}]],
---       preview       = "git show --color {1} -- {file}",
---       -- git-delta is automatically detected as pager, uncomment to disable
---       -- preview_pager = false,
---       actions = {
---         ["enter"]  = actions.git_goto_line,
---         ["ctrl-s"] = actions.git_buf_split,
---         ["ctrl-v"] = actions.git_buf_vsplit,
---         ["ctrl-t"] = actions.git_buf_tabedit,
---         ["ctrl-y"] = { fn = actions.git_yank_commit, exec_silent = true },
---       },
---     },
---     branches = {
---       prompt   = 'Branches❯ ',
---       cmd      = "git branch --all --color",
---       preview  = "git log --graph --pretty=oneline --abbrev-commit --color {1}",
---       remotes  = "local", -- "detach|local", switch behavior for remotes
---       actions  = {
---         ["enter"]   = actions.git_switch,
---         ["ctrl-x"]  = { fn = actions.git_branch_del, reload = true },
---         ["ctrl-a"]  = { fn = actions.git_branch_add, field_index = "{q}", reload = true },
---       },
---       -- If you wish to add branch and switch immediately
---       -- cmd_add  = { "git", "checkout", "-b" },
---       cmd_add  = { "git", "branch" },
---       -- If you wish to delete unmerged branches add "--force"
---       -- cmd_del  = { "git", "branch", "--delete", "--force" },
---       cmd_del  = { "git", "branch", "--delete" },
---     },
---     tags = {
---       prompt   = "Tags> ",
---       cmd      = [[git for-each-ref --color --sort="-taggerdate" --format ]]
---           .. [["%(color:yellow)%(refname:short)%(color:reset) ]]
---           .. [[%(color:green)(%(taggerdate:relative))%(color:reset)]]
---           .. [[ %(subject) %(color:blue)%(taggername)%(color:reset)" refs/tags]],
---       preview  = [[git log --graph --color --pretty=format:"%C(yellow)%h%Creset ]]
---           .. [[%Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset" {1}]],
---       actions  = { ["enter"] = actions.git_checkout },
---     },
---     stash = {
---       prompt          = 'Stash> ',
---       cmd             = "git --no-pager stash list",
---       preview         = "git --no-pager stash show --patch --color {1}",
---       actions = {
---         ["enter"]     = actions.git_stash_apply,
---         ["ctrl-x"]    = { fn = actions.git_stash_drop, reload = true },
---       },
---     },
---     icons = {
---       ["M"]           = { icon = "M", color = "yellow" },
---       ["D"]           = { icon = "D", color = "red" },
---       ["A"]           = { icon = "A", color = "green" },
---       ["R"]           = { icon = "R", color = "yellow" },
---       ["C"]           = { icon = "C", color = "yellow" },
---       ["T"]           = { icon = "T", color = "magenta" },
---       ["?"]           = { icon = "?", color = "magenta" },
---       -- override git icons?
---       -- ["M"]        = { icon = "★", color = "red" },
---       -- ["D"]        = { icon = "✗", color = "red" },
---       -- ["A"]        = { icon = "+", color = "green" },
---     },
---   },
---   grep = {
---     prompt            = 'Rg❯ ',
---     input_prompt      = 'Grep For❯ ',
---     multiprocess      = true,           -- run command in a separate process
---     git_icons         = false,          -- show git icons?
---     file_icons        = true,           -- show file icons (true|"devicons"|"mini")?
---     color_icons       = true,           -- colorize file|git icons
---     -- executed command priority is 'cmd' (if exists)
---     -- otherwise auto-detect prioritizes `rg` over `grep`
---     -- default options are controlled by 'rg|grep_opts'
---     -- cmd            = "rg --vimgrep",
---     grep_opts         = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
---     rg_opts           = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
---     hidden             = false,       -- disable hidden files by default
---     follow             = false,       -- do not follow symlinks by default
---     no_ignore          = false,       -- respect ".gitignore"  by default
---     -- Uncomment to use the rg config file `$RIPGREP_CONFIG_PATH`
---     -- RIPGREP_CONFIG_PATH = vim.env.RIPGREP_CONFIG_PATH
---     --
---     -- Set to 'true' to always parse globs in both 'grep' and 'live_grep'
---     -- search strings will be split using the 'glob_separator' and translated
---     -- to '--iglob=' arguments, requires 'rg'
---     -- can still be used when 'false' by calling 'live_grep_glob' directly
---     rg_glob           = true,         -- default to glob parsing with `rg`
---     glob_flag         = "--iglob",    -- for case sensitive globs use '--glob'
---     glob_separator    = "%s%-%-",     -- query separator pattern (lua): ' --'
---     -- advanced usage: for custom argument parsing define
---     -- 'rg_glob_fn' to return a pair:
---     --   first returned argument is the new search query
---     --   second returned argument are additional rg flags
---     -- rg_glob_fn = function(query, opts)
---     --   ...
---     --   return new_query, flags
---     -- end,
---     --
---     -- Enable with narrow term width, split results to multiple lines
---     -- NOTE: multiline requires fzf >= v0.53 and is ignored otherwise
---     -- multiline      = 1,      -- Display as: PATH:LINE:COL\nTEXT
---     -- multiline      = 2,      -- Display as: PATH:LINE:COL\nTEXT\n
---     actions = {
---       -- actions inherit from 'actions.files' and merge
---       -- this action toggles between 'grep' and 'live_grep'
---       ["ctrl-g"]      = { actions.grep_lgrep }
---       -- uncomment to enable '.gitignore' toggle for grep
---       -- ["ctrl-r"]   = { actions.toggle_ignore }
---     },
---     no_header             = false,    -- hide grep|cwd header?
---     no_header_i           = false,    -- hide interactive header?
---   },
---   args = {
---     prompt            = 'Args❯ ',
---     files_only        = true,
---     -- actions inherit from 'actions.files' and merge
---     actions           = { ["ctrl-x"] = { fn = actions.arg_del, reload = true } },
---   },
---   oldfiles = {
---     prompt            = 'History❯ ',
---     cwd_only          = false,
---     stat_file         = true,         -- verify files exist on disk
---     -- can also be a lua function, for example:
---     -- stat_file = FzfLua.utils.file_is_readable,
---     -- stat_file = function() return true end,
---     include_current_session = false,  -- include bufs from current session
---   },
---   buffers = {
---     prompt            = 'Buffers❯ ',
---     file_icons        = true,         -- show file icons (true|"devicons"|"mini")?
---     color_icons       = true,         -- colorize file|git icons
---     sort_lastused     = true,         -- sort buffers() by last used
---     show_unloaded     = true,         -- show unloaded buffers
---     cwd_only          = false,        -- buffers for the cwd only
---     cwd               = nil,          -- buffers list for a given dir
---     actions = {
---       -- actions inherit from 'actions.files' and merge
---       -- by supplying a table of functions we're telling
---       -- fzf-lua to not close the fzf window, this way we
---       -- can resume the buffers picker on the same window
---       -- eliminating an otherwise unaesthetic win "flash"
---       ["ctrl-x"]      = { fn = actions.buf_del, reload = true },
---     }
---   },
---   tabs = {
---     prompt            = 'Tabs❯ ',
---     tab_title         = "Tab",
---     tab_marker        = "<<",
---     locate            = true,         -- position cursor at current window
---     file_icons        = true,         -- show file icons (true|"devicons"|"mini")?
---     color_icons       = true,         -- colorize file|git icons
---     actions = {
---       -- actions inherit from 'actions.files' and merge
---       ["enter"]       = actions.buf_switch,
---       ["ctrl-x"]      = { fn = actions.buf_del, reload = true },
---     },
---     fzf_opts = {
---       -- hide tabnr
---       ["--delimiter"] = "[\\):]",
---       ["--with-nth"]  = '2..',
---     },
---   },
---   -- `blines` has the same defaults as `lines` aside from prompt and `show_bufname`
---   lines = {
---     prompt            = 'Lines❯ ',
---     file_icons        = true,
---     show_bufname      = true,         -- display buffer name
---     show_unloaded     = true,         -- show unloaded buffers
---     show_unlisted     = false,        -- exclude 'help' buffers
---     no_term_buffers   = true,         -- exclude 'term' buffers
---     sort_lastused     = true,         -- sort by most recent
---     winopts  = { treesitter = true }, -- enable TS highlights
---     fzf_opts = {
---       -- do not include bufnr in fuzzy matching
---       -- tiebreak by line no.
---       ["--multi"]     = true,
---       ["--delimiter"] = "[\t]",
---       ["--tabstop"]   = "1",
---       ["--tiebreak"]  = "index",
---       ["--with-nth"]  = "2..",
---       ["--nth"]       = "4..",
---     },
---   },
---   tags = {
---     prompt                = 'Tags❯ ',
---     ctags_file            = nil,      -- auto-detect from tags-option
---     multiprocess          = true,
---     file_icons            = true,
---     color_icons           = true,
---     -- 'tags_live_grep' options, `rg` prioritizes over `grep`
---     rg_opts               = "--no-heading --color=always --smart-case",
---     grep_opts             = "--color=auto --perl-regexp",
---     fzf_opts              = { ["--tiebreak"] = "begin" },
---     actions = {
---       -- actions inherit from 'actions.files' and merge
---       -- this action toggles between 'grep' and 'live_grep'
---       ["ctrl-g"]          = { actions.grep_lgrep }
---     },
---     no_header             = false,    -- hide grep|cwd header?
---     no_header_i           = false,    -- hide interactive header?
---   },
---   btags = {
---     prompt                = 'BTags❯ ',
---     ctags_file            = nil,      -- auto-detect from tags-option
---     ctags_autogen         = true,     -- dynamically generate ctags each call
---     multiprocess          = true,
---     file_icons            = false,
---     rg_opts               = "--color=never --no-heading",
---     grep_opts             = "--color=never --perl-regexp",
---     fzf_opts              = { ["--tiebreak"] = "begin" },
---     -- actions inherit from 'actions.files'
---   },
---   colorschemes = {
---     prompt            = 'Colorschemes❯ ',
---     live_preview      = true,       -- apply the colorscheme on preview?
---     actions           = { ["enter"] = actions.colorscheme },
---     winopts           = { height = 0.55, width = 0.30, },
---     -- uncomment to ignore colorschemes names (lua patterns)
---     -- ignore_patterns   = { "^delek$", "^blue$" },
---   },
---   awesome_colorschemes = {
---     prompt            = 'Colorschemes❯ ',
---     live_preview      = true,       -- apply the colorscheme on preview?
---     max_threads       = 5,          -- max download/update threads
---     winopts           = { row = 0, col = 0.99, width = 0.50 },
---     fzf_opts          = {
---       ["--multi"]     = true,
---       ["--delimiter"] = "[:]",
---       ["--with-nth"]  = "3..",
---       ["--tiebreak"]  = "index",
---     },
---     actions           = {
---       ["enter"]   = actions.colorscheme,
---       ["ctrl-g"]  = { fn = actions.toggle_bg, exec_silent = true },
---       ["ctrl-r"]  = { fn = actions.cs_update, reload = true },
---       ["ctrl-x"]  = { fn = actions.cs_delete, reload = true },
---     },
---   },
---   keymaps = {
---     prompt            = "Keymaps> ",
---     winopts           = { preview = { layout = "vertical" } },
---     fzf_opts          = { ["--tiebreak"] = "index", },
---     -- by default, we ignore <Plug> and <SNR> mappings
---     -- set `ignore_patterns = false` to disable filtering
---     ignore_patterns   = { "^<SNR>", "^<Plug>" },
---     show_desc         = true,
---     show_details      = true,
---     actions           = {
---       ["enter"]       = actions.keymap_apply,
---       ["ctrl-s"]      = actions.keymap_split,
---       ["ctrl-v"]      = actions.keymap_vsplit,
---       ["ctrl-t"]      = actions.keymap_tabedit,
---     },
---   },
---   nvim_options = {
---     prompt            = "Nvim Options> ",
---     separator         = "│",  -- separator between option name and value
---     color_values      = true, -- colorize boolean values
---     actions           = {
---       ["enter"]     = { fn = actions.nvim_opt_edit_local, reload = true },
---       ["alt-enter"] = { fn = actions.nvim_opt_edit_global, reload = true },
---     },
---   },
---   quickfix = {
---     file_icons        = true,
---     valid_only        = false, -- select among only the valid quickfix entries
---   },
---   quickfix_stack = {
---     prompt = "Quickfix Stack> ",
---     marker = ">",                   -- current list marker
---   },
---   lsp = {
---     prompt_postfix    = '❯ ',       -- will be appended to the LSP label
---                                     -- to override use 'prompt' instead
---     cwd_only          = false,      -- LSP/diagnostics for cwd only?
---     async_or_timeout  = 5000,       -- timeout(ms) or 'true' for async calls
---     file_icons        = true,
---     git_icons         = false,
---     jump1             = true,       -- skip the UI when result is a single entry
---     jump1_action      = FzfLua.actions.file_edit
---     -- The equivalent of using `includeDeclaration` in lsp buf calls, e.g:
---     -- :lua vim.lsp.buf.references({includeDeclaration = false})
---     includeDeclaration = true,      -- include current declaration in LSP context
---     -- settings for 'lsp_{document|workspace|lsp_live_workspace}_symbols'
---     symbols = {
---         -- lsp_query      = "foo"       -- query passed to the LSP directly
---         -- query          = "bar"       -- query passed to fzf prompt for fuzzy matching
---         locate            = false,      -- attempt to position cursor at current symbol
---         async_or_timeout  = true,       -- symbols are async by default
---         symbol_style      = 1,          -- style for document/workspace symbols
---                                         -- false: disable,    1: icon+kind
---                                         --     2: icon only,  3: kind only
---                                         -- NOTE: icons are extracted from
---                                         -- vim.lsp.protocol.CompletionItemKind
---         -- icons for symbol kind
---         -- see https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#symbolKind
---         -- see https://github.com/neovim/neovim/blob/829d92eca3d72a701adc6e6aa17ccd9fe2082479/runtime/lua/vim/lsp/protocol.lua#L117
---         symbol_icons     = {
---           File          = "󰈙",
---           Module        = "",
---           Namespace     = "󰦮",
---           Package       = "",
---           Class         = "󰆧",
---           Method        = "󰊕",
---           Property      = "",
---           Field         = "",
---           Constructor   = "",
---           Enum          = "",
---           Interface     = "",
---           Function      = "󰊕",
---           Variable      = "󰀫",
---           Constant      = "󰏿",
---           String        = "",
---           Number        = "󰎠",
---           Boolean       = "󰨙",
---           Array         = "󱡠",
---           Object        = "",
---           Key           = "󰌋",
---           Null          = "󰟢",
---           EnumMember    = "",
---           Struct        = "󰆼",
---           Event         = "",
---           Operator      = "󰆕",
---           TypeParameter = "󰗴",
---         },
---         -- colorize using Treesitter '@' highlight groups ("@function", etc).
---         -- or 'false' to disable highlighting
---         symbol_hl         = function(s) return "@" .. s:lower() end,
---         -- additional symbol formatting, works with or without style
---         symbol_fmt        = function(s, opts) return "[" .. s .. "]" end,
---         -- prefix child symbols. set to any string or `false` to disable
---         child_prefix      = true,
---         fzf_opts          = { ["--tiebreak"] = "begin" },
---     },
---     code_actions = {
---         prompt            = 'Code Actions> ',
---         async_or_timeout  = 5000,
---         -- when git-delta is installed use "codeaction_native" for beautiful diffs
---         -- try it out with `:FzfLua lsp_code_actions previewer=codeaction_native`
---         -- scroll up to `previewers.codeaction{_native}` for more previewer options
---         previewer        = "codeaction",
---     },
---     finder = {
---         prompt      = "LSP Finder> ",
---         file_icons  = true,
---         color_icons = true,
---         async       = true,         -- async by default
---         silent      = true,         -- suppress "not found"
---         separator   = "| ",         -- separator after provider prefix, `false` to disable
---         includeDeclaration = true,  -- include current declaration in LSP context
---         -- by default display all LSP locations
---         -- to customize, duplicate table and delete unwanted providers
---         providers   = {
---             { "references",      prefix = FzfLua.utils.ansi_codes.blue("ref ") },
---             { "definitions",     prefix = FzfLua.utils.ansi_codes.green("def ") },
---             { "declarations",    prefix = FzfLua.utils.ansi_codes.magenta("decl") },
---             { "typedefs",        prefix = FzfLua.utils.ansi_codes.red("tdef") },
---             { "implementations", prefix = FzfLua.utils.ansi_codes.green("impl") },
---             { "incoming_calls",  prefix = FzfLua.utils.ansi_codes.cyan("in  ") },
---             { "outgoing_calls",  prefix = FzfLua.utils.ansi_codes.yellow("out ") },
---         },
---     }
---   },
---   diagnostics ={
---     prompt            = 'Diagnostics❯ ',
---     cwd_only          = false,
---     file_icons        = false,
---     git_icons         = false,
---     color_headings    = true,   -- use diag highlights to color source & filepath
---     diag_icons        = true,   -- display icons from diag sign definitions
---     diag_source       = true,   -- display diag source (e.g. [pycodestyle])
---     diag_code         = true,   -- display diag code (e.g. [undefined])
---     icon_padding      = '',     -- add padding for wide diagnostics signs
---     multiline         = 2,      -- split heading and diag to separate lines
---     -- severity_only:   keep any matching exact severity
---     -- severity_limit:  keep any equal or more severe (lower)
---     -- severity_bound:  keep any equal or less severe (higher)
---   },
---   marks = {
---     marks = "", -- filter vim marks with a lua pattern
---     -- for example if you want to only show user defined marks
---     -- you would set this option as %a this would match characters from [A-Za-z]
---     -- or if you want to show only numbers you would set the pattern to %d (0-9).
---   },
---   complete_path = {
---     cmd          = nil, -- default: auto detect fd|rg|find
---     complete     = { ["enter"] = actions.complete },
---     word_pattern = nil, -- default: "[^%s\"']*"
---   },
---   complete_file = {
---     cmd          = nil, -- default: auto detect rg|fd|find
---     file_icons   = true,
---     color_icons  = true,
---     word_pattern = nil,
---     -- actions inherit from 'actions.files' and merge
---     actions      = { ["enter"] = actions.complete },
---     -- previewer hidden by default
---     winopts      = { preview = { hidden = true } },
---   },
---   zoxide = {
---     cmd          = "zoxide query --list --score",
---     scope        = "global", -- cd action scope "local|win|tab"
---     git_root     = false,    -- auto-detect git root
---     formatter    = "path.dirname_first",
---     fzf_opts     = {
---       ["--no-multi"]  = true,
---       ["--delimiter"] = "[\t]",
---       ["--tabstop"]   = "4",
---       ["--tiebreak"]  = "end,index", -- prefer dirs ending with search term
---       ["--nth"]       = "2..",       -- exclude score from fuzzy matching
---     },
---     actions      = { enter = actions.cd }
---   },
---   -- uncomment to use fzf native previewers
---   -- (instead of using a neovim floating window)
---   -- manpages = { previewer = "man_native" },
---   -- helptags = { previewer = "help_native" },
---
---To get the best out of fzf-lua I highly recommend installing the below:
-
---     fd: a better version of the find utility
---     ripgrep(rg): a better version of the grep utility
---
--- In addition, in neovim, use your favorite plugin manager to install kyazdani42/nvim-web-devicons in order to be able to display file icons in the interface.
--- CTRL n, p move prev
--- CTRL j, k move selection
--- CTRL v, s split w/ selection
---
---
---
---
--- add a fzf-lua file search but from home dir
---
---
--- return {
---   'saecki/crates.nvim',
---   event = { 'BufRead Cargo.toml' },
---   tag = 'stable',
---   config = function()
---     require('crates').setup {
---       lsp = {
---         enabled = true,
---         actions = true,
---         completion = true,
---         hover = true,
---       },
---       -- i use blink, can i use it with this
---       -- completion = {
---       --   cmp = { enabled = true },
---       -- },
---     }
---   end,
--- }
-
--- vim.api.nvim_create_autocmd("BufRead", {
---     group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
---     pattern = "Cargo.toml",
---     callback = function()
---         cmp.setup.buffer({ sources = { { name = "crates" } } })
---     end,
--- })
-
--- require("crates").setup {
---     ...
---     completion = {
---         ...
---         cmp = {
---             use_custom_kind = true,
---             -- optionally change the text and highlight groups
---             kind_text = {
---                 version = "Version",
---                 feature = "Feature",
---             },
---             kind_highlight = {
---                 version = "CmpItemKindVersion",
---                 feature = "CmpItemKindFeature",
---             },
---         },
---     },
--- }
-
--- local kind_icons = {
---     ["Class"] = "🅒 ",
---     ["Interface"] = "🅘 ",
---     ["TypeParameter"] = "🅣 ",
---     ["Struct"] = "🅢 ",
---     ["Enum"] = "🅔 ",
---     ["Unit"] = "🅤 ",
---     ["EnumMember"] = "🅔 ",
---     ["Constant"] = "🅒 ",
---     ["Field"] = "🅕 ",
---     ["Property"] = "🅟 ",
---     ["Variable"] = "🅥 ",
---     ["Reference"] = "🅡 ",
---     ["Function"] = "🅕 ",
---     ["Method"] = "🅜 ",
---     ["Constructor"] = "🅒 ",
---     ["Module"] = "🅜 ",
---     ["File"] = "🅕 ",
---     ["Folder"] = "🅕 ",
---     ["Keyword"] = "🅚 ",
---     ["Operator"] = "🅞 ",
---     ["Snippet"] = "🅢 ",
---     ["Value"] = "🅥 ",
---     ["Color"] = "🅒 ",
---     ["Event"] = "🅔 ",
---     ["Text"] = "🅣 ",
---
---     -- crates.nvim extensions
---     ["Version"] = "🅥 ",
---     ["Feature"] = "🅕 ",
--- }
---
--- require("cmp").setup({
---     formatting = {
---         fields = { "abbr", "kind" },
---         format = function(_, vim_item)
---             vim_item.kind = kind_icons[vim_item.kind] or "  "
---             return vim_item
---         end,
---     },
--- })
-
--- require("crates").setup {
---     ...
---     completion = {
---         ...
---         coq = {
---             enabled = true,
---             name = "crates.nvim",
---         },
---     },
--- }
-
--- require("crates").setup {
---     ...
---     completion = {
---         crates = {
---             enabled = true -- disabled by default
---             max_results = 8 -- The maximum number of search results to display
---             min_chars = 3 -- The minimum number of charaters to type before completions begin appearing
---         }
---     }
--- }
-
--- require("crates").setup {
---     ...
---     null_ls = {
---         enabled = true,
---         name = "crates.nvim",
---     },
--- }
-
--- require("crates").setup {
---     smart_insert = true,
---     remove_enabled_default_features = true,
---     remove_empty_features = true,
---     insert_closing_quote = true,
---     autoload = true,
---     autoupdate = true,
---     autoupdate_throttle = 250,
---     loading_indicator = true,
---     search_indicator = true,
---     date_format = "%Y-%m-%d",
---     thousands_separator = ".",
---     notification_title = "crates.nvim",
---     curl_args = { "-sL", "--retry", "1" },
---     max_parallel_requests = 80,
---     expand_crate_moves_cursor = true,
---     enable_update_available_warning = true,
---     on_attach = function(bufnr) end,
---     text = {
---         searching = "   Searching",
---         loading = "   Loading",
---         version = "   %s",
---         prerelease = "   %s",
---         yanked = "   %s",
---         nomatch = "   No match",
---         upgrade = "   %s",
---         error = "   Error fetching crate",
---     },
---     highlight = {
---         searching = "CratesNvimSearching",
---         loading = "CratesNvimLoading",
---         version = "CratesNvimVersion",
---         prerelease = "CratesNvimPreRelease",
---         yanked = "CratesNvimYanked",
---         nomatch = "CratesNvimNoMatch",
---         upgrade = "CratesNvimUpgrade",
---         error = "CratesNvimError",
---     },
---     popup = {
---         autofocus = false,
---         hide_on_select = false,
---         copy_register = '"',
---         style = "minimal",
---         border = "none",
---         show_version_date = false,
---         show_dependency_version = true,
---         max_height = 30,
---         min_width = 20,
---         padding = 1,
---         text = {
---             title = " %s",
---             pill_left = "",
---             pill_right = "",
---             description = "%s",
---             created_label = " created        ",
---             created = "%s",
---             updated_label = " updated        ",
---             updated = "%s",
---             downloads_label = " downloads      ",
---             downloads = "%s",
---             homepage_label = " homepage       ",
---             homepage = "%s",
---             repository_label = " repository     ",
---             repository = "%s",
---             documentation_label = " documentation  ",
---             documentation = "%s",
---             crates_io_label = " crates.io      ",
---             crates_io = "%s",
---             lib_rs_label = " lib.rs         ",
---             lib_rs = "%s",
---             categories_label = " categories     ",
---             keywords_label = " keywords       ",
---             version = "  %s",
---             prerelease = " %s",
---             yanked = " %s",
---             version_date = "  %s",
---             feature = "  %s",
---             enabled = " %s",
---             transitive = " %s",
---             normal_dependencies_title = " Dependencies",
---             build_dependencies_title = " Build dependencies",
---             dev_dependencies_title = " Dev dependencies",
---             dependency = "  %s",
---             optional = " %s",
---             dependency_version = "  %s",
---             loading = "  ",
---         },
---         highlight = {
---             title = "CratesNvimPopupTitle",
---             pill_text = "CratesNvimPopupPillText",
---             pill_border = "CratesNvimPopupPillBorder",
---             description = "CratesNvimPopupDescription",
---             created_label = "CratesNvimPopupLabel",
---             created = "CratesNvimPopupValue",
---             updated_label = "CratesNvimPopupLabel",
---             updated = "CratesNvimPopupValue",
---             downloads_label = "CratesNvimPopupLabel",
---             downloads = "CratesNvimPopupValue",
---             homepage_label = "CratesNvimPopupLabel",
---             homepage = "CratesNvimPopupUrl",
---             repository_label = "CratesNvimPopupLabel",
---             repository = "CratesNvimPopupUrl",
---             documentation_label = "CratesNvimPopupLabel",
---             documentation = "CratesNvimPopupUrl",
---             crates_io_label = "CratesNvimPopupLabel",
---             crates_io = "CratesNvimPopupUrl",
---             lib_rs_label = "CratesNvimPopupLabel",
---             lib_rs = "CratesNvimPopupUrl",
---             categories_label = "CratesNvimPopupLabel",
---             keywords_label = "CratesNvimPopupLabel",
---             version = "CratesNvimPopupVersion",
---             prerelease = "CratesNvimPopupPreRelease",
---             yanked = "CratesNvimPopupYanked",
---             version_date = "CratesNvimPopupVersionDate",
---             feature = "CratesNvimPopupFeature",
---             enabled = "CratesNvimPopupEnabled",
---             transitive = "CratesNvimPopupTransitive",
---             normal_dependencies_title = "CratesNvimPopupNormalDependenciesTitle",
---             build_dependencies_title = "CratesNvimPopupBuildDependenciesTitle",
---             dev_dependencies_title = "CratesNvimPopupDevDependenciesTitle",
---             dependency = "CratesNvimPopupDependency",
---             optional = "CratesNvimPopupOptional",
---             dependency_version = "CratesNvimPopupDependencyVersion",
---             loading = "CratesNvimPopupLoading",
---         },
---         keys = {
---             hide = { "q", "<esc>" },
---             open_url = { "<cr>" },
---             select = { "<cr>" },
---             select_alt = { "s" },
---             toggle_feature = { "<cr>" },
---             copy_value = { "yy" },
---             goto_item = { "gd", "K", "<C-LeftMouse>" },
---             jump_forward = { "<c-i>" },
---             jump_back = { "<c-o>", "<C-RightMouse>" },
---         },
---     },
---     completion = {
---         insert_closing_quote = true,
---         text = {
---             prerelease = "  pre-release ",
---             yanked = "  yanked ",
---         },
---         cmp = {
---             enabled = false,
---             use_custom_kind = true,
---             kind_text = {
---                 version = "Version",
---                 feature = "Feature",
---             },
---             kind_highlight = {
---                 version = "CmpItemKindVersion",
---                 feature = "CmpItemKindFeature",
---             },
---         },
---         coq = {
---             enabled = false,
---             name = "crates.nvim",
---         },
---         blink = {
---             use_custom_kind = true,
---             kind_text = {
---                 version = "Version",
---                 feature = "Feature",
---             },
---             kind_highlight = {
---                 version = "BlinkCmpKindVersion",
---                 feature = "BlinkCmpKindFeature",
---             },
---             kind_icon = {
---                 version = " ",
---                 feature = " ",
---             },
---         },
---         crates = {
---             enabled = true,
---             min_chars = 3,
---             max_results = 8,
---         },
---     },
---     null_ls = {
---         enabled = false,
---         name = "crates.nvim",
---     },
---     neoconf = {
---         enabled = false,
---         namespace = "crates",
---     },
---     lsp = {
---         enabled = false,
---         name = "crates.nvim",
---         on_attach = function(client, bufnr) end,
---         actions = false,
---         completion = false,
---         hover = false,
---     },
--- }
-
--- require("crates").setup {
---     text = {
---         loading = "  Loading...",
---         version = "  %s",
---         prerelease = "  %s",
---         yanked = "  %s yanked",
---         nomatch = "  Not found",
---         upgrade = "  %s",
---         error = "  Error fetching crate",
---     },
---     popup = {
---         text = {
---             title = "# %s",
---             pill_left = "",
---             pill_right = "",
---             created_label = "created        ",
---             updated_label = "updated        ",
---             downloads_label = "downloads      ",
---             homepage_label = "homepage       ",
---             repository_label = "repository     ",
---             documentation_label = "documentation  ",
---             crates_io_label = "crates.io      ",
---             lib_rs_label = "lib.rs         ",
---             categories_label = "categories     ",
---             keywords_label = "keywords       ",
---             version = "%s",
---             prerelease = "%s pre-release",
---             yanked = "%s yanked",
---             enabled = "* s",
---             transitive = "~ s",
---             normal_dependencies_title = "  Dependencies",
---             build_dependencies_title = "  Build dependencies",
---             dev_dependencies_title = "  Dev dependencies",
---             optional = "? %s",
---             loading = " ...",
---         },
---     },
---     completion = {
---         text = {
---             prerelease = " pre-release ",
---             yanked = " yanked ",
---         },
---     },
--- }
-
--- -- Setup config and auto commands.
--- require("crates").setup(cfg: crates.UserConfig)
---
--- -- Disable UI elements (virtual text and diagnostics).
--- require("crates").hide()
--- -- Enable UI elements (virtual text and diagnostics).
--- require("crates").show()
--- -- Enable or disable UI elements (virtual text and diagnostics).
--- require("crates").toggle()
--- -- Update data. Optionally specify which `buf` to update.
--- require("crates").update(buf: integer?)
--- -- Reload data (clears cache). Optionally specify which `buf` to reload.
--- require("crates").reload(buf: integer?)
---
--- -- Upgrade the crate on the current line.
--- -- If the `alt` flag is passed as true, the opposite of the `smart_insert` config
--- -- option will be used to insert the version.
--- require("crates").upgrade_crate(alt: boolean?)
--- -- Upgrade the crates on the lines visually selected.
--- -- See `crates.upgrade_crate()`.
--- require("crates").upgrade_crates(alt: boolean?)
--- -- Upgrade all crates in the buffer.
--- -- See `crates.upgrade_crate()`.
--- require("crates").upgrade_all_crates(alt: boolean?)
---
--- -- Update the crate on the current line.
--- -- See `crates.upgrade_crate()`.
--- require("crates").update_crate(alt: boolean?)
--- -- Update the crates on the lines visually selected.
--- -- See `crates.upgrade_crate()`.
--- require("crates").update_crates(alt: boolean?)
--- -- Update all crates in the buffer.
--- -- See `crates.upgrade_crate()`.
--- require("crates").update_all_crates(alt: boolean?)
---
--- -- Expand a plain crate declaration into an inline table.
--- require("crates").expand_plain_crate_to_inline_table()
--- -- Extract an crate declaration from a dependency section into a table.
--- require("crates").extract_crate_into_table()
--- -- Convert crate dependency to use a git source instead of version number.
--- require("crates").use_git_source()
---
--- -- Open the homepage of the crate on the current line.
--- require("crates").open_homepage()
--- -- Open the repository page of the crate on the current line.
--- require("crates").open_repository()
--- -- Open the documentation page of the crate on the current line.
--- require("crates").open_documentation()
--- -- Open the `crates.io` page of the crate on the current line.
--- require("crates").open_crates_io()
--- -- Open the `lib.rs` page of the crate on the current line.
--- require("crates").open_lib_rs()
---
--- -- Returns whether there is information to show in a popup.
--- require("crates").popup_available(): boolean
--- -- Show/hide popup with crate details, all versions, all features or details about one feature.
--- -- If `popup.autofocus` is disabled calling this again will focus the popup.
--- require("crates").show_popup()
--- -- Same as `crates.show_popup()` but always show crate details.
--- require("crates").show_crate_popup()
--- -- Same as `crates.show_popup()` but always show versions.
--- require("crates").show_versions_popup()
--- -- Same as `crates.show_popup()` but always show features or features details.
--- require("crates").show_features_popup()
--- -- Same as `crates.show_popup()` but always show dependencies.
--- require("crates").show_dependencies_popup()
--- -- Focus the popup (jump into the floating window).
--- -- Optionally specify the line to jump to, inside the popup.
--- require("crates").focus_popup(line: integer?)
--- -- Hide the popup.
--- require("crates").hide_popup()
-
---  :Crates <subcmd>-
--- hide()
--- show()
--- toggle()
--- update()
--- reload()
--- upgrade_crate()
--- upgrade_crates()
--- upgrade_all_crates()
--- update_crate()
--- update_crates()
--- update_all_crates()
--- use_git_source()
--- expand_plain_crate_to_inline_table()
--- extract_crate_into_table()
--- open_homepage()
--- open_repository()
--- open_documentation()
--- open_cratesio()
--- popup_available()
--- show_popup()
--- show_crate_popup()
--- show_versions_popup()
--- show_features_popup()
--- show_dependencies_popup()
--- focus_popup()
--- hide_popup()
-
--- local crates = require("crates")
--- local opts = { silent = true }
---
--- vim.keymap.set("n", "<leader>ct", crates.toggle, opts)
--- vim.keymap.set("n", "<leader>cr", crates.reload, opts)
---
--- vim.keymap.set("n", "<leader>cv", crates.show_versions_popup, opts)
--- vim.keymap.set("n", "<leader>cf", crates.show_features_popup, opts)
--- vim.keymap.set("n", "<leader>cd", crates.show_dependencies_popup, opts)
---
--- vim.keymap.set("n", "<leader>cu", crates.update_crate, opts)
--- vim.keymap.set("v", "<leader>cu", crates.update_crates, opts)
--- vim.keymap.set("n", "<leader>ca", crates.update_all_crates, opts)
--- vim.keymap.set("n", "<leader>cU", crates.upgrade_crate, opts)
--- vim.keymap.set("v", "<leader>cU", crates.upgrade_crates, opts)
--- vim.keymap.set("n", "<leader>cA", crates.upgrade_all_crates, opts)
---
--- vim.keymap.set("n", "<leader>cx", crates.expand_plain_crate_to_inline_table, opts)
--- vim.keymap.set("n", "<leader>cX", crates.extract_crate_into_table, opts)
---
--- vim.keymap.set("n", "<leader>cH", crates.open_homepage, opts)
--- vim.keymap.set("n", "<leader>cR", crates.open_repository, opts)
--- vim.keymap.set("n", "<leader>cD", crates.open_documentation, opts)
--- vim.keymap.set("n", "<leader>cC", crates.open_crates_io, opts)
--- vim.keymap.set("n", "<leader>cL", crates.open_lib_rs, opts)
-
--- local function show_documentation()
---     local filetype = vim.bo.filetype
---     if filetype == "vim" or filetype == "help" then
---         vim.cmd('h '..vim.fn.expand('<cword>'))
---     elseif filetype == "man" then
---         vim.cmd('Man '..vim.fn.expand('<cword>'))
---     elseif vim.fn.expand('%:t') == 'Cargo.toml' and require('crates').popup_available() then
---         require('crates').show_popup()
---     else
---         vim.lsp.buf.hover()
---     end
--- end
---
--- vim.keymap.set('n', 'K', show_documentation, { silent = true })
-
--- require("crates").setup {
---     ...
---     neoconf = {
---         enabled = false,
---         namespace = "crates",
---
---     },
--- }
-
---// .neoconf.json
--- {
---     //...
---     "crates": {
---         "smart_insert": false,
---         "max_parallel_requests": 50,
---         "completion": {
---             "crates": {
---                 "enabled": false
---             }
---         }
---     }
--- }
-
--- do this in teh other file
--- require("cmp").setup {
---     ...
---     sources = {
---         { name = "path" },
---         { name = "buffer" },
---         { name = "nvim_lsp" },
---         ...
---         { name = "crates" },
---     },
--- }
---
--- return {
---   'lewis6991/gitsigns.nvim',
---   event = { 'BufReadPre', 'BufNewFile' },
---   opts = {
---     signs = {
---       add = { text = '┃' },
---       change = { text = '┃' },
---       delete = { text = '_' },
---       topdelete = { text = '‾' },
---       changedelete = { text = '~' },
---       untracked = { text = '┆' },
---       --     opts = {
---       --       signs = {
---       --         add = { text = '+' },
---       --         change = { text = '~' },
---       --         delete = { text = '_' },
---       --         topdelete = { text = '‾' },
---       --         changedelete = { text = '~' },
---       --       },
---       --     },
---     },
---     signs_staged = {
---       add = { text = '┃' },
---       change = { text = '┃' },
---       delete = { text = '_' },
---       topdelete = { text = '‾' },
---       changedelete = { text = '~' },
---       untracked = { text = '┆' },
---     },
---     signs_staged_enable = true,
---
---     -- set these to keymaps?
---     signcolumn = true, -- `:Gitsigns toggle_signs`
---     numhl = false, -- `:Gitsigns toggle_numhl`
---     linehl = false, -- `:Gitsigns toggle_linehl`
---     word_diff = false, -- `:Gitsigns toggle_word_diff`
---     current_line_blame = false, -- `:Gitsigns toggle_current_line_blame`
---     -- :Gitsigns preview_hunk
---
---     watch_gitdir = {
---       follow_files = true,
---     },
---
---     auto_attach = true,
---     attach_to_untracked = false,
---
---     current_line_blame_opts = {
---       virt_text = true,
---       virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
---       delay = 1000,
---       ignore_whitespace = false,
---       virt_text_priority = 100,
---       use_focus = true,
---     },
---     current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
---
---     sign_priority = 6,
---     update_debounce = 100,
---     status_formatter = nil, -- Use default
---     max_file_length = 40000, -- Disable if file is longer than this (in lines)
---     preview_config = {
---       -- Options passed to nvim_open_win
---       style = 'minimal',
---       relative = 'cursor',
---       row = 0,
---       col = 1,
---     },
---     on_attach = function(bufnr)
---       --:Gitsigns ---
---       --stage_hunk
---       --reset_hunk
---       --preview_hunk-inline
---       --preview_hunk
---       --nav_hunk next/prev
---       -- blame
---       -- blame_line
---       -- toggle_current_line_blame
---       -- change_base <Revision>
---       -- diffthis <Revisions>
---       -- toggle_word_diff
---       -- setqflist/setloclist target=all/attached/[int]
---       -- set{'o', 'x'}, 'ih' <Cmd>Gitsigns selecthunk<CR>''
---       -- set statusline+=%{get(b:,'gitsigns_status','')}
---       -- show <revision>
---       -- otehr toggles above
---
---       local gitsigns = require 'gitsigns'
---
---       local function map(mode, l, r, opts)
---         opts = opts or {}
---         opts.buffer = bufnr
---         vim.keymap.set(mode, l, r, opts)
---       end
---
---       -- Navigation
---       map('n', ']c', function()
---         if vim.wo.diff then
---           vim.cmd.normal { ']c', bang = true }
---         else
---           gitsigns.nav_hunk 'next'
---         end
---       end, { desc = 'next hunk/diff-chunk' })
---
---       map('n', '[c', function()
---         if vim.wo.diff then
---           vim.cmd.normal { '[c', bang = true }
---         else
---           gitsigns.nav_hunk 'prev'
---         end
---       end, { desc = 'prev hunk/diff-chunk' })
---
---       -- Actions
---       map('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[g]it [p]review' })
---       map('n', '<leader>gs', gitsigns.stage_hunk, { desc = '[g]it [s]tage' })
---       map('n', '<leader>gr', gitsigns.reset_hunk, { desc = '[g]it [r]eset' })
---
---       -- -- Actions
---       -- map('n', '<leader>hs', gitsigns.stage_hunk)
---       -- map('n', '<leader>hr', gitsigns.reset_hunk)
---       --
---       -- map('v', '<leader>hs', function()
---       --   gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
---       -- end)
---       --
---       -- map('v', '<leader>hr', function()
---       --   gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
---       -- end)
---       --
---       -- map('n', '<leader>hS', gitsigns.stage_buffer)
---       -- map('n', '<leader>hR', gitsigns.reset_buffer)
---       -- map('n', '<leader>hp', gitsigns.preview_hunk)
---       -- map('n', '<leader>hi', gitsigns.preview_hunk_inline)
---       --
---       -- map('n', '<leader>hb', function()
---       --   gitsigns.blame_line { full = true }
---       -- end)
---       --
---       -- map('n', '<leader>hd', gitsigns.diffthis)
---       --
---       -- map('n', '<leader>hD', function()
---       --   gitsigns.diffthis '~'
---       -- end)
---       --
---       -- map('n', '<leader>hQ', function()
---       --   gitsigns.setqflist 'all'
---       -- end)
---       -- map('n', '<leader>hq', gitsigns.setqflist)
---       --
---       -- -- Toggles
---       -- map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
---       -- map('n', '<leader>tw', gitsigns.toggle_word_diff)
---       --
---       -- -- Text object
---       -- map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
---     end,
---   },
--- }
---
--- -- return {
--- --   {
--- --     'lewis6991/gitsigns.nvim',
--- --     opts = {
--- --       on_attach = function(bufnr)
--- --         local gitsigns = require 'gitsigns'
--- --
--- --         local function map(mode, l, r, opts)
--- --           opts = opts or {}
--- --           opts.buffer = bufnr
--- --           vim.keymap.set(mode, l, r, opts)
--- --         end
--- --
--- --         -- Navigation
--- --         map('n', ']c', function()
--- --           if vim.wo.diff then
--- --             vim.cmd.normal { ']c', bang = true }
--- --           else
--- --             gitsigns.nav_hunk 'next'
--- --           end
--- --         end, { desc = 'Jump to next git [c]hange' })
--- --
--- --         map('n', '[c', function()
--- --           if vim.wo.diff then
--- --             vim.cmd.normal { '[c', bang = true }
--- --           else
--- --             gitsigns.nav_hunk 'prev'
--- --           end
--- --         end, { desc = 'Jump to previous git [c]hange' })
--- --
--- --         -- Actions
--- --         -- visual mode
--- --         map('v', '<leader>hs', function()
--- --           gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
--- --         end, { desc = 'git [s]tage hunk' })
--- --         map('v', '<leader>hr', function()
--- --           gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
--- --         end, { desc = 'git [r]eset hunk' })
--- --         -- normal mode
--- --         map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
--- --         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
--- --         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
--- --         map('n', '<leader>hu', gitsigns.stage_hunk, { desc = 'git [u]ndo stage hunk' })
--- --         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
--- --         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
--- --         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
--- --         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
--- --         map('n', '<leader>hD', function()
--- --           gitsigns.diffthis '@'
--- --         end, { desc = 'git [D]iff against last commit' })
--- --         -- Toggles
--- --         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
--- --         map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
--- --       end,
--- --     },
--- --   },
--- -- }
--- --
--- -- make kepmap to move to next or prev diagnostic? '[d', '[D', ']d', ']D'

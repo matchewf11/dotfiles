@@ -1,6 +1,4 @@
--- done with this
-
-local large_file = function(lang, buf) -- disables for large files
+local large_file = function(_, buf) -- disables for large files
   local max_filesize = 100 * 1024 -- 100 KB
   local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
   if ok and stats and stats.size > max_filesize then
@@ -33,11 +31,11 @@ return {
       },
     },
   },
-  { -- config both and look into theri lazyies
+  {
     'nvim-treesitter/nvim-treesitter-context',
     lazy = true,
   },
-  { -- look into this
+  {
     'nvim-treesitter/nvim-treesitter-textobjects',
     lazy = true,
   },
