@@ -73,6 +73,9 @@ alias top='htop'
 # (learn how to use this)
 alias cat='bat'
 # (learn how to use this)
+alias find='fd'
+# (learn how to use this)
+
 
 
 # can do this with git config?
@@ -95,7 +98,7 @@ alias gd='git diff'
 
 cdf() {
   local dir
-  dir=$(find . -type d | fzf) || return  # fuzzy find a directory
+  dir=$(fd --type d --hidden --follow . | fzf) || return  # fuzzy find a directory
   if [[ -n "$dir" ]]; then
     cd "$dir" || echo "Failed to cd into $dir"
   fi

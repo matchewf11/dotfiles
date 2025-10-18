@@ -1,5 +1,5 @@
 [general]
-import = ["kanagawa.toml", "keymaps.toml"]
+import = ["color.toml", "keymaps.toml"]
 
 [window]
 decorations = "None"

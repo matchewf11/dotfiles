@@ -73,7 +73,7 @@ local function mini_pick_config()
       scroll_up = '<C-b>',
       stop = '<Esc>',
       toggle_info = '<S-Tab>',
-      toggle_preview = '<Tab>',
+      toggle_preview = '<Tab>', -- <C-p> (reassign tab)
     },
 
     options = {
@@ -147,10 +147,17 @@ local function mini_pick_config()
 
   vim.keymap.set('n', '<leader>sb', mini_pick.builtin.buffers)
   vim.keymap.set('n', '<leader>sf', mini_pick.builtin.files)
-  vim.keymap.set('n', '<leader>sg', mini_pick.builtin.grep)
-  vim.keymap.set('n', '<leader>sl', mini_pick.builtin.grep_live)
+  vim.keymap.set('n', '<leader>sG', mini_pick.builtin.grep)
+  vim.keymap.set('n', '<leader>sg', mini_pick.builtin.grep_live)
   vim.keymap.set('n', '<leader>sh', mini_pick.builtin.help)
   vim.keymap.set('n', '<leader>sr', mini_pick.builtin.resume)
+
+  -- make one (chatgpt made this, does this work?)
+  vim.keymap.set('n', '<leader>sl', function()
+    mini_pick.builtin.cli {
+      command = { 'cat', vim.api.nvim_buf_get_name(0) },
+    }
+  end, { desc = 'Search lines in current buffer (cli)' })
 
   -------------------------------------------------------------------
   -- *MiniPick-overview*
