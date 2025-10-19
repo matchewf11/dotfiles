@@ -96,3 +96,7 @@ require('lazy').setup {
 --
 -- git workflow? how to handle merge confilcts
 -- can i make a merge conflits populate my quickfix list
+--
+-- fugitive or mini.git
+--
+-- do i wanna try using debuggers again

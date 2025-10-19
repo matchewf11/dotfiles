@@ -1946,3 +1946,7 @@
 
 -- make kepmap to move to next or prev diagnostic? '[d', '[D', ']d', ']D'
 -- fugative or mini.git
+
+
+key map terminal emulator and open minifiles/oil
+put merge conflicts in quickfix?

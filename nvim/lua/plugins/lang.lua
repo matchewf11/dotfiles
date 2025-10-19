@@ -1,12 +1,4 @@
 return {
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-mini/mini.nvim',
-    },
-    opts = {}, -- config this
-  },
   { -- sets up lua lsp for nvim stuff and libraries
     'folke/lazydev.nvim',
     lazy = true,
