@@ -7,9 +7,7 @@ Use mini.pick w/ `:Pick` -- extend w/ MiniPick.registry
   :Pick grep
   :Pick grep_live
   :Pick help
-  :Pick resume
-  :Pick cli -- need some xtra stuff with it (config w/ rg, fd, git)
-  :Pick files tool='git' or MiniPick.builtin.files { tool = 'git' }
+  :Pick resume :Pick cli -- need some xtra stuff with it (config w/ rg, fd, git) :Pick files tool='git' or MiniPick.builtin.files { tool = 'git' }
 
 MiniPick.start() w/ opts.source defining source
 
@@ -26,65 +24,42 @@ Uses MiniPick.default_match() -> query is array of pressed chars
 
 MiniPick.builtin for builtin pickers `MiniPick.builtin.files { tool = 'git '}`
 
-MiniPick.config for configuration
+MiniPick.config for configuration;
+vim.b.mini_pick_config is same but for buffer; see mini.nvim-buffer-local-config
+
+Has a "Main", "Preview", and "Info"
+
+vim.ui.select implementation; to adjust use MiniPick.ui_select()
+save-restore `vim.ui.select` manually after calling |MiniPick.setup()|.
+
+MiniPick-actions when picker is active
+MiniPick-events has autocmds of
+`MiniPickMatch` - just after updating query matches or setting items.
+`MiniPickStart` - just after picker has started.
+`MiniPickStop` - just before picker is stopped.
+
+
+minipick-source is source field in
+minipick.config; global
+vim.b.mini_pick_config; buffer
+opts.soruce; picker
+
+{ items = vim.fn.arv, name = 'Arglist' }
+
+
+source.items is items to choose from
+- array of objects (any type)
+- nil; waits for minipick.set_picker_items()
+- a callable that returns one of the above
+- start on source's `cwd` as current-directory
+
+MiniPick-source.items-stritems
+match on array based on the string representation
+can pass in a callable, string, or String <text> field of table item
+
 
 ]]
 
-  -- vim.b.minipick_config should have same structure but for 1 buffer
-  -- See |mini.nvim-buffer-local-config| for more details.
-
-  -- to use cli tools config them using their respective configs
-  -- Custom actions/keys can be configured globally, buffer, or picker
-
-  -- UI consists from a single window capable of displaying three different views:
-  -- - "Main" - where current query matches are shown.
-  -- - "Preview" - preview of current item (toggle with `<Tab>`).
-  -- - "Info" - general info about picker and its state (toggle with `<S-Tab>`).
-
-  -- |vim.ui.select()| implementation. To adjust, use |MiniPick.ui_select()|
-  -- save-restore `vim.ui.select` manually after calling |MiniPick.setup()|.
-
-  -- Rich and customizable built-in |MiniPick-actions| when picker is active:
-
-  -- MiniPick-events include the autocmds of:
-  -- `MiniPickMatch` - just after updating query matches or setting items.
-  -- `MiniPickStart` - just after picker has started.
-  -- `MiniPickStop` - just before picker is stopped.
-
-  --[[
-  minipick-source is `source` field inside of one of:
-    |MiniPick.config| - gloabl
-    vim.b.minipick_config - buffer
-    opts.source - picker for that call
-
-    Example to choose from |arglist|
-    { items = vim.fn.arv, name = 'Arglist' }
-
-    *source.items*
-
-  ]]
-
-  -- `source.items` defines items to choose from. It should be one of the following:
-  -- - Array of objects which can have different types. Any type is allowed.
-  -- - `nil`. Picker waits for explicit |MiniPick.set_picker_items()| call.
-  -- - Callable returning any of the previous types. Will be called once on start
-  --   with source's `cwd` set as |current-directory|.
-  --
-  -- *MiniPick-source.items-stritems*
-  -- Matching is done for items array based on the string representation of its
-  -- elements (here called "stritems"). For single item it is computed as follows:
-  -- - Callable is called once with output used in next steps.
-  -- - String item is used as is.
-  -- - String <text> field of table item is used (if present).
-  -- - Use output of |vim.inspect()|.
-  --
-  -- Example: >lua
-  --
-  --   items = { 'aaa.txt', { text = 'bbb' }, function() return 'ccc' end }
-  --   -- corresponding stritems are { 'aaa.txt', 'bbb', 'ccc' }
-  -- <
-  -- Default value is `nil`, assuming it always be supplied by the caller.
-  --
   -- *MiniPick-source.items-common*
   -- There are some recommendations for common item types in order for them to work
   -- out of the box with |MiniPick.default_show()|, |MiniPick.default_preview()|,
@@ -678,35 +653,10 @@ MiniPick.config for configuration
   -- Default: '> '.
   --
   -- ------------------------------------------------------------------------------
-  --                                                               *MiniPick.start()*
-  --                             `MiniPick.start`({opts})
-  -- Start picker
-  --
-  -- Notes:
-  -- - If there is currently an active picker, it is properly stopped and new one
-  --   is started "soon" in the main event-loop (see |vim.schedule()|).
-  -- - Current window at the moment of this function call is treated as "target".
-  --   It will be set back as current after |MiniPick.stop()|.
-  --   See |MiniPick.get_picker_state()| and |MiniPick.set_picker_target_window()|.
-  --
-  -- Parameters ~
-  -- {opts} `(table|nil)` Options. Should have same structure as |MiniPick.config|.
-  --   Default values are inferred from there.
-  --   Usually should have proper |MiniPick-source.items| defined.
-  --
-  -- Return ~
-  -- `(any)` Item which was current when picker is stopped; `nil` if aborted.
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                                *MiniPick.stop()*
-  --                                `MiniPick.stop`()
-  -- Stop active picker
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                             *MiniPick.refresh()*
-  --                               `MiniPick.refresh`()
-  -- Refresh active picker
-  --
+  -- MiniPick.start {opts} -- strats picker (stop other one, current win is target (reset after))
+  --    opts is same as .config, returns item chosen when stopped (nil if stopped)
+  -- MiniPick.stop() -- stop avtive picker
+  -- MiniPick.refresh() -- refresh active picker
   -- ------------------------------------------------------------------------------
   --                                                       *MiniPick.default_match()*
   --          `MiniPick.default_match`({stritems}, {inds}, {query}, {opts})
@@ -918,10 +868,7 @@ MiniPick.config for configuration
   --   vim.ui.select = ui_select_orig
   -- <
   -- ------------------------------------------------------------------------------
-  --                                                               *MiniPick.builtin*
-  --                                `MiniPick.builtin`
-  -- Table with built-in pickers
-  --
+  -- MiniPick.builtin -- table with builtin pickers
   -- ------------------------------------------------------------------------------
   --                                                       *MiniPick.builtin.files()*
   --                  `MiniPick.builtin.files`({local_opts}, {opts})
@@ -1054,10 +1001,7 @@ MiniPick.config for configuration
   -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
   --
   -- ------------------------------------------------------------------------------
-  --                                                      *MiniPick.builtin.resume()*
-  --                           `MiniPick.builtin.resume`()
-  -- Resume latest picker
-  --
+  -- MiniPick.builtin.resume() -- resume last picker
   -- ------------------------------------------------------------------------------
   --                                                              *MiniPick.registry*
   --                               `MiniPick.registry`
@@ -1089,28 +1033,8 @@ MiniPick.config for configuration
   --   end
   -- <
   -- ------------------------------------------------------------------------------
-  --                                                    *MiniPick.get_picker_items()*
-  --                          `MiniPick.get_picker_items`()
-  -- Get items of active picker
-  --
-  -- Return ~
-  -- `(table|nil)` Picker items or `nil` if no active picker.
-  --
-  -- See also ~
-  -- |MiniPick.set_picker_items()| and |MiniPick.set_picker_items_from_cli()|
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                 *MiniPick.get_picker_stritems()*
-  --                         `MiniPick.get_picker_stritems`()
-  -- Get stritems of active picker
-  --
-  -- Return ~
-  -- `(table|nil)` Picker stritems (|MiniPick-source.items-stritems|) or `nil` if
-  --   no active picker.
-  --
-  -- See also ~
-  -- |MiniPick.set_picker_items()| and |MiniPick.set_picker_items_from_cli()|
-  --
+  -- MiniPick.get_picker_items() -- get items of active picker {nil | table}
+  -- MiniPick.get_picker_stritems() -> table|nil -- stritems of active picker
   -- ------------------------------------------------------------------------------
   --                                                  *MiniPick.get_picker_matches()*
   --                         `MiniPick.get_picker_matches`()
@@ -1132,17 +1056,7 @@ MiniPick.config for configuration
   -- |MiniPick.set_picker_match_inds()|
   --
   -- ------------------------------------------------------------------------------
-  --                                                     *MiniPick.get_picker_opts()*
-  --                           `MiniPick.get_picker_opts`()
-  -- Get config of active picker
-  --
-  -- Return ~
-  -- `(table|nil)` Picker config (`start()`'s input `opts` table) or `nil` if
-  --   no active picker.
-  --
-  -- See also ~
-  -- |MiniPick.set_picker_opts()|
-  --
+  -- MiniPick.get_picker_opts() -> table|nil -- return config
   -- ------------------------------------------------------------------------------
   --                                                    *MiniPick.get_picker_state()*
   --                          `MiniPick.get_picker_state`()
@@ -1162,35 +1076,9 @@ MiniPick.config for configuration
   -- |MiniPick.set_picker_target_window()|
   --
   -- ------------------------------------------------------------------------------
-  --                                                    *MiniPick.get_picker_query()*
-  --                          `MiniPick.get_picker_query`()
-  -- Get query of active picker
-  --
-  -- Return ~
-  -- `(table|nil)` Array of picker query or `nil` if no active picker.
-  --
-  -- See also ~
-  -- |MiniPick.set_picker_query()|
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                    *MiniPick.set_picker_items()*
-  --                   `MiniPick.set_picker_items`({items}, {opts})
-  -- Set items for active picker
-  --
-  -- Note: sets items asynchronously in non-blocking fashion.
-  --
-  -- Parameters ~
-  -- {items} `(table)` Array of items.
-  -- {opts} `(table|nil)` Options. Possible fields:
-  --   - <do_match> `(boolean)` - whether to perform match after setting items.
-  --     Default: `true`.
-  --   - <querytick> `(number|nil)` - value of querytick (|MiniPick.get_querytick()|)
-  --     to periodically check against when setting items. If checked querytick
-  --     differs from supplied, no items are set.
-  --
-  -- See also ~
-  -- |MiniPick.get_picker_items()| and |MiniPick.get_picker_stritems()|
-  --
+  -- MiniPick.get_picker_query() -> table|nil -- query of active picker
+  -- MiniPick.set_picker_items ({items}, {opts}|nil) -- sets items for active picker
+  -- opts fields {do_match = bool; preform match after setting items?, querytick = number?; value of querytick}
   -- ------------------------------------------------------------------------------
   --                                           *MiniPick.set_picker_items_from_cli()*
   --             `MiniPick.set_picker_items_from_cli`({command}, {opts})
@@ -1243,104 +1131,14 @@ MiniPick.config for configuration
   -- |MiniPick.get_picker_matches()|
   --
   -- ------------------------------------------------------------------------------
-  --                                                     *MiniPick.set_picker_opts()*
-  --                        `MiniPick.set_picker_opts`({opts})
-  -- Set config for active picker
-  --
-  -- Parameters ~
-  -- {opts} `(table)` Table overriding initial `opts` input of |MiniPick.start()|.
-  --
-  -- See also ~
-  -- |MiniPick.get_picker_opts()|
-  --
-  -- ------------------------------------------------------------------------------
-  --                                            *MiniPick.set_picker_target_window()*
-  --                  `MiniPick.set_picker_target_window`({win_id})
-  -- Set target window for active picker
-  --
-  -- Parameters ~
-  -- {win_id} `(number)` Valid window identifier to be used as the new target window.
-  --
-  -- See also ~
-  -- |MiniPick.get_picker_state()|
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                    *MiniPick.set_picker_query()*
-  --                       `MiniPick.set_picker_query`({query})
-  -- Set query for active picker
-  --
-  -- Parameters ~
-  -- {query} `(table)` Array of strings to be set as the new picker query.
-  --
-  -- See also ~
-  -- |MiniPick.get_picker_query()|
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                       *MiniPick.get_querytick()*
-  --                            `MiniPick.get_querytick`()
-  -- Get query tick
-  --
-  -- Query tick is a unique query identifier. Intended to be used to detect user
-  -- activity during and between |MiniPick.start()| calls for efficient non-blocking
-  -- functionality. Updates after any query change, picker start and stop.
-  --
-  -- See |MiniPick.poke_is_picker_active()| for usage example.
-  --
-  -- Return ~
-  -- `(number)` Query tick.
-  --
-  -- ------------------------------------------------------------------------------
-  --                                                    *MiniPick.is_picker_active()*
-  --                          `MiniPick.is_picker_active`()
-  -- Check if there is an active picker
-  --
-  -- Return ~
-  -- `(boolean)` Whether there is currently an active picker.
-  --
-  -- See also ~
-  -- |MiniPick.poke_is_picker_active()|
-  --
-  -- ------------------------------------------------------------------------------
-  --                                               *MiniPick.poke_is_picker_active()*
-  --                        `MiniPick.poke_is_picker_active`()
-  -- Poke if picker is active
-  --
-  -- Intended to be used for non-blocking implementation of source methods.
-  -- Returns an output of |MiniPick.is_picker_active()|, but depending on
-  -- whether there is a coroutine running:
-  -- - If no, return it immediately.
-  -- - If yes, return it after `coroutine.yield()` with `coroutine.resume()`
-  --   called "soon" by the main event-loop (see |vim.schedule()|).
-  --
-  -- Example of non-blocking exact `match` (as demo; can be optimized further): >lua
-  --
-  --   local match_nonblock = function(match_inds, stritems, query)
-  --     local prompt, querytick = table.concat(query), MiniPick.get_querytick()
-  --     local f = function()
-  --       local res = {}
-  --       for _, ind in ipairs(match_inds) do
-  --         local should_stop = not MiniPick.poke_is_picker_active() or
-  --           MiniPick.get_querytick() ~= querytick
-  --         if should_stop then return end
-  --
-  --         if stritems[ind]:find(prompt) ~= nil then table.insert(res, ind) end
-  --       end
-  --
-  --       MiniPick.set_picker_match_inds(res)
-  --     end
-  --
-  --     coroutine.resume(coroutine.create(f))
-  --   end
-  -- <
-  -- Return ~
-  -- `(boolean)` Whether there is an active picker.
-  --
-  -- See also ~
-  -- |MiniPick.is_picker_active()|
-
-  -- # Highlight groups ~ for mini.pick look into if needed
-  -- To change any highlight group, set it directly with |nvim_set_hl()|.
-  -- ////////////////////////////////////////////////////////////
+  -- MiniPick.set_picker_opts {opts} -- set config for active picker
+  -- MiniPick.set_picker_target_window {win_id} -- set target window for picker
+  -- MiniPick.set_picker_query {query} -- set query for active picker (array of strings)
+  -- MiniPick.get_querytick() -> number -- get query tick
+  -- MiniPick.is_picker_active() -> bool -- if active picker
+  -- MiniPick.poke_is_picker_active() -> bool
+  --    (if no coroutine return immediately)
+  --    (if yes, return after coroutine.yeild() w/ .resume())
 
   local mini_pick = require 'mini.pick'
   mini_pick.setup {
@@ -1407,22 +1205,11 @@ MiniPick.config for configuration
   }
 end
 
--- should i use mini.deps?
--- set up creates a global table _G.MiniSurround (or other)
--- config is stored in _G.MiniSurround.config
--- can change fields on the fly
--- MiniSurround.config.n_lines (can be changed @ runtime)
--- also use buffer specific mini.nvim-buffer-local-config
--- module-reulated buffers are named mini<module-name>://<buffer-number>/<useful-info> (may be empty)
--- see disabling recipes to turn off for buffers
--- config.silent = true (non-error feedback)
--- can be controlled with ":h highlight-groups", ":highlight" or "vim.api.nvim_set_hl()"
---
-
 return {
   'nvim-mini/mini.nvim',
   version = false,
   config = function()
+    -- mini.pick
     mini_pick_config()
 
     -- research, config
@@ -1475,38 +1262,8 @@ return {
 
     -- research, config
     -- capabilites of each and their workflow (keymaps, cmds)
-    local miniclue = require 'mini.clue'
-    miniclue.setup {
-      triggers = {
-        { mode = 'n', keys = '<Leader>' },
-        { mode = 'x', keys = '<Leader>' },
-        { mode = 'i', keys = '<C-x>' },
-        { mode = 'n', keys = 'g' },
-        { mode = 'x', keys = 'g' },
-        { mode = 'n', keys = "'" },
-        { mode = 'n', keys = '`' },
-        { mode = 'x', keys = "'" },
-        { mode = 'x', keys = '`' },
-        { mode = 'n', keys = '"' },
-        { mode = 'x', keys = '"' },
-        { mode = 'i', keys = '<C-r>' },
-        { mode = 'c', keys = '<C-r>' },
-        { mode = 'n', keys = '<C-w>' },
-        { mode = 'n', keys = 'z' },
-        { mode = 'x', keys = 'z' },
-      },
-      clues = {
-        { mode = 'n', keys = '<leader>s', desc = '[s]earch' },
-        { mode = 'n', keys = '<leader>g', desc = '[g]it' },
-        -- Enhance this by adding descriptions for <Leader> mapping groups
-        miniclue.gen_clues.builtin_completion(),
-        miniclue.gen_clues.g(),
-        miniclue.gen_clues.marks(),
-        miniclue.gen_clues.registers(),
-        miniclue.gen_clues.windows(),
-        miniclue.gen_clues.z(),
-      },
-    }
+    require('mini.clue').setup {}
+
     -- |mini.hues| - generate configurable color scheme. Takes only background
     -- and foreground colors as required arguments. Can adjust number of hues
     -- for non-base colors, saturation, accent color, plugin integration.
@@ -1625,23 +1382,33 @@ return {
     -- |mini.basics| - common configuration presets. Has configurable presets for
     -- options, mappings, and autocommands. It doesn't change option or mapping
     -- if it was manually created.
+
+    --base16
+    --colors
+    --cursorword
+    --hipatterns
+    --hues
+    --icons
+    --indentscope
+    --map
+    --notify
+    --starter
+    --statusline
+    --tabline
+    --trailspace
+    --doc
+    --fuzzy
+    --test
   end,
 }
 
---mini.animate
---base16
---colors
---cursorword
---hipatterns
---hues
---icons
---indentscope
---map
---notify
---starter
---statusline
---tabline
---trailspace
---doc
---fuzzy
---test
+-- should i use mini.deps?
+-- set up creates a global table _G.MiniSurround (or other)
+-- config is stored in _G.MiniSurround.config
+-- can change fields on the fly
+-- MiniSurround.config.n_lines (can be changed @ runtime)
+-- also use buffer specific mini.nvim-buffer-local-config
+-- module-reulated buffers are named mini<module-name>://<buffer-number>/<useful-info> (may be empty)
+-- see disabling recipes to turn off for buffers
+-- config.silent = true (non-error feedback)
+-- canbecontrolled with ":h highlight-groups", ":highlight" or "vim.api.nvim_set_hl()"
