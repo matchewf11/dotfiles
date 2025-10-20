@@ -1056,29 +1056,17 @@ can pass in a callable, string, or String <text> field of table item
   -- |MiniPick.set_picker_match_inds()|
   --
   -- ------------------------------------------------------------------------------
+  -- MiniPick.get_picker_query() -> table|nil -- query of active picker
+  -- MiniPick.set_picker_items ({items}, {opts}|nil) -- sets items for active picker
+  -- opts fields {do_match = bool; preform match after setting items?, querytick = number?; value of querytick}
   -- MiniPick.get_picker_opts() -> table|nil -- return config
-  -- ------------------------------------------------------------------------------
-  --                                                    *MiniPick.get_picker_state()*
-  --                          `MiniPick.get_picker_state`()
-  -- Get state data of active picker
-  --
-  -- Return ~
-  -- `(table|nil)` Table with picker state data or `nil` if no active picker.
-  --   State data is a table with the following fields:
+  -- MiniPick.get_picker_state() -> table|nil -- get picker state
   --   - <buffers> `(table)` - table with `main`, `preview`, `info` fields representing
   --     buffer identifier (or `nil`) for corresponding view.
   --   - <windows> `(table)` - table with `main` and `target` fields representing
   --     window identifiers for main and target windows.
   --   - <caret> `(number)` - caret column.
   --   - <is_busy> `(boolean)` - whether picker is busy with computations.
-  --
-  -- See also ~
-  -- |MiniPick.set_picker_target_window()|
-  --
-  -- ------------------------------------------------------------------------------
-  -- MiniPick.get_picker_query() -> table|nil -- query of active picker
-  -- MiniPick.set_picker_items ({items}, {opts}|nil) -- sets items for active picker
-  -- opts fields {do_match = bool; preform match after setting items?, querytick = number?; value of querytick}
   -- ------------------------------------------------------------------------------
   --                                           *MiniPick.set_picker_items_from_cli()*
   --             `MiniPick.set_picker_items_from_cli`({command}, {opts})
@@ -1102,35 +1090,17 @@ can pass in a callable, string, or String <text> field of table item
   --   - <spawn_opts> `(table)` - `options` for |uv.spawn()|, except `args` and `stdio`.
   --     Note: relative `cwd` path is resolved against active picker's `cwd`.
   --   - <set_items_opts> `(table)` - table forwarded to |MiniPick.set_picker_items()|.
-  --
-  -- See also ~
-  -- |MiniPick.get_picker_items()| and |MiniPick.get_picker_stritems()|
-  --
   -- ------------------------------------------------------------------------------
-  --                                               *MiniPick.set_picker_match_inds()*
-  --           `MiniPick.set_picker_match_inds`({match_inds}, {match_type})
-  -- Set match indexes for active picker
-  --
-  -- There are two intended use cases:
-  -- - Inside custom asynchronous |MiniPick-source.match| function to set which of
-  --   picker's stritems match the query. See |MiniPick.poke_is_picker_active()|.
-  -- - To programmatically set current match and marked items.
-  --   See |MiniPick.get_picker_matches()|.
-  --
-  -- Parameters ~
-  -- {match_inds} `(table)` Array of numbers with picker's items indexes.
-  -- {match_type} `(string|nil)` Type of match indexes to set. One of:
-  --   - `"all"` (default) - indexes of items that match query.
-  --   - `"current"` - index of current match. Only first element is used and should
-  --     also be present among query matches.
-  --   - `"marked"` - indexes of marked items. Values can be not among query matches.
-  --     Will make only input indexes be marked, i.e. current marks are reset.
-  --   Note: no `"shown"` match type as those indexes are computed automatically.
-  --
-  -- See also ~
-  -- |MiniPick.get_picker_matches()|
-  --
-  -- ------------------------------------------------------------------------------
+  -- MiniPick.set_picker_match_inds({match_inds}, {match_type}) -- set match indexes for active picker
+  --   - inside async |-source.matc|
+  --   - {match_inds} -- arr of nums w/ items indexes
+  --   - {match_type} -- string|nil. One of:
+  --    - `"all"` (default) - indexes of items that match query.
+  --    - `"current"` - index of current match. Only first element is used and should
+  --      also be present among query matches.
+  --    - `"marked"` - indexes of marked items. Values can be not among query matches.
+  --      Will make only input indexes be marked, i.e. current marks are reset.
+  --    Note: no `"shown"` match type as those indexes are computed automatically.
   -- MiniPick.set_picker_opts {opts} -- set config for active picker
   -- MiniPick.set_picker_target_window {win_id} -- set target window for picker
   -- MiniPick.set_picker_query {query} -- set query for active picker (array of strings)
@@ -1212,197 +1182,50 @@ return {
     -- mini.pick
     mini_pick_config()
 
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.surround').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.comment').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.align').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.ai').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.statusline').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.icons').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.pairs').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.files').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.diff').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.git').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.extra').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.snippets').setup {}
-
-    -- research, config
-    -- capabilites of each and their workflow (keymaps, cmds)
     require('mini.clue').setup {}
-
-    -- |mini.hues| - generate configurable color scheme. Takes only background
-    -- and foreground colors as required arguments. Can adjust number of hues
-    -- for non-base colors, saturation, accent color, plugin integration.
-
-    -- |mini.colors| - tweak and save any color scheme. Can create colorscheme
-    -- object with methods to invert/set/modify/etc.
-    -- lightness/saturation/hue/temperature/etc. of foreground/background/all
-    -- colors, infer cterm attributes, add transparency, save to a file and more.
-    -- Has functionality for interactive experiments and animation of
-    -- transition between color schemes. (Like lush)
-
-    -- |mini.bracketed| - go forward/backward with square brackets. Among others,
-    -- supports variety of non-trivial targets: comments, files on disk, indent
-    -- changes, tree-sitter nodes, linear undo states, yank history entries.
-    --
-    -- |mini.bufremove| - buffer removing (unshow, delete, wipeout) while saving
-    -- window layout.
-    --
-    -- |mini.completion| - async (with customizable 'debounce' delay) 'two-stage
-    -- chain completion': first builtin LSP, then configurable fallback. Also
-    -- has functionality for completion item info and function signature (both
-    -- in floating window appearing after customizable delay).
-    --
-    -- |mini.cursorword| - automatic highlighting of word under cursor (displayed
-    -- after customizable delay). Current word under cursor can be highlighted
-    -- differently.
-    --
-    -- |mini.deps| - plugin manager for plugins outside of 'mini.nvim'. Uses Git and
-    -- built-in packages to install, update, clean, and snapshot plugins.
-    --
-    -- |mini.doc| - generation of help files from EmmyLua-like annotations.
-    -- Allows flexible customization of output via hook functions. Used for
-    -- documenting this plugin.
-    --
-    -- |mini.fuzzy| - functions for fast and simple fuzzy matching. It has
-    -- not only functions to perform fuzzy matching of one string to others, but
-    -- also a sorter for 'nvim-telescope/telescope.nvim'.
-    --
-    -- |mini.hipatterns| - highlight patterns in text with configurable highlighters
-    -- (pattern and/or highlight group can be string or callable).
-    -- Works asynchronously with configurable debounce delay.
-    --
-    -- |mini.indentscope| - visualize and operate on indent scope. Supports
-    -- customization of debounce delay, animation style, and different
-    -- granularity of options for scope computing algorithm.
-    --
-    -- |mini.jump| - minimal and fast module for smarter jumping to a single
-    -- character.
-    --
-    -- |mini.jump2d| - minimal and fast Lua plugin for jumping (moving cursor)
-    -- within visible lines via iterative label filtering. Supports custom jump
-    -- targets (spots), labels, hooks, allowed windows and lines, and more.
-    --
-    -- |mini.keymap| - utilities to make special key mappings: multi-step actions
-    -- (with built-in steps for "smart" <Tab>, <S-Tab>, <CR>, <BS>),
-    -- combos (more general version of "better escape" like behavior).
-    --
-    -- |mini.map| - window with buffer text overview, scrollbar, and highlights.
-    -- Allows configurable symbols for line encode and scrollbar, extensible
-    -- highlight integration (with pre-built ones for builtin search, diagnostic,
-    -- git line status), window properties, and more.
-    --
-    -- |mini.misc| - collection of miscellaneous useful functions. Like `put()`
-    -- and `put_text()` which print Lua objects to command line and current
-    -- buffer respectively.
-    --
-    -- |mini.move| - move any selection in any direction. Supports any Visual
-    -- mode (charwise, linewise, blockwise) and Normal mode (current line) for
-    -- all four directions (left, right, down, up). Respects `count` and undo.
-    --
-    -- |mini.notify| - show one or more highlighted notifications in a single window.
-    -- Provides both low-level functions (add, update, remove, clear) and maker
-    -- of |vim.notify()| implementation. Sets up automated LSP progress updates.
-    --
-    -- |mini.operators| - various text edit operators: replace, exchange,
-    -- multiply, sort, evaluate. Creates mappings to operate on textobject,
-    -- line, and visual selection. Supports |[count]| and dot-repeat.
-    --
-    -- |mini.sessions| - session management (read, write, delete) which works
-    -- using |:mksession|. Implements both global (from configured directory) and
-    -- local (from current directory) sessions.
-    --
-    -- |mini.snippets| - manage and expand snippets. Supports only syntax from LSP
-    -- specification. Provides flexible loaders to manage snippet files, exact and
-    -- fuzzy prefix matching, interactive selection, and rich interactive snippet
-    -- session experience with dynamic tabstop visualization.
-    --
-    -- |mini.splitjoin| - split and join arguments (regions inside brackets
-    -- between allowed separators). Has customizable pre and post hooks.
-    -- Works inside comments.
-    --
-    -- |mini.starter| - minimal, fast, and flexible start screen. Displayed items
-    -- are fully customizable both in terms of what they do and how they look
-    -- (with reasonable defaults). Item selection can be done using prefix query
-    -- with instant visual feedback.
-    --
-    -- |mini.test| - framework for writing extensive Neovim plugin tests.
-    -- Supports hierarchical tests, hooks, parametrization, filtering (like from
-    -- current file or cursor position), screen tests, "busted-style" emulation,
-    -- customizable reporters, and more. Designed to be used with provided
-    -- wrapper for managing child Neovim processes.
-    --
-    -- |mini.tabline| - minimal tabline which always shows listed (see 'buflisted')
-    -- buffers. Allows showing extra information section in case of multiple vim
-    -- tabpages. For full experience needs enabled |mini.icons| module (but works
-    -- without it).
-    --
-    -- |mini.trailspace| - automatic highlighting of trailing whitespace with
-    -- functionality to remove it.
-    --
-    -- |mini.visits| - track and reuse file system visits. Tracks data about each
-    -- file/directory visit (after delay) and stores it (only) locally. This can be
-    -- used to get a list of "recent"/"frequent"/"frecent" visits.
-    -- Allows persistently adding labels to visits enabling flexible workflow.
-    --
-    -- |mini.basics| - common configuration presets. Has configurable presets for
-    -- options, mappings, and autocommands. It doesn't change option or mapping
-    -- if it was manually created.
-
-    --base16
-    --colors
-    --cursorword
-    --hipatterns
-    --hues
-    --icons
-    --indentscope
-    --map
-    --notify
-    --starter
-    --statusline
-    --tabline
-    --trailspace
-    --doc
-    --fuzzy
-    --test
+    -- require('mini.hues').setup {}
+    -- require('mini.colors').setup {}
+    -- require('mini.bracketed').setup {}
+    -- require('mini.bufremove').setup {}
+    -- require('mini.completion').setup {}
+    -- require('mini.cursorword').setup {}
+    -- require('mini.deps').setup {}
+    -- require('mini.docs').setup {}
+    -- require('mini.fuzzy').setup {}
+    -- require('mini.hipatterns').setup {}
+    -- require('mini.indentscope').setup {}
+    -- require('mini.jump').setup {}
+    -- require('mini.jump2d').setup {}
+    -- require('mini.keymap').setup {}
+    -- require('mini.map').setup {}
+    -- require('mini.misc').setup {}
+    -- require('mini.move').setup {}
+    -- require('mini.notify').setup {}
+    -- require('mini.operators').setup {}
+    -- require('mini.sessions').setup {}
+    -- require('mini.splitjoin').setup {}
+    -- require('mini.starter').setup {}
+    -- require('mini.test').setup {}
+    -- require('mini.tabline').setup {}
+    -- require('mini.trailspace').setup {}
+    -- require('mini.visits').setup {}
+    -- require('mini.basics').setup {}
+    -- require('mini.base16').setup {}
   end,
 }
 
--- should i use mini.deps?
 -- set up creates a global table _G.MiniSurround (or other)
 -- config is stored in _G.MiniSurround.config
 -- can change fields on the fly
