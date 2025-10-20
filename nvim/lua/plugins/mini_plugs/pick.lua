@@ -1,11 +1,193 @@
 local mini_pick = require 'mini.pick'
+
+-- buffers
+-- files
+-- oldfiles (history)
+-- lines
+-- lines amongs all buffers
+-- search quickfix
+-- resume
+
+-- tags 	search project tags
+-- btags 	search buffer tags
+-- tags_grep 	grep project tags
+-- tags_grep_cword 	tags_grep word under cursor
+-- tags_grep_cWORD 	tags_grep WORD under cursor
+-- tags_grep_visual 	tags_grep visual selection
+-- tags_live_grep 	live grep project tags
+
+-- git_files 	git ls-files
+-- git_status 	git status
+-- git_diff 	git diff {ref}
+-- git_hunks 	git hunks {ref}
+-- git_commits 	git commit log (project)
+-- git_bcommits 	git commit log (buffer)
+-- git_blame 	git blame (buffer)
+-- git_branches 	git branches
+-- git_tags 	git tags
+-- git_stash 	git stash
+
+-- lsp_references 	References
+-- lsp_definitions 	Definitions
+-- lsp_declarations 	Declarations
+-- lsp_typedefs 	Type Definitions
+-- lsp_implementations 	Implementations
+-- lsp_document_symbols 	Document Symbols
+-- lsp_workspace_symbols 	Workspace Symbols
+-- lsp_live_workspace_symbols 	Workspace Symbols (live query)
+-- lsp_incoming_calls 	Incoming Calls
+-- lsp_outgoing_calls 	Outgoing Calls
+-- lsp_code_actions 	Code Actions
+-- lsp_finder 	All LSP locations, combined view
+-- diagnostics_document 	Document Diagnostics diagnostics_workspace 	Workspace Diagnostics lsp_document_diagnostics 	alias to diagnostics_document
+-- lsp_workspace_diagnostics 	alias to diagnostics_workspace
+
+-- register_ui_select 	register fzf-lua as the UI interface for vim.ui.select
+-- deregister_ui_select 	de-register fzf-lua with vim.ui.select
+
+-- dap_commands 	list,run nvim-dap builtin commands
+-- dap_configurations 	list,run debug configurations
+-- dap_breakpoints 	list,delete breakpoints
+-- dap_variables 	active session variables
+-- dap_frames 	active session jump to frame
+-- tmux_buffers 	list tmux paste buffers
+-- zoxide 	list recent directories
+-- complete_path 	complete path under cursor (incl dirs)
+-- complete_file 	complete file under cursor (excl dirs)
+-- complete_line 	complete line (all open buffers)
+-- complete_bline 	complete line (current buffer only)
+-- quickfix -- qf list
+-- quickfix_stack  -- qf stack
+-- loclist -- locations list
+-- loclist_stack -- location stack
+-- treesitter -- treesitter symbols
+-- grep
+-- grep_last -- last patter
+-- grep_cword -- word under cursor
+-- grep_cWORD -- search WORD under cursotr
+-- grep_visual -- search visual selection
+-- grep_project -- search all project lines
+-- grep_curbuf 	search current buffer lines
+-- grep_quickfix 	search the quickfix list
+-- grep_loclist 	search the location list
+-- lgrep_curbuf 	live grep current buffer
+-- lgrep_quickfix 	live grep the quickfix list
+-- lgrep_loclist 	live grep the location list
+-- live_grep 	live grep current project
+-- live_grep_resume 	live grep continue last search
+-- live_grep_glob 	live_grep with rg --glob support
+-- live_grep_native 	performant version of live_grep
+-- buffers 	open buffers
+-- files 	find or fd on a path
+-- oldfiles 	opened files history
+-- quickfix 	quickfix list
+-- quickfix_stack 	quickfix stack
+-- loclist 	location list
+-- loclist_stack 	location stack
+-- lines 	open buffers lines
+-- blines 	current buffer lines
+-- treesitter 	current buffer treesitter symbols
+-- tabs 	open tabs
+-- args 	argument list
+-- grep 	search for a pattern with grep or rg
+-- grep_last 	run search again with the last pattern
+-- grep_cword 	search word under cursor
+-- grep_cWORD 	search WORD under cursor
+-- grep_visual 	search visual selection
+-- grep_project 	search all project lines (fzf.vim's :Rg)
+-- grep_curbuf 	search current buffer lines
+-- grep_quickfix 	search the quickfix list
+-- grep_loclist 	search the location list
+-- lgrep_curbuf 	live grep current buffer
+-- lgrep_quickfix 	live grep the quickfix list
+-- lgrep_loclist 	live grep the location list
+-- live_grep 	live grep current project
+-- live_grep_resume 	live grep continue last search
+-- live_grep_glob 	live_grep with rg --glob support
+-- live_grep_native 	performant version of live_grep
+-- Command 	List
+-- tags 	search project tags
+-- btags 	search buffer tags
+-- tags_grep 	grep project tags
+-- tags_grep_cword 	tags_grep word under cursor
+-- tags_grep_cWORD 	tags_grep WORD under cursor
+-- tags_grep_visual 	tags_grep visual selection
+-- tags_live_grep 	live grep project tags
+-- git_files 	git ls-files
+-- git_status 	git status
+-- git_diff 	git diff {ref}
+-- git_hunks 	git hunks {ref}
+-- git_commits 	git commit log (project)
+-- git_bcommits 	git commit log (buffer)
+-- git_blame 	git blame (buffer)
+-- git_branches 	git branches
+-- git_tags 	git tags
+-- git_stash 	git stash
+-- lsp_references 	References
+-- lsp_definitions 	Definitions
+-- lsp_declarations 	Declarations
+-- lsp_typedefs 	Type Definitions
+-- lsp_implementations 	Implementations
+-- lsp_document_symbols 	Document Symbols
+-- lsp_workspace_symbols 	Workspace Symbols
+-- lsp_live_workspace_symbols 	Workspace Symbols (live query)
+-- lsp_incoming_calls 	Incoming Calls
+-- lsp_outgoing_calls 	Outgoing Calls
+-- lsp_code_actions 	Code Actions
+-- lsp_finder 	All LSP locations, combined view
+-- diagnostics_document 	Document Diagnostics
+-- diagnostics_workspace 	Workspace Diagnostics
+-- lsp_document_diagnostics 	alias to diagnostics_document
+-- lsp_workspace_diagnostics 	alias to diagnostics_workspace
+-- resume 	resume last command/query
+-- builtin 	fzf-lua builtin commands
+-- combine 	combine different fzf-lua pickers
+-- global 	global picker for files,buffers and symbols
+-- profiles 	fzf-lua configuration profiles
+-- helptags 	help tags
+-- manpages 	man pages
+-- colorschemes 	color schemes
+-- awesome_colorschemes 	Awesome Neovim color schemes
+-- highlights 	highlight groups
+-- commands 	neovim commands
+-- command_history 	command history
+-- search_history 	search history
+-- marks 	:marks
+-- jumps 	:jumps
+-- changes 	:changes
+-- registers 	:registers
+-- tagstack 	:tags
+-- autocmds 	:autocmd
+-- nvim_options 	neovim options
+-- keymaps 	key mappings
+-- filetypes 	filetypes
+-- menus 	menus
+-- spellcheck 	misspelled words in buffer
+-- spell_suggest 	spelling suggestions
+-- packadd 	:packadd
+-- register_ui_select 	register fzf-lua as the UI interface for vim.ui.select
+-- deregister_ui_select 	de-register fzf-lua with vim.ui.select
+-- dap_commands 	list,run nvim-dap builtin commands
+-- dap_configurations 	list,run debug configurations
+-- dap_breakpoints 	list,delete breakpoints
+-- dap_variables 	active session variables
+-- dap_frames 	active session jump to frame
+-- tmux_buffers 	list tmux paste buffers
+-- zoxide 	list recent directories
+-- complete_path 	complete path under cursor (incl dirs)
+-- complete_file 	complete file under cursor (excl dirs)
+-- complete_line 	complete line (all open buffers)
+-- complete_bline 	complete line (current buffer only)
+-- add a fzf-lua file search but from home dir
+
 mini_pick.setup {
   -- mappings = {}, -- :h MiniPick-actions
   options = {
     content_from_bottom = true, -- default is false
     use_cache = true, -- defualt is false
   },
-  -- source = { -- :h MiniPick-source
+  -- :h MiniPick-source
+  -- source = {
   --   items = nil,
   --   name = nil,
   --   cwd = nil,
@@ -22,7 +204,7 @@ mini_pick.setup {
   },
 }
 
--- :Pick lines
+-- Set up lines in registry to allow for `:Pick lines`
 mini_pick.registry.lines = function()
   local i = 0
   mini_pick.start {
@@ -43,54 +225,59 @@ mini_pick.registry.lines = function()
   }
 end
 
--- Pick Commands:
---  :Pick files
---  :Pick grep
---  :Pick grep_live
---  :Pick buffers
---  :Pick help
---  :Pick resume
---  :Pick cli
--- Can use :Pick files tool='git' == .files { tool = 'git' }
---
--- Match modes:
---  *abc -> fuzzy
---  'abc -> exact
---  $abc -> end
---  ^abc -> start
---
--- Events:
---  "Main"
---  "Preview"
---  "Info"
---
--- Mappings
---  caret_left/caret_right = '<Left/Right>'
---  move_up/move_down = '<C-p/n>'
---  stop = '<Esc>'
---  choose = '<CR>',
---  choose_in_split = '<C-s>',
---  choose_in_tabpage = '<C-t>',
---  choose_in_vsplit = '<C-v>',
---  choose_marked = '<M-CR>',
---  delete_char = '<BS>',
---  delete_char_right = '<Del>',
---  delete_left = '<C-u>',
---  delete_word = '<C-w>',
---  mark = '<C-x>',
---  mark_all = '<C-a>',
---  move_start = '<C-g>',
---  paste = '<C-r>',
---  refine = '<C-Space>',
---  refine_marked = '<M-Space>',
---  scroll_down = '<C-f>',
---  scroll_left = '<C-h>',
---  scroll_right = '<C-l>',
---  scroll_up = '<C-b>',
---  toggle_info = '<S-Tab>',
---  toggle_preview = '<Tab>',
+--[[
+
+Pick Commands:
+ :Pick files
+ :Pick grep
+ :Pick grep_live
+ :Pick buffers
+ :Pick help
+ :Pick resume
+ :Pick cli
+Can use :Pick files tool='git' == .files { tool = 'git' }
+
+Match modes:
+  *abc -> fuzzy
+  'abc -> exact
+  $abc -> end
+  ^abc -> start
+
+Events:
+  "Main"
+  "Preview"
+  "Info"
+
+Mappings
+  caret_left/caret_right = '<Left/Right>'
+  move_up/move_down = '<C-p/n>'
+  stop  = '<Esc>'
+  choose  = '<CR>',
+  choose_in_split  = '<C-s>',
+  choose_in_tabpage  = '<C-t>',
+  choose_in_vsplit  = '<C-v>',
+  choose_marked  = '<M-CR>',
+  delete_char  = '<BS>',
+  delete_char_right  = '<Del>',
+  delete_left  = '<C-u>',
+  delete_word  = '<C-w>',
+  mark  = '<C-x>',
+  mark_all  = '<C-a>',
+  move_start  = '<C-g>',
+  paste  = '<C-r>',
+  refine  = '<C-Space>',
+  refine_marked  = '<M-Space>',
+  scroll_down  = '<C-f>',
+  scroll_left  = '<C-h>',
+  scroll_right  = '<C-l>',
+  scroll_up  = '<C-b>',
+  toggle_info  = '<S-Tab>',
+  toggle_preview  = '<Tab>',
+]]
 
 -------------------------------------------------------------
+-- Notes to clean
+
 --[[
 Use mini.pick w/ `:Pick` -- extend w/ MiniPick.registry
 MiniPick.start() w/ opts.source defining source
@@ -818,56 +1005,21 @@ can pass in a callable, string, or String <text> field of table item
 -- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
 --
 -- ------------------------------------------------------------------------------
---                                                        *MiniPick.builtin.help()*
---                  `MiniPick.builtin.help`({local_opts}, {opts})
--- Pick from help tags
---
--- Notes:
--- - On choose directly executes |:help| command with appropriate modifier
---   (none, |:vertical|, |:tab|). This is done through custom mappings named
---   `show_help_in_{split,vsplit,tab}`. Not `choose_in_{split,vsplit,tab}` because
---   there is no split guarantee (like if there is already help window opened).
---
--- Parameters ~
--- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
---   Possible fields:
---   - <default_split> `(string)` - direction of a split for `choose` action.
---     One of "horizontal", "vertical", "tab". Default: "horizontal".
--- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
---
+-- MiniPick.builtin.help({local_opts}, {opts}) -- help tags
+-- -- {local_opts}|nil -- defining picker options
+--    -- <default_split> 'horizontal' | 'vertical' | 'tab'
+-- -- {opts}|nil -- forwarded to MiniPick.start()
+-- MiniPick.builtin.buffer({local_opts}, {opts}) -- pick from buffers
+--   {local_opts}|nil picker options
+--     - <include_current> `(boolean)` - whether to include current buffer in
+--       the output. Default: `true`.
+--     - <include_unlisted> `(boolean)` - whether to include |unlisted-buffer|s in
+--       the output. Default: `false`.
+--   {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
 -- ------------------------------------------------------------------------------
---                                                     *MiniPick.builtin.buffers()*
---                 `MiniPick.builtin.buffers`({local_opts}, {opts})
--- Pick from buffers
+-- MiniPick.builtin.cli({local_opts}, {opts}) -- pick from cli output
+-- -- .cli { command = {'echo', 'a\nb\n\nc'}}
 --
--- Notes:
--- - There are not built-in mappings for buffer manipulation. Here is an example
---   of how to call this function with mapping to wipeout the current item: >lua
---
---   local wipeout_cur = function()
---     vim.api.nvim_buf_delete(MiniPick.get_picker_matches().current.bufnr, {})
---   end
---   local buffer_mappings = { wipeout = { char = '<C-d>', func = wipeout_cur } }
---   MiniPick.builtin.buffers(local_opts, { mappings = buffer_mappings })
--- <
--- Parameters ~
--- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
---   Possible fields:
---   - <include_current> `(boolean)` - whether to include current buffer in
---     the output. Default: `true`.
---   - <include_unlisted> `(boolean)` - whether to include |unlisted-buffer|s in
---     the output. Default: `false`.
--- {opts} `(table|nil)` Options forwarded to |MiniPick.start()|.
---
--- ------------------------------------------------------------------------------
---                                                         *MiniPick.builtin.cli()*
---                   `MiniPick.builtin.cli`({local_opts}, {opts})
--- Pick from CLI output
---
--- Executes command line tool and constructs items based on its output.
--- Uses |MiniPick.set_picker_items_from_cli()|.
---
--- Example: `MiniPick.builtin.cli({ command = { 'echo', 'a\nb\nc' } })`
 --
 -- Parameters ~
 -- {local_opts} `(table|nil)` Options defining behavior of this particular picker.
@@ -934,19 +1086,8 @@ can pass in a callable, string, or String <text> field of table item
 --   - <caret> `(number)` - caret column.
 --   - <is_busy> `(boolean)` - whether picker is busy with computations.
 -- ------------------------------------------------------------------------------
---                                           *MiniPick.set_picker_items_from_cli()*
---             `MiniPick.set_picker_items_from_cli`({command}, {opts})
--- Set items for active picker based on CLI output
---
--- Asynchronously executes `command` and sets items to its postprocessed output.
---
--- Example: >lua
---
---   local items = vim.schedule_wrap(function()
---     MiniPick.set_picker_items_from_cli({ 'echo', 'a\nb\nc' })
---   end)
---   MiniPick.start({ source = { items = items, name = 'Echo abc' } })
--- <
+-- MiniPick.set_picker_items_from_cli({commands}, {opts})
+-- -- aync exec 'cmd', sets items for active picker
 -- Parameters ~
 -- {command} `(table)` Array with (at least one) string command parts.
 -- {opts} `(table|nil)` Options. Possible fields:
