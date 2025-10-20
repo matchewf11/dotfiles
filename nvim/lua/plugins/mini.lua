@@ -1,227 +1,69 @@
 local function mini_pick_config()
-  -- ////////////////////////////////////////////////////////////
-  -- config, capabilites of each and their workflow (keymaps, cmds)
+  --[[
 
-  -- can extend :Pick w/ MiniPick.registry
-  -- `vim.ui.select()` implementation. To adjust, use `MiniPick.ui_select()` or save-restore `vim.ui.select` manually
-  -- after calling `MiniPick.setup()`.
-  -- `:h MiniPick-overview`
-  -- `:h MiniPick-source`
-  -- `:h MiniPick-actions`
-  -- `:h MiniPick-examples`
-  -- `:h MiniPick.builtin`
-  --
-  -- pick from an array
-  -- MiniPick.start() w/ opts.source defining source
-  -- Example: `MiniPick.start({ source = { items = vim.fn.readdir('.') } })`
-  --
-  -- can use any builtin directly
-  -- MiniPick.builtin.files { tool = 'git' }
-  --
-  -- Use `:Pick` command which uses customizable pickers from `MiniPick.registry`.
-  -- Example: `:Pick files tool='git'`
-  --
-  -- config.delay.busy (color changes when idle)
-  -- Uses MiniPick.default_match() -> query is array of pressed chars
-  -- `'` means exact
-  -- `^` means match at start
-  -- `$` means match at end
-  -- `*` means forced to be fuzzy
-  -- otherwise fuzzy
-  -- <C-n> down, <C-p> up
-  -- <S-Tab> toggles info
-  -- <Tab> toggle preview
-  -- <C-x>/<C-a> toggles current/all items as unmarked
-  -- <C-Space>/<M-Space> makes all matches or marked items as new picker.
-  -- `<CR>` / `<M-CR>` chooses current/marked item(s).
-  -- `<Esc>` / `<C-c>` stops picker.
+Use mini.pick w/ `:Pick` -- extend w/ MiniPick.registry
+  :Pick buffers
+  :Pick files
+  :Pick grep
+  :Pick grep_live
+  :Pick help
+  :Pick resume
+  :Pick cli -- need some xtra stuff with it (config w/ rg, fd, git)
+  :Pick files tool='git' or MiniPick.builtin.files { tool = 'git' }
 
-  local mini_pick = require 'mini.pick'
-  mini_pick.setup {
-    delay = {
-      -- Delay between forcing asynchronous behavior
-      async = 10, -- default; Min is 1
-      -- Delay between computation start and visual feedback about it
-      busy = 50, -- default; Min is 1
-    },
+MiniPick.start() w/ opts.source defining source
 
-    -- Keys for performing actions. See `:h MiniPick-actions`.
-    -- defaults
-    mappings = {
-      caret_left = '<Left>',
-      caret_right = '<Right>',
-      choose = '<CR>',
-      choose_in_split = '<C-s>',
-      choose_in_tabpage = '<C-t>',
-      choose_in_vsplit = '<C-v>',
-      choose_marked = '<M-CR>',
-      delete_char = '<BS>',
-      delete_char_right = '<Del>',
-      delete_left = '<C-u>',
-      delete_word = '<C-w>',
-      mark = '<C-x>',
-      mark_all = '<C-a>',
-      move_down = '<C-n>',
-      move_start = '<C-g>',
-      move_up = '<C-p>',
-      paste = '<C-r>',
-      refine = '<C-Space>',
-      refine_marked = '<M-Space>',
-      scroll_down = '<C-f>',
-      scroll_left = '<C-h>',
-      scroll_right = '<C-l>',
-      scroll_up = '<C-b>',
-      stop = '<Esc>',
-      toggle_info = '<S-Tab>',
-      toggle_preview = '<Tab>', -- <C-p> (reassign tab)
-    },
+`'` exact, `^` start, `$` end, `*` fuzzy
 
-    options = {
-      content_from_bottom = true, -- default is false
-      use_cache = true, -- defualt is false
-    },
+To look for help
+- `:h MiniPick-overview`
+- `:h MiniPick-source`
+- `:h MiniPick-actions`
+- `:h MiniPick-examples`
+- `:h MiniPick.builtin`
 
-    -- Source definition. See `:h MiniPick-source`.
-    -- defaults
-    source = {
-      items = nil,
-      name = nil,
-      cwd = nil,
-      match = nil,
-      show = nil,
-      preview = nil,
-      choose = nil,
-      choose_marked = nil,
-    },
+Uses MiniPick.default_match() -> query is array of pressed chars
 
-    window = {
-      config = nil, -- Float window config (table or callable returning it)
-      prompt_caret = '█', -- '▏'
-    },
-  }
+MiniPick.builtin for builtin pickers `MiniPick.builtin.files { tool = 'git '}`
 
-  -- Builtinpickers |MiniPick.builtin|
-  -- files
-  -- pattern match
-  -- buffers
-  -- help tags
-  -- CLI output.
-  -- Resume latest picker.
+MiniPick.config for configuration
 
-  -- vim.keymap.set('n', '<leader>sc', mini_pick.builtin.cli)
-  -- w/ ripgrep, fd, git
+]]
 
-  -- config w/ MiniPick.config
   -- vim.b.minipick_config should have same structure but for 1 buffer
   -- See |mini.nvim-buffer-local-config| for more details.
 
   -- to use cli tools config them using their respective configs
   -- Custom actions/keys can be configured globally, buffer, or picker
 
-  -- |:Pick| command to work with extensible |MiniPick.registry|.
+  -- UI consists from a single window capable of displaying three different views:
+  -- - "Main" - where current query matches are shown.
+  -- - "Preview" - preview of current item (toggle with `<Tab>`).
+  -- - "Info" - general info about picker and its state (toggle with `<S-Tab>`).
 
   -- |vim.ui.select()| implementation. To adjust, use |MiniPick.ui_select()|
   -- save-restore `vim.ui.select` manually after calling |MiniPick.setup()|.
 
   -- Rich and customizable built-in |MiniPick-actions| when picker is active:
-  -- Manually change currently focused item.
-  -- Scroll vertically and horizontally.
-  --     - Toggle preview or info view.
-  --     - Mark/unmark items to choose later.
-  --     - Refine current matches (make them part of a new picker).
-  --     - And many more.
-
-  -- - Minimal yet flexible |MiniPick-source| specification with:
-  --     - Items (array, callable, or manually set later).
-  --     - Source name.
-  --     - Working directory.
-  --     - Matching algorithm.
-  --     - Way matches are shown in main window.
-  --     - Item preview.
-  --     - "On choice" action for current and marked items.
 
   -- MiniPick-events include the autocmds of:
   -- `MiniPickMatch` - just after updating query matches or setting items.
   -- `MiniPickStart` - just after picker has started.
   -- `MiniPickStop` - just before picker is stopped.
 
-  vim.keymap.set('n', '<leader>sb', mini_pick.builtin.buffers)
-  vim.keymap.set('n', '<leader>sf', mini_pick.builtin.files)
-  vim.keymap.set('n', '<leader>sG', mini_pick.builtin.grep)
-  vim.keymap.set('n', '<leader>sg', mini_pick.builtin.grep_live)
-  vim.keymap.set('n', '<leader>sh', mini_pick.builtin.help)
-  vim.keymap.set('n', '<leader>sr', mini_pick.builtin.resume)
+  --[[
+  minipick-source is `source` field inside of one of:
+    |MiniPick.config| - gloabl
+    vim.b.minipick_config - buffer
+    opts.source - picker for that call
 
-  -- make one (chatgpt made this, does this work?)
-  vim.keymap.set('n', '<leader>sl', function()
-    mini_pick.builtin.cli {
-      command = { 'cat', vim.api.nvim_buf_get_name(0) },
-    }
-  end, { desc = 'Search lines in current buffer (cli)' })
+    Example to choose from |arglist|
+    { items = vim.fn.arv, name = 'Arglist' }
 
-  -------------------------------------------------------------------
-  -- *MiniPick-overview*
-  -- General idea is to take array of objects, display them with interactive
-  -- filter/sort/navigate/preview, and allow to choose one or more items.
-  --
-  -- # How to start a picker ~
-  --
-  -- - Use |MiniPick.start()| with `opts.source` defining |MiniPick-source|.
-  --   Example: `MiniPick.start({ source = { items = vim.fn.readdir('.') } })`
-  --
-  -- - Use any of |MiniPick.builtin| pickers directly.
-  --   Example: `MiniPick.builtin.files({ tool = 'git' })`
-  --
-  -- - Use |:Pick| command which uses customizable pickers from |MiniPick.registry|.
-  --   Example: `:Pick files tool='git'`
-  --
-  -- # User interface ~
-  --
-  -- UI consists from a single window capable of displaying three different views:
-  -- - "Main" - where current query matches are shown.
-  -- - "Preview" - preview of current item (toggle with `<Tab>`).
-  -- - "Info" - general info about picker and its state (toggle with `<S-Tab>`).
-  --
-  -- Current prompt is displayed at the top left of the window border with vertical
-  -- line indicating caret (current input position).
-  --
-  -- Bottom part of window border displays (in Neovim>=0.10) extra visual feedback:
-  -- - Left part is a picker name.
-  -- - Right part contains information in the format >
-  --
-  --   <current index in matches> | <match count> | <marked count> / <total count>
-  -- <
-  -- When picker is busy (like if there are no items yet set or matching is active)
-  -- window border changes color to be `MiniPickBorderBusy` after `config.delay.busy`
-  -- milliseconds of idle time.
-  --
-  --
-  -- # Implementation details ~
-  --
-  -- - Processing key typing is done via a dedicated key query process for more
-  --   control over their side effects. As a result, regular mappings don't work
-  --   here and picker's window needs to be current as long as it is shown.
-  --   Changing window focus leads to automatic picker stop (after small delay).
-  -- - Any picker is non-blocking but waits to return the chosen item. Example:
-  -- `file = MiniPick.builtin.files()` allows other actions to be executed when
-  -- picker is shown while still assigning `file` with value of the chosen item.
-  ------------------------------------------------------------------------------
-  -- *MiniPick-source*
-  -- Source is defined as a `source` field inside one of (in increasing priority):
-  -- - |MiniPick.config| - has global effect.
-  -- - `vim.b.minipick_config` - has buffer-local effect.
-  -- - `opts.source` in picker call - has effect for that particular call.
-  --
-  -- Example of source to choose from |arglist|: >lua
-  --
-  --   { items = vim.fn.argv, name = 'Arglist' }
-  -- <
-  -- Note: this is mostly useful for writing pickers. Can safely skip if you
-  -- want to just use provided pickers.
-  --
-  -- # Items ~
-  -- *MiniPick-source.items*
-  --
+    *source.items*
+
+  ]]
+
   -- `source.items` defines items to choose from. It should be one of the following:
   -- - Array of objects which can have different types. Any type is allowed.
   -- - `nil`. Picker waits for explicit |MiniPick.set_picker_items()| call.
@@ -1496,7 +1338,73 @@ local function mini_pick_config()
   -- See also ~
   -- |MiniPick.is_picker_active()|
 
+  -- # Highlight groups ~ for mini.pick look into if needed
+  -- To change any highlight group, set it directly with |nvim_set_hl()|.
   -- ////////////////////////////////////////////////////////////
+
+  local mini_pick = require 'mini.pick'
+  mini_pick.setup {
+    delay = {
+      -- Delay between forcing asynchronous behavior
+      async = 10, -- default; Min is 1
+      -- Delay between computation start and visual feedback about it
+      busy = 50, -- default; Min is 1
+    },
+
+    -- Keys for performing actions. See `:h MiniPick-actions`.
+    -- defaults
+    mappings = {
+      caret_left = '<Left>',
+      caret_right = '<Right>',
+      choose = '<CR>',
+      choose_in_split = '<C-s>',
+      choose_in_tabpage = '<C-t>',
+      choose_in_vsplit = '<C-v>',
+      choose_marked = '<M-CR>',
+      delete_char = '<BS>',
+      delete_char_right = '<Del>',
+      delete_left = '<C-u>',
+      delete_word = '<C-w>',
+      mark = '<C-x>',
+      mark_all = '<C-a>',
+      move_down = '<C-n>',
+      move_start = '<C-g>',
+      move_up = '<C-p>',
+      paste = '<C-r>',
+      refine = '<C-Space>',
+      refine_marked = '<M-Space>',
+      scroll_down = '<C-f>',
+      scroll_left = '<C-h>',
+      scroll_right = '<C-l>',
+      scroll_up = '<C-b>',
+      stop = '<Esc>',
+      toggle_info = '<S-Tab>',
+      toggle_preview = '<Tab>', -- <C-p> (reassign tab)
+    },
+
+    options = {
+      content_from_bottom = true, -- default is false
+      use_cache = true, -- defualt is false
+    },
+
+    -- Source definition. See `:h MiniPick-source`.
+    -- defaults
+    source = {
+      items = nil,
+      name = nil,
+      cwd = nil,
+      match = nil,
+      show = nil,
+      preview = nil,
+      choose = nil,
+      choose_marked = nil,
+    },
+
+    window = {
+      config = nil, -- Float window config (table or callable returning it)
+      prompt_caret = '█', -- '▏'
+    },
+  }
 end
 
 -- should i use mini.deps?
@@ -1559,6 +1467,14 @@ return {
 
     -- research, config
     -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.extra').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
+    require('mini.snippets').setup {}
+
+    -- research, config
+    -- capabilites of each and their workflow (keymaps, cmds)
     local miniclue = require 'mini.clue'
     miniclue.setup {
       triggers = {
@@ -1579,7 +1495,6 @@ return {
         { mode = 'n', keys = 'z' },
         { mode = 'x', keys = 'z' },
       },
-
       clues = {
         { mode = 'n', keys = '<leader>s', desc = '[s]earch' },
         { mode = 'n', keys = '<leader>g', desc = '[g]it' },
@@ -1592,25 +1507,32 @@ return {
         miniclue.gen_clues.z(),
       },
     }
+    -- |mini.hues| - generate configurable color scheme. Takes only background
+    -- and foreground colors as required arguments. Can adjust number of hues
+    -- for non-base colors, saturation, accent color, plugin integration.
 
-    -- - |mini.basics| - common configuration presets. Has configurable presets for
-    --   options, mappings, and autocommands. It doesn't change option or mapping
-    --   if it was manually created.
+    -- |mini.colors| - tweak and save any color scheme. Can create colorscheme
+    -- object with methods to invert/set/modify/etc.
+    -- lightness/saturation/hue/temperature/etc. of foreground/background/all
+    -- colors, infer cterm attributes, add transparency, save to a file and more.
+    -- Has functionality for interactive experiments and animation of
+    -- transition between color schemes. (Like lush)
+
+    -- |mini.bracketed| - go forward/backward with square brackets. Among others,
+    -- supports variety of non-trivial targets: comments, files on disk, indent
+    -- changes, tree-sitter nodes, linear undo states, yank history entries.
     --
-    -- - |mini.bracketed| - go forward/backward with square brackets. Among others,
-    --   supports variety of non-trivial targets: comments, files on disk, indent
-    --   changes, tree-sitter nodes, linear undo states, yank history entries.
+    -- |mini.bufremove| - buffer removing (unshow, delete, wipeout) while saving
+    -- window layout.
     --
-    -- - |mini.bufremove| - buffer removing (unshow, delete, wipeout) while saving
-    --   window layout.
-    -- - |mini.completion| - async (with customizable 'debounce' delay) 'two-stage
-    --   chain completion': first builtin LSP, then configurable fallback. Also
-    --   has functionality for completion item info and function signature (both
-    --   in floating window appearing after customizable delay).
+    -- |mini.completion| - async (with customizable 'debounce' delay) 'two-stage
+    -- chain completion': first builtin LSP, then configurable fallback. Also
+    -- has functionality for completion item info and function signature (both
+    -- in floating window appearing after customizable delay).
     --
-    -- - |mini.cursorword| - automatic highlighting of word under cursor (displayed
-    --   after customizable delay). Current word under cursor can be highlighted
-    --   differently.
+    -- |mini.cursorword| - automatic highlighting of word under cursor (displayed
+    -- after customizable delay). Current word under cursor can be highlighted
+    -- differently.
     --
     -- |mini.deps| - plugin manager for plugins outside of 'mini.nvim'. Uses Git and
     -- built-in packages to install, update, clean, and snapshot plugins.
@@ -1619,120 +1541,107 @@ return {
     -- Allows flexible customization of output via hook functions. Used for
     -- documenting this plugin.
     --
-    -- - |mini.extra| - extra 'mini.nvim' functionality. Contains 'mini.pick' pickers,
-    --   'mini.ai' textobjects, and more.
+    -- |mini.fuzzy| - functions for fast and simple fuzzy matching. It has
+    -- not only functions to perform fuzzy matching of one string to others, but
+    -- also a sorter for 'nvim-telescope/telescope.nvim'.
     --
-    -- - |mini.fuzzy| - functions for fast and simple fuzzy matching. It has
-    --   not only functions to perform fuzzy matching of one string to others, but
-    --   also a sorter for 'nvim-telescope/telescope.nvim'.
+    -- |mini.hipatterns| - highlight patterns in text with configurable highlighters
+    -- (pattern and/or highlight group can be string or callable).
+    -- Works asynchronously with configurable debounce delay.
     --
+    -- |mini.indentscope| - visualize and operate on indent scope. Supports
+    -- customization of debounce delay, animation style, and different
+    -- granularity of options for scope computing algorithm.
     --
-    -- - |mini.hipatterns| - highlight patterns in text with configurable highlighters
-    --   (pattern and/or highlight group can be string or callable).
-    --   Works asynchronously with configurable debounce delay.
+    -- |mini.jump| - minimal and fast module for smarter jumping to a single
+    -- character.
     --
-    -- - |mini.hues| - generate configurable color scheme. Takes only background
-    --   and foreground colors as required arguments. Can adjust number of hues
-    --   for non-base colors, saturation, accent color, plugin integration.
+    -- |mini.jump2d| - minimal and fast Lua plugin for jumping (moving cursor)
+    -- within visible lines via iterative label filtering. Supports custom jump
+    -- targets (spots), labels, hooks, allowed windows and lines, and more.
     --
-    -- - |mini.indentscope| - visualize and operate on indent scope. Supports
-    --   customization of debounce delay, animation style, and different
-    --   granularity of options for scope computing algorithm.
+    -- |mini.keymap| - utilities to make special key mappings: multi-step actions
+    -- (with built-in steps for "smart" <Tab>, <S-Tab>, <CR>, <BS>),
+    -- combos (more general version of "better escape" like behavior).
     --
-    -- - |mini.jump| - minimal and fast module for smarter jumping to a single
-    --   character.
+    -- |mini.map| - window with buffer text overview, scrollbar, and highlights.
+    -- Allows configurable symbols for line encode and scrollbar, extensible
+    -- highlight integration (with pre-built ones for builtin search, diagnostic,
+    -- git line status), window properties, and more.
     --
-    -- - |mini.jump2d| - minimal and fast Lua plugin for jumping (moving cursor)
-    --   within visible lines via iterative label filtering. Supports custom jump
-    --   targets (spots), labels, hooks, allowed windows and lines, and more.
+    -- |mini.misc| - collection of miscellaneous useful functions. Like `put()`
+    -- and `put_text()` which print Lua objects to command line and current
+    -- buffer respectively.
     --
-    -- - |mini.keymap| - utilities to make special key mappings: multi-step actions
-    --   (with built-in steps for "smart" <Tab>, <S-Tab>, <CR>, <BS>),
-    --   combos (more general version of "better escape" like behavior).
+    -- |mini.move| - move any selection in any direction. Supports any Visual
+    -- mode (charwise, linewise, blockwise) and Normal mode (current line) for
+    -- all four directions (left, right, down, up). Respects `count` and undo.
     --
-    -- - |mini.map| - window with buffer text overview, scrollbar, and highlights.
-    --   Allows configurable symbols for line encode and scrollbar, extensible
-    --   highlight integration (with pre-built ones for builtin search, diagnostic,
-    --   git line status), window properties, and more.
+    -- |mini.notify| - show one or more highlighted notifications in a single window.
+    -- Provides both low-level functions (add, update, remove, clear) and maker
+    -- of |vim.notify()| implementation. Sets up automated LSP progress updates.
     --
-    -- - |mini.misc| - collection of miscellaneous useful functions. Like `put()`
-    --   and `put_text()` which print Lua objects to command line and current
-    --   buffer respectively.
+    -- |mini.operators| - various text edit operators: replace, exchange,
+    -- multiply, sort, evaluate. Creates mappings to operate on textobject,
+    -- line, and visual selection. Supports |[count]| and dot-repeat.
     --
-    -- - |mini.move| - move any selection in any direction. Supports any Visual
-    --   mode (charwise, linewise, blockwise) and Normal mode (current line) for
-    --   all four directions (left, right, down, up). Respects `count` and undo.
+    -- |mini.sessions| - session management (read, write, delete) which works
+    -- using |:mksession|. Implements both global (from configured directory) and
+    -- local (from current directory) sessions.
     --
-    -- - |mini.notify| - show one or more highlighted notifications in a single window.
-    --   Provides both low-level functions (add, update, remove, clear) and maker
-    --   of |vim.notify()| implementation. Sets up automated LSP progress updates.
+    -- |mini.snippets| - manage and expand snippets. Supports only syntax from LSP
+    -- specification. Provides flexible loaders to manage snippet files, exact and
+    -- fuzzy prefix matching, interactive selection, and rich interactive snippet
+    -- session experience with dynamic tabstop visualization.
     --
-    -- - |mini.operators| - various text edit operators: replace, exchange,
-    --   multiply, sort, evaluate. Creates mappings to operate on textobject,
-    --   line, and visual selection. Supports |[count]| and dot-repeat.
+    -- |mini.splitjoin| - split and join arguments (regions inside brackets
+    -- between allowed separators). Has customizable pre and post hooks.
+    -- Works inside comments.
     --
-    -- - |mini.sessions| - session management (read, write, delete) which works
-    --   using |:mksession|. Implements both global (from configured directory) and
-    --   local (from current directory) sessions.
+    -- |mini.starter| - minimal, fast, and flexible start screen. Displayed items
+    -- are fully customizable both in terms of what they do and how they look
+    -- (with reasonable defaults). Item selection can be done using prefix query
+    -- with instant visual feedback.
     --
-    -- - |mini.snippets| - manage and expand snippets. Supports only syntax from LSP
-    --   specification. Provides flexible loaders to manage snippet files, exact and
-    --   fuzzy prefix matching, interactive selection, and rich interactive snippet
-    --   session experience with dynamic tabstop visualization.
+    -- |mini.test| - framework for writing extensive Neovim plugin tests.
+    -- Supports hierarchical tests, hooks, parametrization, filtering (like from
+    -- current file or cursor position), screen tests, "busted-style" emulation,
+    -- customizable reporters, and more. Designed to be used with provided
+    -- wrapper for managing child Neovim processes.
     --
-    -- - |mini.splitjoin| - split and join arguments (regions inside brackets
-    --   between allowed separators). Has customizable pre and post hooks.
-    --   Works inside comments.
+    -- |mini.tabline| - minimal tabline which always shows listed (see 'buflisted')
+    -- buffers. Allows showing extra information section in case of multiple vim
+    -- tabpages. For full experience needs enabled |mini.icons| module (but works
+    -- without it).
     --
-    -- - |mini.starter| - minimal, fast, and flexible start screen. Displayed items
-    --   are fully customizable both in terms of what they do and how they look
-    --   (with reasonable defaults). Item selection can be done using prefix query
-    --   with instant visual feedback.
+    -- |mini.trailspace| - automatic highlighting of trailing whitespace with
+    -- functionality to remove it.
     --
-    -- - |mini.test| - framework for writing extensive Neovim plugin tests.
-    --   Supports hierarchical tests, hooks, parametrization, filtering (like from
-    --   current file or cursor position), screen tests, "busted-style" emulation,
-    --   customizable reporters, and more. Designed to be used with provided
-    --   wrapper for managing child Neovim processes.
+    -- |mini.visits| - track and reuse file system visits. Tracks data about each
+    -- file/directory visit (after delay) and stores it (only) locally. This can be
+    -- used to get a list of "recent"/"frequent"/"frecent" visits.
+    -- Allows persistently adding labels to visits enabling flexible workflow.
     --
-    -- - |mini.tabline| - minimal tabline which always shows listed (see 'buflisted')
-    --   buffers. Allows showing extra information section in case of multiple vim
-    --   tabpages. For full experience needs enabled |mini.icons| module (but works
-    --   without it).
-    --
-    -- - |mini.trailspace| - automatic highlighting of trailing whitespace with
-    --   functionality to remove it.
-    --
-    -- - |mini.visits| - track and reuse file system visits. Tracks data about each
-    --   file/directory visit (after delay) and stores it (only) locally. This can be
-    --   used to get a list of "recent"/"frequent"/"frecent" visits.
-    --   Allows persistently adding labels to visits enabling flexible workflow.
-    --
-    -- - |mini.colors| - tweak and save any color scheme. Can create colorscheme
-    --   object with methods to invert/set/modify/etc.
-    --   lightness/saturation/hue/temperature/etc. of foreground/background/all
-    --   colors, infer cterm attributes, add transparency, save to a file and more.
-    --   Has functionality for interactive experiments and animation of
-    --   transition between color schemes.
+    -- |mini.basics| - common configuration presets. Has configurable presets for
+    -- options, mappings, and autocommands. It doesn't change option or mapping
+    -- if it was manually created.
   end,
 }
 
--- # Highlight groups ~ for mini.pick
---
--- - `MiniPickBorder` - window border.
--- - `MiniPickBorderBusy` - window border while picker is busy processing.
--- - `MiniPickBorderText` - non-prompt on border.
--- - `MiniPickCursor` - cursor during active picker (hidden by default).
--- - `MiniPickIconDirectory` - default icon for directory.
--- - `MiniPickIconFile` - default icon for file.
--- - `MiniPickHeader` - headers in info buffer and previews.
--- - `MiniPickMatchCurrent` - current matched item.
--- - `MiniPickMatchMarked` - marked matched items.
--- - `MiniPickMatchRanges` - ranges matching query elements.
--- - `MiniPickNormal` - basic foreground/background highlighting.
--- - `MiniPickPreviewLine` - target line in preview.
--- - `MiniPickPreviewRegion` - target region in preview.
--- - `MiniPickPrompt` - prompt.
--- - `MiniPickPromptCaret` - caret in prompt.
--- - `MiniPickPromptPrefix` - prefix of the prompt.
--- To change any highlight group, set it directly with |nvim_set_hl()|.
+--mini.animate
+--base16
+--colors
+--cursorword
+--hipatterns
+--hues
+--icons
+--indentscope
+--map
+--notify
+--starter
+--statusline
+--tabline
+--trailspace
+--doc
+--fuzzy
+--test
