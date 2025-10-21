@@ -1,5 +1,4 @@
 -- finish this
-
 return {
   'rebelot/kanagawa.nvim',
   name = 'kanagawa',

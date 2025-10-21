@@ -1,5 +1,3 @@
--- finish this
-
 local function set_spacing(pattern, expandtab, tabstop_shiftwidth, softtabstop)
   vim.api.nvim_create_autocmd('FileType', {
     pattern = pattern,
@@ -32,33 +30,45 @@ function M.global()
 end
 
 function M.lsp()
+  -- When lsp attaches
   vim.api.nvim_create_autocmd('LspAttach', {
+    -- create group 'lsp-attach', that starts empty
     group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
 
+    -- it then calls this back
     callback = function(event)
+      -- set up lsp keymaps
       require('config.keymaps').lsp()
       local function client_supports_method(client, method, bufnr)
         return client:supports_method(method, bufnr)
       end
 
+      -- get the client
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
+      -- shorten the thing
       local hl_method = vim.lsp.protocol.Methods.textDocument_documentHighlight
+
+      -- if lsp supports highlighting
       if client and client_supports_method(client, hl_method, event.buf) then
+        -- creates lsp-highlight group
         local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
 
+        -- highlights under cursor
         vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
           buffer = event.buf,
           group = highlight_augroup,
           callback = vim.lsp.buf.document_highlight,
         })
 
+        -- removes
         vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
           buffer = event.buf,
           group = highlight_augroup,
           callback = vim.lsp.buf.clear_references,
         })
 
+        -- removes
         vim.api.nvim_create_autocmd('LspDetach', {
           group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
           callback = function(event2)
