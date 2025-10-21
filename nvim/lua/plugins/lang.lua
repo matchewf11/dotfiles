@@ -1,3 +1,4 @@
+-- finish this
 return {
   { -- sets up lua lsp for nvim stuff and libraries
     'folke/lazydev.nvim',

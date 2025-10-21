@@ -1,3 +1,5 @@
+-- finish this
+
 local function set_spacing(pattern, expandtab, tabstop_shiftwidth, softtabstop)
   vim.api.nvim_create_autocmd('FileType', {
     pattern = pattern,

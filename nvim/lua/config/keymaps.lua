@@ -1,3 +1,5 @@
+-- finish this
+
 local function set_maps(map_tbl)
   for _, val in ipairs(map_tbl) do
     vim.keymap.set(val[4] or 'n', val[1], val[2], { desc = val[3] })

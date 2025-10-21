@@ -1,3 +1,5 @@
+-- finish this
+
 local function config()
   require('config.autocmds').lsp()
 

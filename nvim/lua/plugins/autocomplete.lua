@@ -1,3 +1,5 @@
+-- finish this
+--
 -- copying kickstart config
 -- change to my own later!!!
 return {
