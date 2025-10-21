@@ -1,5 +1,3 @@
--- finish this
-
 local function set_maps(map_tbl)
   for _, val in ipairs(map_tbl) do
     vim.keymap.set(val[4] or 'n', val[1], val[2], { desc = val[3] })
@@ -22,7 +20,6 @@ function M.global()
     { '<Esc><Esc>', '<C-\\><C-n>', 'Exit terminal mode', 't' },
     { '<leader>q', vim.diagnostic.setloclist, 'Open diagnostic [Q]uickfix list' },
   }
-  -- add something to run the code
 end
 
 function M.lsp()

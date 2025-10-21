@@ -842,3 +842,16 @@ put merge conflicts in quickfix?
 -- fugitive or mini.git
 --
 -- do i wanna try using debuggers again
+
+
+
+
+    -- set up creates a global table _G.MiniSurround (or other)
+    -- config is stored in _G.MiniSurround.config
+    -- can change fields on the fly
+    -- MiniSurround.config.n_lines (can be changed @ runtime)
+    -- also use buffer specific mini.nvim-buffer-local-config
+    -- module-reulated buffers are named mini<module-name>://<buffer-number>/<useful-info> (may be empty)
+    -- see disabling recipes to turn off for buffers
+    -- config.silent = true (non-error feedback)
+    -- canbecontrolled with ":h highlight-groups", ":highlight" or "vim.api.nvim_set_hl()"
