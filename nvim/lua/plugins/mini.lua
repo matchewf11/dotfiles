@@ -10,6 +10,13 @@ return {
     require('mini.pairs').setup {} -- config this
     require('mini.files').setup {} -- config this
     require('mini.snippets').setup {} -- config this
+    require('mini.hues').setup { -- config this more
+      background = '#0f0f0e',
+      foreground = '#e5dbce',
+      n_hues = 8,
+      saturation = 'lowmedium',
+      accent = 'fg',
+    }
 
     -- require('mini.ai').setup {} -- config this
     -- require('mini.diff').setup {} -- config this
@@ -19,8 +26,6 @@ return {
     -- require('mini.git').setup {} -- config this
     -- require('mini.extra').setup {} -- config this
     -- require('mini.clue').setup {} -- config this
-
-    -- require('mini.hues').setup {}
     -- require('mini.colors').setup {}
     -- require('mini.bracketed').setup {}
     -- require('mini.bufremove').setup {}

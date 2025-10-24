@@ -33,7 +33,7 @@ plugins=(zsh-syntax-highlighting colored-man-pages jsontools)
 # web-search – quick search aliases for Google, Wiki, Bing, YouTube, etc
 # autocomplete, zsh completions
 # jq – command-line JSON processor
-# need fd, rg, delta, rendermarkdown or markview
+# need fd, rg, delta
 # do i need chafa, viu, or ueberzzupp
 
 source $ZSH/oh-my-zsh.sh

@@ -9,7 +9,7 @@ local mini_pick = require 'mini.pick'
 mini_pick.setup {
   --[[
   caret_left/caret_right = '<Left/Right>'
-  move_up/move_down/move_start = '<C-p/n/g>'
+  move_up/move_down/move_start = '<C-p/n/g>' -- change to j/k later
   stop  = '<Esc>'
   choose  = '<CR>',
   choose_in_split  = '<C-s>',
@@ -43,18 +43,19 @@ mini_pick.setup {
 }
 
 mini_pick.registry.blines = function()
-  local i = 0
+  local buf_lines = {}
+  for i, v in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
+    table.insert(buf_lines, string.format('%d| %s', i, v))
+  end
   mini_pick.start {
     source = {
-      items = vim.tbl_map(function(str)
-        i = i + 1
-        return { i, str }
-      end, vim.api.nvim_buf_get_lines(0, 0, -1, false)),
+      items = buf_lines,
       name = 'Buffer Lines',
-      choose = function(val)
-        if val then
+      choose = function(chosen)
+        if chosen then
+          local i = tonumber(chosen:match '^(%d+)|')
           vim.schedule(function()
-            vim.api.nvim_win_set_cursor(0, { val[1], 0 })
+            vim.api.nvim_win_set_cursor(0, { i, 0 })
           end)
         end
       end,
@@ -90,7 +91,7 @@ search_map('b', 'buffers', 'Buffers')
 search_map('l', 'blines', 'Buffer Lines')
 search_map('r', 'resume', 'Resume')
 search_map('h', 'help', 'Help')
-search_map('g', 'grep', 'Grep')
+search_map('G', 'grep', 'Grep')
 search_map('g', 'grep_live', 'Grep_live')
 search_map('o', 'oldfiles', 'Oldfiles')
 search_map('c', 'cli', 'Cli')
