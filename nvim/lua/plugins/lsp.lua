@@ -1,3 +1,14 @@
+-- add lsp/fmt/lint for all languages
+-- rust
+-- lua
+-- go
+-- bash
+-- c
+-- json
+-- html/css/js
+--
+-- markdown
+
 local function config()
   require('config.autocmds').lsp()
 
@@ -14,12 +25,23 @@ local function config()
   }
 
   local servers = {
+    -- rust
     'rust_analyzer', -- rustup
+    -- lua
     'lua_ls', -- pacman
+    -- go
     'gopls', -- go
+    -- c
     'clangd', -- pacman
+    -- toml
     'taplo', -- cargo
-    'zls', -- pacman
+    -- bash (bashls)
+    -- sql (sqlls)
+    -- json (jsonls)
+    -- docker/dockercompose? (dockerls)
+    -- cspell/textlsp/basicsls (spell-checking)
+    -- one for html/css/js/ts
+    -- what is emmylua_ls
   }
 
   local blink_abilities = require('blink.cmp').get_lsp_capabilities()
@@ -35,6 +57,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = { 'saghen/blink.cmp' },
     config = config,
+    event = 'BufReadPre',
   },
   -- finish conform
   {
@@ -64,15 +87,12 @@ return {
         toml = { 'taplo' },
         --["*"] = { "codespell" },
         --["*"] = { "trimwhitespace" },
+        --   "shfmt",         -- Shell
+        --   "sql-formatter", -- SQL
+        --   prettier?
       },
     },
-    formatters = {
-      stylua = {},
-      goimports = {},
-      gofumpt = {},
-      ['clang-format'] = {},
-      rustfmt = {},
-    },
+    -- formatters = {},
   },
   -- finish lint
   {
@@ -86,6 +106,11 @@ return {
         c = { 'clangtidy' },
         make = { 'checkmake' }, -- go
         rust = { 'clippy' },
+        --   "shellcheck",    -- Shell
+        --   shellharden
+        --   hadolint for dockerfiles
+        --   systemdlint
+        --   cspell/misspell/textlint/typos
       }
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
@@ -99,45 +124,3 @@ return {
     end,
   },
 }
-
--- plugins for each lang
-
---LSP
--- ast-grep, autotools-ls, bacon_ls, bashls, basicsls, cspell, diagnosticsls, dockercompose langauge server,
--- docker-lagnuage-server, dockerls, dprint, efm,
--- emmylua_ls, golangci-lint-langserver,
--- grammerly-langugageserver, harper-ls, ltex-ls, systemd-ls,, termux-ls, textlsp, tombi(is mine better or both)
--- C
--- debugger (more for C, C++, Rust)
--- bash-debug-dapteer, codelldb, delve, go-debug-dabter, ocamlearlybird
--- mock and local lua
--- linter
--- ast-grep, codespell, commitlint, cpplint, cspell, dotenv-linter, gitlint,
--- gospel, hadolint, misspell, revive, selene, shellcheck,
--- shellharden, semgrep, staticcheck, systemdlint, textlint, typos
--- formatter
---beautysh, crlfmt, gci, goimports-reviser, golines, go modify tages,
---gotests, luaformatter, ocaml_format, shellharden, shfmt, tombi, yamlfix, yamlfmt
--- docker
--- 'dockerls',
--- 'hadolint',
--- LSPs
---   "jsonls",        -- JSON
---   "dockerls",      -- Docker
---   "bashls",        -- Shell scripts
---   "sqlls",         -- SQL
--- Formatters
---   "shfmt",         -- Shell
---   "sql-formatter", -- SQL
--- Linters
---   "shellcheck",    -- Shell
--- Debuggers (DAP)
---   "delve",         -- Go
---   "codelldb",      -- Rust, C/C++
---   something for bash?
---   something for lua
---   capabilities = {},
---   cmd = {},
---   filetype = {},
---   settings = {},
---   look at lsp config stuff

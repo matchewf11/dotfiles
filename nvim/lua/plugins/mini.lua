@@ -14,7 +14,7 @@ return {
       background = '#0f0f0e',
       foreground = '#e5dbce',
       n_hues = 8,
-      saturation = 'lowmedium',
+      saturation = 'medium',
       accent = 'fg',
     }
 

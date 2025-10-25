@@ -15,8 +15,9 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
 plugins=(zsh-syntax-highlighting colored-man-pages jsontools)
-# look into jsontools, get rid of this pp_json!!!
 
+# look into jsontools, get rid of this pp_json!!!
+#
 # zoxide – smarter cd, jump to frequently used directories.
 # gitfast – Git aliases and completion (fast version with fewer zsh-specific features).
 # gh – GitHub CLI completion.
@@ -44,6 +45,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 
 export PATH=$PATH:$HOME/go/bin # add go to path
 export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
+export PATH="$HOME/.npm-global/bin:$PATH" # add npm to path
 
 export LANG=en_US.UTF-8
 export EDITOR='nvim'
@@ -112,6 +114,13 @@ fe() {
   fi
 }
 
+up() {
+  local n=${1:-1}
+  for ((i = 0; i < n; i++)); do
+    cd ..
+  done
+}
+
 bindkey -v # vimode
 
 # unbind rm for trash-cli?
@@ -133,7 +142,6 @@ bindkey -v # vimode
 # iftop – real-time network traffic monitor
 # nload – live bandwidth usage monitor
 # ssh – secure remote login
-# mosh – mobile shell, smoother over flaky networks
 # scp – copy files over SSH
 # rsync – fast, resumable file transfer and sync
 # netcat (nc) – versatile TCP/UDP networking utility
@@ -145,13 +153,9 @@ bindkey -v # vimode
 # taskwarrior – command-line task manager
 # gping – ping with live graph
 # glances – all-in-one system monitor
-# zip – archive utility
-# unzip – extract zip files
-# tar – create/extract tarballs
 # 7z – 7-Zip compression tool
 # aria2 – multi-protocol downloader supporting torrents and HTTP/FTP
 # broot – tree-view file manager with fuzzy navigation
 # atuin – searchable, synced shell history
-# chezmoi – manageandsyncdotfilesacrosssystemslookinto other cli things)
 
 # what do i install thru zsh vs oh-my-zsh (move off of omz)
