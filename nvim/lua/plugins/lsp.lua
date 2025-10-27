@@ -59,8 +59,8 @@ return {
     config = config,
     event = 'BufReadPre',
   },
-  -- finish conform
   {
+    -- finish conform
     'stevearc/conform.nvim',
     lazy = true,
     event = 'BufWritePre',
@@ -94,8 +94,8 @@ return {
     },
     -- formatters = {},
   },
-  -- finish lint
   {
+    -- finish lint
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
