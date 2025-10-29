@@ -6,6 +6,8 @@
 -- c
 -- json
 -- html/css/js
+-- toml
+-- make
 --
 -- markdown
 

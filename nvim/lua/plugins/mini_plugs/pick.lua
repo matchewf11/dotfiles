@@ -1,8 +1,7 @@
 -- finish this
 -- README
 -- Docs
--- Write down :h's
--- look at telescope for other pickers
+-- Write down :h's look at telescope for other pickers
 
 local mini_pick = require 'mini.pick'
 
@@ -42,6 +41,7 @@ mini_pick.setup {
   },
 }
 
+-- use cli instead?
 mini_pick.registry.blines = function()
   local buf_lines = {}
   for i, v in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
