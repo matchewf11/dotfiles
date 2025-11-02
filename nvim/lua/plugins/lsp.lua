@@ -8,8 +8,10 @@
 -- html/css/js
 -- toml
 -- make
+-- haskell
 --
 -- markdown
+-- yaml
 
 local function config()
   require('config.autocmds').lsp()
@@ -37,6 +39,8 @@ local function config()
     'clangd', -- pacman
     -- toml
     'taplo', -- cargo
+    -- haskell
+    'hls', -- ghcup
     -- bash (bashls)
     -- sql (sqlls)
     -- json (jsonls)

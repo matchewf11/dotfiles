@@ -1,0 +1,7 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+# Disable the package module, hiding it from the prompt completely
+# [package]
+# disabled = true

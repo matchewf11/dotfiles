@@ -28,6 +28,7 @@ function M.global()
   set_spacing('rust', true, 4, 4)
   set_spacing('toml', true, 2, 2)
   set_spacing('json', true, 2, 2)
+  -- haskell stuff
 end
 
 function M.lsp()

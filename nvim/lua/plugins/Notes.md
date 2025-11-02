@@ -90,20 +90,6 @@
 -- start with fd
 -- start with git
 
--- return {
--- 'stevearc/oil.nvim',
--- opts = {
---   delete_to_trash = true,
---   watch_for_changes = true,
---   view_options = {
---     show_hidden = true,
---     is_always_hidden = function(name, _)
---       return name == '..'
---     end,
---   },
--- },
--- dependencies = { 'nvim-mini/mini.nvim' },
--- }
 
 -- return {
 --   'folke/which-key.nvim',
@@ -842,8 +828,6 @@ put merge conflicts in quickfix?
 -- fugitive or mini.git
 --
 -- do i wanna try using debuggers again
-
-
 
 
     -- set up creates a global table _G.MiniSurround (or other)

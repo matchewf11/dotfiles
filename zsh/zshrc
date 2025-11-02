@@ -1,102 +1,24 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-export ZSH="$HOME/.oh-my-zsh" # installer
-
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-zstyle ':omz:update' mode reminder
-zstyle ':omz:update' frequency 7
-
-HYPHEN_INSENSITIVE="true"
-ENABLE_CORRECTION="false"
-COMPLETION_WAITING_DOTS="true"
-HIST_STAMPS="mm/dd/yyyy"
-
-plugins=(zsh-syntax-highlighting colored-man-pages jsontools)
-
-# look into jsontools, get rid of this pp_json!!!
-#
-# zoxide – smarter cd, jump to frequently used directories.
-# gitfast – Git aliases and completion (fast version with fewer zsh-specific features).
-# gh – GitHub CLI completion.
-# fzf – fuzzy finder with key bindings for autocompletion and searching.
-# fzf-tab – fancy tab completions using fzf.
-# history-substring-search – search command history by typing substring
-# vi-mode – vi-like keybindings in the shell.
-# command-not-found – suggests packages if a command isn’t found.
-# colorize – syntax-highlight file contents (300+ languages).
-# rust – completion for Rust (rustc, cargo, rustup).
-# ssh-agent – automatically start ssh-agent and load credentials.
-# starship – modern, fast, customizable prompt.
-# tmux – aliases and helpers for tmux.
-# web-search – quick search aliases for Google, Wiki, Bing, YouTube, etc
-# autocomplete, zsh completions
-# jq – command-line JSON processor
-# need fd, rg, delta
-# do i need chafa, viu, or ueberzzupp
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-export MANPATH="/usr/local/man:$MANPATH"
-
-export PATH=$PATH:$HOME/go/bin # add go to path
-export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
-export PATH="$HOME/.npm-global/bin:$PATH" # add npm to path
-
 export LANG=en_US.UTF-8
 export EDITOR='nvim'
 
+export MANPATH="/usr/local/man:$MANPATH"
+export PATH=$PATH:$HOME/go/bin # add go to path
+export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
+export PATH="$HOME/.npm-global/bin:$PATH" # add npm to path
+[ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
+
 source <(fzf --zsh)
-
-UPDATE_FILE="$ZSH_CUSTOM/.last_pacman_update"
-NOW=$(date +%s)
-ONE_WEEK=$((60 * 60 * 24 * 7))
-if [[ ! -f "$UPDATE_FILE" || $((NOW - $(cat "$UPDATE_FILE"))) -ge $ONE_WEEK ]]; then
-	echo "Consider running sudo pacman -Syu"
-	echo "$NOW" > "$UPDATE_FILE"
-fi
-
-# make a function to write all arch downloads to a folder
-# make a up function that lets me go up n directories
-# minimize config and pacman install stuff
+eval "$(starship init zsh)"
 
 alias ff="firefox >/dev/null 2>&1 & disown"
 alias vim='nvim'
 
+# (learn how to use this)
 alias ls='eza'
-# (learn how to use this)
 alias grep='rg'
-# (learn how to use this)
 alias top='htop'
-# (learn how to use this)
 alias cat='bat'
-# (learn how to use this)
 alias find='fd'
-# (learn how to use this)
-
-
-
-# can do this with git config?
-alias ga='git add'
-alias gc='git commit'
-alias gp='git push'
-alias gs='git status'
-alias gd='git diff'
-# add others?
-
-# alias rm='trash'
-# (zioxide tool)
-# (fd tool)
-# (gh cli)
-# (doppler cli)
-# (pass)
-# (jq)
-# (stow)
-# (fzf)
 
 cdf() {
   local dir
@@ -123,39 +45,44 @@ up() {
 
 bindkey -v # vimode
 
+export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
+
+# theme smart-history completions also syntax-highlighi
+
+# move to lighter config -> a theme -> zshautoload + syntax-highlight
+#
+# look into jsontools, get rid of this pp_json!!!
+# zoxide – smarter cd, jump to frequently used directories.
+# gitfast – Git aliases and completion (fast version with fewer zsh-specific features).
+# gh – GitHub CLI completion.
+# fzf – fuzzy finder with key bindings for autocompletion and searching.
+# fzf-tab – fancy tab completions using fzf.
+# history-substring-search – search command history by typing substring
+# vi-mode – vi-like keybindings in the shell.
+# command-not-found – suggests packages if a command isn’t found.
+# colorize – syntax-highlight file contents (300+ languages).
+# rust – completion for Rust (rustc, cargo, rustup).
+# ssh-agent – automatically start ssh-agent and load credentials.
+# starship – modern, fast, customizable prompt.
+# tmux – aliases and helpers for tmux.
+# web-search – quick search aliases for Google, Wiki, Bing, YouTube, etc
+# autocomplete, zsh completions
+# jq – command-line JSON processor
+# need fd, rg, delta
+# do i need chafa, viu, or ueberzzupp
+#
+# can do this with git config?
+# alias rm='trash'
+# (zioxide tool)
+# (fd tool)
+# (gh cli)
+# (doppler cli)
+# (pass)
+# (jq)
+# (stow)
+# (fzf)
 # unbind rm for trash-cli?
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/dotfiles/zsh/p10k.zsh ]] && source ~/dotfiles/zsh/p10k.zsh
-
-# ncdu – disk usage analyzer for cleaning space
-# duf – human-readable df replacement
-# procs – colored ps replacement with tree view
-# httpie – human-friendly HTTP client
-# wget – classic downloader and site mirroring tool
-# dig – DNS lookup utility
-# nslookup – alternative DNS query tool
-# nmap – network scanner and host discovery
-# ping – test connectivity
-# mtr – combined ping and traceroute with live updates
-# traceroute – trace network route
-# iftop – real-time network traffic monitor
-# nload – live bandwidth usage monitor
-# ssh – secure remote login
-# scp – copy files over SSH
-# rsync – fast, resumable file transfer and sync
-# netcat (nc) – versatile TCP/UDP networking utility
-# entr – automatically rerun commands on file changes
-# tree – directory tree viewer
-# ctags – generate tags for code navigation
-# universal-ctags – modern ctags fork
-# bat-extras – suite of helpers for bat
-# taskwarrior – command-line task manager
-# gping – ping with live graph
-# glances – all-in-one system monitor
-# 7z – 7-Zip compression tool
-# aria2 – multi-protocol downloader supporting torrents and HTTP/FTP
-# broot – tree-view file manager with fuzzy navigation
-# atuin – searchable, synced shell history
-
-# what do i install thru zsh vs oh-my-zsh (move off of omz)
+#
+# make a function to write all arch downloads to a folder
+# make a up function that lets me go up n directories
+# minimize config and pacman install stuff
