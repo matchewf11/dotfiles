@@ -47,11 +47,9 @@ bindkey -v # vimode
 
 export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 
-# theme smart-history completions also syntax-highlighi
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# move to lighter config -> a theme -> zshautoload + syntax-highlight
-#
-# look into jsontools, get rid of this pp_json!!!
+# i am using jq
 # zoxide – smarter cd, jump to frequently used directories.
 # gitfast – Git aliases and completion (fast version with fewer zsh-specific features).
 # gh – GitHub CLI completion.

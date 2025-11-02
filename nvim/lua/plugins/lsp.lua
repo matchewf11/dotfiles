@@ -13,6 +13,7 @@
 -- markdown
 -- yaml
 
+--config
 local function config()
   require('config.autocmds').lsp()
 
