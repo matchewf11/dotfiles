@@ -7,11 +7,19 @@ export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
 export PATH="$HOME/.npm-global/bin:$PATH" # add npm to path
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
 
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt hist_ignore_dups # ignore saving dup cmds
+setopt hist_ignore_space # dont save cmd is starts w/ space
+setopt append_history
+setopt share_history
+
 source <(fzf --zsh)
-eval "$(starship init zsh)"
+bindkey -v
 
 alias ff="firefox >/dev/null 2>&1 & disown"
-alias vim='nvim'
+alias vi='nvim'
 
 # (learn how to use this)
 alias ls='eza'
@@ -32,7 +40,7 @@ fe() {
   local file
   file=$(fzf) || return   # fuzzy find a file
   if [[ -n "$file" ]]; then
-    nvim "$file"
+    vi "$file"
   fi
 }
 
@@ -43,11 +51,11 @@ up() {
   done
 }
 
-bindkey -v # vimode
 
 export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 
 # i am using jq
 # zoxide – smarter cd, jump to frequently used directories.
@@ -84,3 +92,10 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # make a function to write all arch downloads to a folder
 # make a up function that lets me go up n directories
 # minimize config and pacman install stuff
+
+
+# get around vi mode bug
+type starship_zle-keymap-select >/dev/null || \
+{
+  eval "$(starship init zsh)"
+}

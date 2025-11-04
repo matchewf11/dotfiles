@@ -1,37 +1,23 @@
-# Kanagawa Dragon Alacritty Colors
+# <https://github.com/savq/melange-nvim?tab=readme-ov-file>
 
 [colors.primary]
-background = '#181616'
-foreground = '#c5c9c5'
-
+foreground = "#ECE1D7"
+background = "#292522"
 [colors.normal]
-black = '#0d0c0c'
-red = '#c4746e'
-green = '#8a9a7b'
-yellow = '#c4b28a'
-blue = '#8ba4b0'
-magenta = '#a292a3'
-cyan = '#8ea4a2'
-white = '#c8c093'
-
+black = "#34302C"
+red = "#BD8183"
+green = "#78997A"
+yellow = "#E49B5D"
+blue = "#7F91B2"
+magenta = "#B380B0"
+cyan = "#7B9695"
+white = "#C1A78E"
 [colors.bright]
-black = '#a6a69c'
-red = '#e46876'
-green = '#87a987'
-yellow = '#e6c384'
-blue = '#7fb4ca'
-magenta = '#938aa9'
-cyan = '#7aa89f'
-white = '#c5c9c5'
-
-[colors.selection]
-background = '#2d4f67'
-foreground = '#c8c093'
-
-[[colors.indexed_colors]]
-index = 16
-color = '#b6927b'
-
-[[colors.indexed_colors]]
-index = 17
-color = '#b98d7b'
+black = "#867462"
+red = "#D47766"
+green = "#85B695"
+yellow = "#EBC06D"
+blue = "#A3A9CE"
+magenta = "#CF9BC2"
+cyan = "#89B3B6"
+white = "#ECE1D7"

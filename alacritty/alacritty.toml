@@ -2,7 +2,6 @@
 import = ["color.toml", "keymaps.toml"]
 
 [window]
-title = "Matchew Terminal"
 resize_increments = true
 
 [font]

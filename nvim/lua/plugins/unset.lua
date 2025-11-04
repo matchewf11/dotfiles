@@ -12,7 +12,8 @@
 --
 -- markdown
 -- yaml
--- finish this
+-- docker?
+-- sql?
 local large_file = function(_, buf) -- disables for large files
   local max_filesize = 100 * 1024 -- 100 KB
   local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
@@ -38,17 +39,11 @@ local function config()
   }
 
   local servers = {
-    -- rust
     'rust_analyzer', -- rustup
-    -- lua
     'lua_ls', -- pacman
-    -- go
     'gopls', -- go
-    -- c
     'clangd', -- pacman
-    -- toml
     'taplo', -- cargo
-    -- haskell
     'hls', -- ghcup
     -- bash (bashls)
     -- sql (sqlls)
@@ -56,7 +51,6 @@ local function config()
     -- docker/dockercompose? (dockerls)
     -- cspell/textlsp/basicsls (spell-checking)
     -- one for html/css/js/ts
-    -- what is emmylua_ls
   }
 
   local blink_abilities = require('blink.cmp').get_lsp_capabilities()
@@ -257,11 +251,10 @@ return {
     },
   },
   {
-    'vague-theme/vague.nvim',
-    lazy = false,
+    'savq/melange-nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'vague'
+      vim.cmd.colorscheme 'melange'
     end,
   },
   {
@@ -296,16 +289,20 @@ return {
     lazy = true,
   },
   {
-    -- require('mini.comment').setup {} -- config this
+    'numToStr/Comment.nvim', -- vim-commentary?
+    lazy = true,
   },
   {
-    -- require('mini.align').setup {} -- config this
+    'akinsho/toggleterm.nvim',
+    lazy = true,
   },
   {
-    -- require('mini.extra').setup {} -- config this
+    'junegunn/vim-easy-align',
+    lazy = true,
   },
   {
-    -- require('mini.bracketed').setup {}
+    'tpope/vim-unimpaired',
+    lazy = true,
   },
   {
     -- require('mini.bufremove').setup {}
@@ -317,13 +314,10 @@ return {
     -- require('mini.cursorword').setup {}
   },
   {
-    -- require('mini.deps').setup {}
-  },
-  {
     -- require('mini.docs').setup {}
   },
   {
-    -- require('mini.surround').setup {} -- config this
+    -- require('mini.surround')
   },
   {
     -- require('mini.fuzzy').setup {}
@@ -374,15 +368,11 @@ return {
     -- require('mini.test').setup {}
   },
   {
-    -- require('mini.tabline').setup {}
+    'akinsho/bufferline.nvim',
+    lazy = true,
   },
   {
     -- require('mini.trailspace').setup {}
-  },
-  {
-    -- require('mini.visits').setup {}
-  },
-  {
-    -- require('mini.basics').setup {}
+    -- vim-better-whitespace
   },
 }
