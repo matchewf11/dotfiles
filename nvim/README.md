@@ -1,3 +1,1 @@
-This is my nvim config
-
-Make sure to have fzf and nerd fonts and unzip!!!
+Welcome to my nvim config, hope you enjoy.

@@ -207,6 +207,13 @@ return {
         end,
         desc = 'Search Lines',
       },
+      {
+        '<leader>so',
+        function()
+          require('fzf-lua').oldfiles()
+        end,
+        desc = 'Search Oldfiles',
+      },
     },
   },
   { -- config this
@@ -270,7 +277,6 @@ return {
   },
   {
     'lewis6991/gitsigns.nvim',
-    lazy = true,
   },
   {
     'mfussenegger/nvim-dap',
@@ -289,7 +295,7 @@ return {
     lazy = true,
   },
   {
-    'numToStr/Comment.nvim', -- vim-commentary?
+    'tpope/vim-commentary',
     lazy = true,
   },
   {
@@ -305,74 +311,53 @@ return {
     lazy = true,
   },
   {
-    -- require('mini.bufremove').setup {}
+    -- nvim-surround
+    -- mini.surround
+    'tpope/vim-surround',
+    lazy = true,
   },
   {
-    -- require('mini.completion').setup {}
+    'folke/todo-comments.nvim',
+    lazy = true,
   },
   {
-    -- require('mini.cursorword').setup {}
+    'lukas-reineke/indent-blankline.nvim',
+    lazy = true,
   },
   {
-    -- require('mini.docs').setup {}
+    -- mini.ai
+    -- targets.vim
   },
   {
-    -- require('mini.surround')
+    -- mini.jump
+    -- vim-sneak
   },
   {
-    -- require('mini.fuzzy').setup {}
+    -- mini jump2d
+    -- leap.nvim
   },
   {
-    -- require('mini.hipatterns').setup {}
+    'matze/vim-move',
+    lazy = true,
   },
   {
-    -- require('mini.indentscope').setup {}
+    'j-hui/fidget.nvim',
+    lazy = true,
   },
   {
-    -- require('mini.ai').setup {} -- config this
+    'gbprod/substitute.nvim',
+    lazy = true,
   },
   {
-    -- require('mini.jump').setup {}
-  },
-  {
-    -- require('mini.jump2d').setup {}
-  },
-  {
-    -- require('mini.keymap').setup {}
-  },
-  {
-    -- require('mini.map').setup {}
-  },
-  {
-    -- require('mini.misc').setup {}
-  },
-  {
-    -- require('mini.move').setup {}
-  },
-  {
-    -- require('mini.notify').setup {}
-  },
-  {
-    -- require('mini.operators').setup {}
-  },
-  {
-    -- require('mini.sessions').setup {}
-  },
-  {
-    -- require('mini.splitjoin').setup {}
-  },
-  {
-    -- require('mini.starter').setup {}
-  },
-  {
-    -- require('mini.test').setup {}
+    'AndrewRadev/splitjoin.vim',
+    lazy = true,
   },
   {
     'akinsho/bufferline.nvim',
     lazy = true,
   },
   {
-    -- require('mini.trailspace').setup {}
-    -- vim-better-whitespace
+    'ntpeters/vim-better-whitespace',
+    lazy = true,
   },
 }
