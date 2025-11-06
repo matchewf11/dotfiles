@@ -9,6 +9,11 @@ return {
   - -p to paginate
   - ! to run in background
 args:
+- add
+- commit
+- rebase -i
+- diff
+- log
 - blame (in vertival split)
   - to resize column (A author, C commit, D date)
   - gq close blame (:Gedit to return to work tree version)
@@ -18,82 +23,14 @@ args:
 - difftool/merge diff/merge in qf list
   - -y in tabs
 wrappers for vim built-ins: (:grep -> :Ggrep)
-- grep git grep (also lgrep)
-  - -q for quiet
+
+grep  clog/llog cd/lcd  edit  split/vsplit
+tabedit/pedit/drop  wq / wq!
+read (empty buffer when arg is ommited similar to checkout) (optrional range)
+write (effectively git add/checkout) (optional path)
+
 --]]
 
---                                                  *:Gclog*
--- :Gclog[!] [args]        Use git-log [args] to load the commit history into the
---                         |quickfix| list.  Jumps to the first commit unless [!]
---                         is given.  This command wraps |:cfile|.
---
---                         The quickfix list can be awkward for many use cases
---                         and exhibits extremely poor performance with larger
---                         data sets.  Consider using |:Git| log --oneline
---                         instead.
---
--- :{range}Gclog[!] [args] Use git-log -L to load previous revisions of the given
---                         range of the current file into the |quickfix| list.
---                         The cursor is positioned on the first line of the
---                         first diff hunk for each commit.  Use :0Gclog to
---                         target the entire file.
---
---                                                 *:Gllog*
--- :Gllog [args]           Like |:Gclog|, but use the location list instead of the
---                         |quickfix| list.
---
---                                                 *:Gcd*
--- :Gcd [directory]        |:cd| relative to the repository.
---
---                                                 *:Glcd*
--- :Glcd [directory]       |:lcd| relative to the repository.
---
---                                                 *:Gedit* *fugitive-:Ge*
--- :Gedit [object]         |:edit| a |fugitive-object|.
---
---                                                 *:Gsplit*
--- :Gsplit [object]        |:split| a |fugitive-object|.
---
---                                                 *:Gvsplit*
--- :Gvsplit [object]       |:vsplit| a |fugitive-object|.
---
---                                                 *:Gtabedit*
--- :Gtabedit [object]      |:tabedit| a |fugitive-object|.
---
---                                                 *:Gpedit*
--- :Gpedit [object]        |:pedit| a |fugitive-object|.
---
---                                                 *:Gdrop*
--- :Gdrop [object]         |:drop| a |fugitive-object|.
---
---                                                 *:Gread* *fugitive-:Gr*
--- :Gread [object]         Empty the buffer and |:read| a |fugitive-object|.
---                         When the argument is omitted, this is similar to
---                         git-checkout on a work tree file or git-add on a stage
---                         file, but without writing anything to disk.
---
--- :{range}Gread [object]  |:read| in a |fugitive-object| after {range}.
---
---                                                 *:Gwrite* *fugitive-:Gw*
--- :Gwrite                 Write to the current file's path and stage the results.
---                         When run in a work tree file, it is effectively git
---                         add.  Elsewhere, it is effectively git-checkout.  A
---                         great deal of effort is expended to behave sensibly
---                         when the work tree or index version of the file is
---                         open in another buffer.
---
--- :Gwrite {path}          You can give |:Gwrite| an explicit path of where in
---                         the work tree to write.  You can also give a path like
---                         :0:foo.txt or :0:% to write to just that stage in
---                         the index.
---
---                                                 *:Gwq*
--- :Gwq [path]             Like |:Gwrite| followed by |:quit| if the write
---                         succeeded.
---
--- :Gwq! [path]            Like |:Gwrite|! followed by |:quit|! if the write
---                         succeeded.
---
 --                                                 *:Gdiffsplit*
 -- :Gdiffsplit [object]    Perform a |vimdiff| against the given file, or if a
 --                         commit is given, the current file in that commit.
