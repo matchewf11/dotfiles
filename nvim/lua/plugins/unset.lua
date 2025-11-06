@@ -1,26 +1,3 @@
--- add lsp/fmt/lint for all languages
--- rust
--- lua
--- go
--- bash
--- c
--- json
--- html/css/js
--- toml
--- make
--- haskell
---
--- markdown
--- yaml
--- docker?
--- sql?
-local large_file = function(_, buf) -- disables for large files
-  local max_filesize = 100 * 1024 -- 100 KB
-  local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-  if ok and stats and stats.size > max_filesize then
-    return true
-  end
-end
 local regex_langs = {}
 
 local function config()
@@ -143,7 +120,14 @@ return {
       auto_install = true,
       highlight = {
         enable = true,
-        disable = large_file,
+        -- disables for large files
+        disable = function(_, buf)
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+            return true
+          end
+        end,
         additional_vim_regex_highlighting = regex_langs,
       },
       indent = {
@@ -272,10 +256,6 @@ return {
     -- this is equivalent to setup({}) function
   },
   {
-    'tpope/vim-fugitive',
-    lazy = true,
-  },
-  {
     'lewis6991/gitsigns.nvim',
   },
   {
@@ -295,6 +275,7 @@ return {
     lazy = true,
   },
   {
+    -- Comment.nvim
     'tpope/vim-commentary',
     lazy = true,
   },
@@ -307,6 +288,7 @@ return {
     lazy = true,
   },
   {
+    -- mini.bracketed
     'tpope/vim-unimpaired',
     lazy = true,
   },
@@ -361,3 +343,20 @@ return {
     lazy = true,
   },
 }
+
+-- add lsp/fmt/lint for all languages
+-- rust
+-- lua
+-- go
+-- bash
+-- c
+-- json
+-- html/css/js
+-- toml
+-- make
+-- haskell
+--
+-- markdown
+-- yaml
+-- docker?
+-- sql?
