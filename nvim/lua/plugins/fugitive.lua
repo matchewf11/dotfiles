@@ -6,71 +6,22 @@ return {
 --[[
 :G or :Git loads a window with status (g? for usage)
 :G {arg} to run git cmd (Git! to run in background)
-
-
--p to paginate
+  - -p to paginate
+  - ! to run in background
+args:
+- blame (in vertival split)
+  - to resize column (A author, C commit, D date)
+  - gq close blame (:Gedit to return to work tree version)
+  - <CR> close, jump to patch that added line
+  - o jump to patch/blob in sp (O in new tab, p in preview win)
+  - - reblame at commit
+- difftool/merge diff/merge in qf list
+  - -y in tabs
+wrappers for vim built-ins: (:grep -> :Ggrep)
+- grep git grep (also lgrep)
+  - -q for quiet
 --]]
 
--- :Git blame [flags]      Run git-blame [flags] on the current file and open the
---                         results in a scroll-bound vertical split.  The
---                         following maps, which work on the cursor line commit
---                         where sensible, are provided:
---
---                         g?    show this help
---                         A     resize to end of author column
---                         C     resize to end of commit column
---                         D     resize to end of date/time column
---                         gq    close blame, then |:Gedit| to return to work
---                               tree version
---                         <CR>  close blame, and jump to patch that added line
---                               (or directly to blob for boundary commit)
---                         o     jump to patch or blob in horizontal split
---                         O     jump to patch or blob in new tab
---                         p     jump to patch or blob in preview window
---                         -     reblame at commit
---
---                         The maps |fugitive_P| and |fugitive_~| are also
---                         supported to reblame on a parent commit, but this is
---                         inherently fragile, as the line being blamed will no
---                         longer exist.  The preferred alternative is to use
---                         <CR> to open up the commit, select the corresponding
---                         `-` line that you care about, and press <CR> twice
---                         more to reblame at that line.  Viewing the commit also
---                         gives you additional context as to why the line
---                         changed.
---
---                                                 *:Git_difftool*
--- :Git[!] difftool [args] Invoke `git diff [args]` and load the changes into the
---                         quickfix list.  Each changed hunk gets a separate
---                         quickfix entry unless you pass an option like
---                         --name-only or --name-status.  Jumps to the first
---                         change unless [!] is given.
---
--- :Git difftool -y [args] Invoke `git diff [args]`, open each changed file in a
---                         new tab, and invoke |:Gdiffsplit!| against the
---                         appropriate commit.
---
---                                                 *:Git_mergetool*
--- :Git mergetool [args]   Like |:Git_difftool|, but target merge conflicts.
---
--- Wrappers for Vim built-ins ~
---
--- These all directly map onto a built-in Vim command, and generally have names
--- that prepend "G" to the command they are wrapping.  For example, :Ggrep is G
--- plus |:grep|.
---
---                                                 *:Ggrep* *:Git_grep*
--- :Ggrep[!] [args]        An approximation of |:grep|[!] with git-grep as
--- :Git[!] grep -O [args]  'grepprg'.
---
--- :Ggrep[!] --quiet [args]
--- :Ggrep[!] -q [args]     Like |:Ggrep|, but instead of displaying output, open
---                         the quickfix list.
---
---                                                 *:Glgrep*
--- :Glgrep[!] [args]       :Ggrep but for |:lgrep|.
--- :0Git[!] grep -O [args]
---
 --                                                  *:Gclog*
 -- :Gclog[!] [args]        Use git-log [args] to load the commit history into the
 --                         |quickfix| list.  Jumps to the first commit unless [!]
