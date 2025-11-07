@@ -28,6 +28,23 @@ local function config()
     -- docker/dockercompose? (dockerls)
     -- cspell/textlsp/basicsls (spell-checking)
     -- one for html/css/js/ts
+
+    -- add lsp/fmt/lint for all languages
+    -- rust
+    -- lua
+    -- go
+    -- bash
+    -- c
+    -- json
+    -- html/css/js
+    -- toml
+    -- make
+    -- haskell
+    --
+    -- markdown
+    -- yaml
+    -- docker?
+    -- sql?
   }
 
   local blink_abilities = require('blink.cmp').get_lsp_capabilities()
@@ -242,13 +259,6 @@ return {
     },
   },
   {
-    'savq/melange-nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'melange'
-    end,
-  },
-  {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
     config = true,
@@ -343,20 +353,3 @@ return {
     lazy = true,
   },
 }
-
--- add lsp/fmt/lint for all languages
--- rust
--- lua
--- go
--- bash
--- c
--- json
--- html/css/js
--- toml
--- make
--- haskell
---
--- markdown
--- yaml
--- docker?
--- sql?
