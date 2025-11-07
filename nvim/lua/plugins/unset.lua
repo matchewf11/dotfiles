@@ -217,13 +217,6 @@ return {
       },
     },
   },
-  { -- config this
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup {}
-    end,
-  },
   {
     'stevearc/oil.nvim',
     lazy = false,
@@ -330,10 +323,6 @@ return {
   },
   {
     'matze/vim-move',
-    lazy = true,
-  },
-  {
-    'j-hui/fidget.nvim',
     lazy = true,
   },
   {
