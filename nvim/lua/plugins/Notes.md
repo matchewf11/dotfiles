@@ -1,14 +1,11 @@
--- make kepmap to move to next or prev diagnostic? '[d', '[D', ']d', ']D'
-
--- do i need keymaps?
--- just do :Something
-
 --guess-indent
 --todo comments
 --mini.ai
 --mini.surround
 --other kickstart stuff
 --other mini stuff
+
+tabs, windows, splits, tmux, i3
 
 -- add back kickstart.debug w/ config
 
