@@ -5,37 +5,13 @@ return {
     require('lualine').setup {
       options = { globalstatus = true },
       sections = {
-        lualine_a = {
-          { 'mode' },
-        },
-        lualine_b = {
-          { 'branch' },
-          { 'diagnostics' },
-          { 'diff' },
-        },
-        lualine_c = {
-          { 'filename' },
-        },
-        lualine_x = {
-          {
-            'buffers',
-            mode = 2,
-          },
-        },
-        lualine_y = {
-          { 'lsp_status' },
-        },
-        lualine_z = {
-          { 'location' },
-        },
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch', 'diff' },
+        lualine_c = { { 'filename', path = 1 } },
+        lualine_x = { 'diagnostics' },
+        lualine_y = { 'lsp_status' },
+        lualine_z = { 'location' },
       },
-      tabline = {},
-      winbar = {},
-      inactive_winbar = {},
-      extensions = {},
     }
   end,
 }
-
--- i am at comopnent specific options rn
---
