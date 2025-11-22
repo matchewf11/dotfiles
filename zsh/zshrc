@@ -5,6 +5,8 @@ export MANPATH="/usr/local/man:$MANPATH"
 export PATH=$PATH:$HOME/go/bin # add go to path
 export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
 export PATH="$HOME/.npm-global/bin:$PATH" # add npm to path
+export PATH="$HOME/.cabal/bin:$PATH"
+
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
 
 HISTFILE=~/.zsh_history
@@ -17,6 +19,8 @@ setopt share_history
 
 source <(fzf --zsh)
 bindkey -v
+
+autoload -Uz compinit && compinit
 
 alias ff="firefox >/dev/null 2>&1 & disown"
 alias vi='nvim'
@@ -44,6 +48,7 @@ fe() {
   fi
 }
 
+# cd ... (look into other zsh specific stuff)
 up() {
   local n=${1:-1}
   for ((i = 0; i < n; i++)); do
@@ -52,10 +57,16 @@ up() {
 }
 
 
-export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_PLUGIN_PATH=/usr/share/zsh/plugins
+source $ZSH_PLUGIN_PATH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZSH_PLUGIN_PATH/zsh-history-substring-search/zsh-history-substring-search.zsh
 
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^P'   history-substring-search-up
+bindkey '^N'   history-substring-search-down
 
 # i am using jq
 # zoxide – smarter cd, jump to frequently used directories.
@@ -99,3 +110,59 @@ type starship_zle-keymap-select >/dev/null || \
 {
   eval "$(starship init zsh)"
 }
+
+# export EDITOR="nvim"
+# export VISUAL="nvim"
+# export PAGER="less"
+#
+# # History
+# HISTFILE=~/.zsh_history
+# HISTSIZE=10000
+# SAVEHIST=10000
+# setopt HIST_IGNORE_DUPS       # no duplicate entries
+# setopt HIST_IGNORE_SPACE      # ignore commands starting with space
+# setopt SHARE_HISTORY          # share history across sessions
+#
+# # --- Prompt ---
+# autoload -Uz colors && colors
+# PROMPT='%F{green}%n@%m%f:%F{blue}%~%f %# '
+#
+# # --- Aliases ---
+# alias ls='ls --color=auto'
+# alias ll='ls -lh'
+# alias la='ls -A'
+# alias l='ls -CF'
+# alias cls='clear'
+# alias ..='cd ..'
+# alias ...='cd ../..'
+# alias grep='grep --color=auto'
+# alias vim='nvim'
+#
+# # --- Path ---
+# export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+#
+# # --- Plugins (optional, manual load example) ---
+# # Example if using zinit or antibody later:
+# # zinit light zsh-users/zsh-autosuggestions
+# # zinit light zsh-users/zsh-syntax-highlighting
+#
+# # --- Completion system ---
+# autoload -Uz compinit
+# compinit
+#
+# # --- Enable auto cd (so you can type folder name to cd there) ---
+# setopt AUTO_CD
+#
+# # --- Useful keybinds ---
+# bindkey -e  # Emacs-style
+# bindkey '^P' up-line-or-search
+# bindkey '^N' down-line-or-search
+
+
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+[[ ! -r '/home/matchew/.opam/opam-init/init.zsh' ]] || source '/home/matchew/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+# END opam configuration

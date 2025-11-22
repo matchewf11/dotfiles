@@ -9,14 +9,6 @@ local M = {}
 function M.global()
   set_maps {
     { '<Esc>', '<cmd>nohlsearch<CR>', 'Clear Highlights' },
-    { '<C-h>', '<C-w><C-h>', 'Move focus to the left window' },
-    { '<C-l>', '<C-w><C-l>', 'Move focus to the right window' },
-    { '<C-j>', '<C-w><C-j>', 'Move focus to the lower window' },
-    { '<C-k>', '<C-w><C-k>', 'Move focus to the upper window' },
-    { '<C-S-h>', '<C-w>H', 'Move window to the left' },
-    { '<C-S-l>', '<C-w>L', 'Move window to the right' },
-    { '<C-S-j>', '<C-w>J', 'Move window to the lower' },
-    { '<C-S-k>', '<C-w>K', 'Move window to the upper' },
     { '<Esc><Esc>', '<C-\\><C-n>', 'Exit terminal mode', 't' },
     { '<leader>q', vim.diagnostic.setloclist, 'Open diagnostic [Q]uickfix list' },
   }
