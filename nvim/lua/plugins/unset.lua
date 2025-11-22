@@ -22,6 +22,7 @@ local function config()
     'clangd', -- pacman
     'taplo', -- cargo
     'hls', -- ghcup
+    'pyright', -- npm
     -- bash (bashls)
     -- sql (sqlls)
     -- json (jsonls)
@@ -186,6 +187,7 @@ return {
     'ibhagwan/fzf-lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
+    cmd = { 'FzfLua' },
     keys = {
       {
         '<leader>sf',
@@ -199,14 +201,14 @@ return {
         function()
           require('fzf-lua').buffers()
         end,
-        desc = 'Search Lines',
+        desc = 'Search Buffer',
       },
       {
         '<leader>sl',
         function()
-          require('fzf-lua').lines()
+          require('fzf-lua').blines() -- lines as well
         end,
-        desc = 'Search Lines',
+        desc = 'Search Buffer Lines',
       },
       {
         '<leader>so',
