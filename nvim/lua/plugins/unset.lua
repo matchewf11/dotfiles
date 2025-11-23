@@ -154,14 +154,14 @@ return {
       },
     },
   },
-  {
-    'nvim-treesitter/nvim-treesitter-context',
-    lazy = true,
-  },
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    lazy = true,
-  },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-context',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-textobjects',
+  --   lazy = true,
+  -- },
   { -- config this
     'saghen/blink.cmp',
     dependencies = {
@@ -229,80 +229,80 @@ return {
   {
     'lewis6991/gitsigns.nvim',
   },
-  {
-    'mfussenegger/nvim-dap',
-    lazy = true,
-  },
-  {
-    'ThePrimeagen/harpoon',
-    lazy = true,
-  },
-  {
-    'chentoast/marks.nvim',
-    lazy = true,
-  },
-  {
-    -- Comment.nvim
-    'tpope/vim-commentary',
-    lazy = true,
-  },
-  {
-    'akinsho/toggleterm.nvim',
-    lazy = true,
-  },
-  {
-    'junegunn/vim-easy-align',
-    lazy = true,
-  },
-  {
-    -- mini.bracketed
-    'tpope/vim-unimpaired',
-    lazy = true,
-  },
-  {
-    -- nvim-surround
-    -- mini.surround
-    'tpope/vim-surround',
-    lazy = true,
-  },
-  {
-    'folke/todo-comments.nvim',
-    lazy = true,
-  },
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    lazy = true,
-  },
-  {
-    -- mini.ai
-    -- targets.vim
-  },
-  {
-    -- mini.jump
-    -- vim-sneak
-  },
-  {
-    -- mini jump2d
-    -- leap.nvim
-  },
-  {
-    'matze/vim-move',
-    lazy = true,
-  },
-  {
-    'gbprod/substitute.nvim',
-    lazy = true,
-  },
-  {
-    'AndrewRadev/splitjoin.vim',
-    lazy = true,
-  },
-  {
-    'akinsho/bufferline.nvim',
-    lazy = true,
-  },
-  {
-    'ntpeters/vim-better-whitespace',
-    lazy = true,
-  },
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'ThePrimeagen/harpoon',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'chentoast/marks.nvim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   -- Comment.nvim
+  --   'tpope/vim-commentary',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'akinsho/toggleterm.nvim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'junegunn/vim-easy-align',
+  --   lazy = true,
+  -- },
+  -- {
+  --   -- mini.bracketed
+  --   'tpope/vim-unimpaired',
+  --   lazy = true,
+  -- },
+  -- {
+  --   -- nvim-surround
+  --   -- mini.surround
+  --   'tpope/vim-surround',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'folke/todo-comments.nvim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   -- mini.ai
+  --   -- targets.vim
+  -- },
+  -- {
+  --   -- mini.jump
+  --   -- vim-sneak
+  -- },
+  -- {
+  --   -- mini jump2d
+  --   -- leap.nvim
+  -- },
+  -- {
+  --   'matze/vim-move',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'gbprod/substitute.nvim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'AndrewRadev/splitjoin.vim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'akinsho/bufferline.nvim',
+  --   lazy = true,
+  -- },
+  -- {
+  --   'ntpeters/vim-better-whitespace',
+  --   lazy = true,
+  -- },
 }
