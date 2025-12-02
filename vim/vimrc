@@ -3,6 +3,7 @@ Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-vinegar'
 call plug#end()
 
 " line numbers
@@ -23,3 +24,6 @@ nnoremap <leader>sf :Files<CR>
 nnoremap <leader>sl :BLines<CR>
 nnoremap <leader>sb :Buffers<CR>
 nnoremap <leader>sh :History<CR>
+
+" vin remaps
+nnoremap <leader>e :e .<CR>
