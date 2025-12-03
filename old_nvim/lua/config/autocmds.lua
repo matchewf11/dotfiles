@@ -21,6 +21,8 @@ function M.global()
     end,
   })
 
+  -- change this to filetype plugin
+  -- .config/nvim/after/ftplugin/lua.lua
   set_spacing('lua', true, 2, 2)
   set_spacing('go', false, 4, 4)
   set_spacing('c', true, 2, 2)

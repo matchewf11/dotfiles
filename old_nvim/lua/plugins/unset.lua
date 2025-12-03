@@ -285,6 +285,7 @@ return {
   -- {
   --   -- mini jump2d
   --   -- leap.nvim
+  --   (maybe flash.nvim)
   -- },
   -- {
   --   'matze/vim-move',

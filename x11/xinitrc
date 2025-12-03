@@ -1,8 +1,11 @@
 #!/bin/sh
+
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+
 setxkbmap -option caps:swapescape
 exec i3
 
 # start picom in here?
 # set up picom?
-
 # https://www.wikihow.com/Configure-X11-in-Linux
