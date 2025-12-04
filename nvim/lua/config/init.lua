@@ -9,9 +9,7 @@ vim.o.guicursor = 'a:block'
 -- vim.g.maplocalleader = "\\"
 -- vim.g.mapleader = ' '
 -- vim.keymap.set('n', '<leader>e', vim.cmd.Ex)
-
 -- :so to source this file
--- fzf
 -- lsp
 -- <https://github.com/ThePrimeagen/init.lua>
 -- <https://github.com/SylvanFranklin/.config/tree/main/nvim>
@@ -20,7 +18,15 @@ vim.o.guicursor = 'a:block'
 -- <https://github.com/alacritty/alacritty-theme/blob/master/themes/gruvbox_dark.toml>
 -- look at my old config
 
--- load lazy and the plugins
+-- for diagnostics
+-- vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+-- vim.o.updatetime = 300
+-- vim.api.nvim_create_autocmd("CursorHold", {
+--   callback = function()
+--     vim.diagnostic.open_float(nil, { focus = false })
+--   end,
+-- })
+
 require 'config.lazy'
 
 vim.cmd.colorscheme 'gruvbox'
