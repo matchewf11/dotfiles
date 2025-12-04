@@ -10,4 +10,11 @@ return {
 		lazy = false, 
 		build = ":TSUpdate"
 	},
+	{
+	  'stevearc/oil.nvim',
+	  opts = { delete_to_trash = true },
+	  dependencies = { "nvim-tree/nvim-web-devicons" }, 
+	  lazy = false,
+	  keys = { {'<leader>e', '<CMD>Oil<CR>', desc = 'Open Oil'} },
+	},
 }

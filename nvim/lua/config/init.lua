@@ -11,7 +11,6 @@ vim.o.guicursor = 'a:block'
 -- vim.keymap.set('n', '<leader>e', vim.cmd.Ex)
 
 -- :so to source this file
--- oil
 -- fzf
 -- lsp
 -- <https://github.com/ThePrimeagen/init.lua>
@@ -21,6 +20,7 @@ vim.o.guicursor = 'a:block'
 -- <https://github.com/alacritty/alacritty-theme/blob/master/themes/gruvbox_dark.toml>
 -- look at my old config
 
+-- load lazy and the plugins
 require 'config.lazy'
 
 vim.cmd.colorscheme 'gruvbox'
