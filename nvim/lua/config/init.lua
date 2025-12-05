@@ -1,3 +1,7 @@
+-- set global leader to <Space>
+vim.g.mapleader = ' '
+-- vim.g.maplocalleader = "\\"
+
 -- Line numbers
 vim.o.number = true
 vim.o.relativenumber = true
@@ -5,10 +9,9 @@ vim.o.relativenumber = true
 -- Cursor Shape
 vim.o.guicursor = 'a:block'
 
--- vim.g.mapleader = " "
--- vim.g.maplocalleader = "\\"
--- vim.g.mapleader = ' '
--- vim.keymap.set('n', '<leader>e', vim.cmd.Ex)
+-- Open netrw
+vim.keymap.set('n', '<leader>e', vim.cmd.Ex)
+
 -- :so to source this file
 -- lsp
 -- <https://github.com/ThePrimeagen/init.lua>
@@ -177,3 +180,36 @@ complete_bline 	complete line (current buffer only)
 --   -- default in all keymap presets
 --   ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
 -- }
+--
+--Navigation
+-- j → move cursor down
+-- k → move cursor up
+-- Enter → open file or enter directory
+-- - → go up one directory (parent of current)
+-- u → go back in directory history
+-- . → show hidden files
+--
+-- Opening files
+-- o → open file in current window
+-- t → open file in new tab
+-- v → open file in vertical split
+-- x → open file in horizontal split
+--
+-- File operations
+-- % → create new file
+-- d → delete file
+-- D → create new directory
+-- R → rename file
+-- mf → mark file (for batch operations)
+-- :Move → move marked files
+-- :Copy → copy marked files
+--
+-- Display & sorting
+-- s → change sort order (name, extension, size, time)
+-- i → change listing style (thin, long, tree)
+--
+-- Other useful keys
+-- q → quit Netrw
+-- r → refresh current directory
+--
+-- move off of fzf-lua (can i just use :vimgrep)

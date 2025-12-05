@@ -34,13 +34,7 @@ return {
 			end
 		end,
 	},
-	{
-		"stevearc/oil.nvim",
-		opts = { delete_to_trash = true },
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		lazy = false,
-		keys = { { "<leader>e", "<CMD>Oil<CR>", desc = "Open Oil" } },
-	},
+	-- try using :vimgrep and :grep
 	{
 		"ibhagwan/fzf-lua",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
