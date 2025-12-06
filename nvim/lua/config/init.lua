@@ -1,20 +1,59 @@
--- set global leader to <Space>
-vim.g.mapleader = ' '
+-- Global Options
+vim.g.mapleader = ' ' -- set global leader to <Space>
 -- vim.g.maplocalleader = "\\"
 
--- Line numbers
+-- Opts
 vim.o.number = true
 vim.o.relativenumber = true
-
+vim.o.laststatus = 3 -- status line only on last window
 vim.o.guicursor = 'a:block' -- Cursor Shape
 vim.o.scrolloff = 8 -- how much buffer around screen
+vim.o.signcolumn = "yes" -- when to show signcolumn
+vim.o.splitright = true -- split to right
+vim.o.splitbelow = true -- split to bottom
+vim.o.cursorline = true -- show line you are on
 
+-- Keymaps
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex) -- Open netrw
+vim.keymap.set('n', '<leader>n', vim.cmd.bn) -- Next buffer
+vim.keymap.set('n', '<leader>p', vim.cmd.bp) -- Prev buffer
+-- delete buffer?
+
+
+-- from melkey
+-- vim-surround
+-- autopairs
+-- nerdcommenter
+-- whichkey
+-- indent-blankline
+-- gitsigns
+-- find fiels, ilve_grep, help_tags, buffer, quickfix, find files, grep_string
+-- vim.keymap.set("n", "<leader>+", "<Cmd>vertical resize +5<CR>", { desc = "Resize window +5" })
+-- [F] format buffer
+-- vim.keymap.set("n", "<leader>-", "<Cmd>vertical resize -5<CR>", { desc = "Resize window -5" })
+-- vim.opt.smartcase = true
+-- vim.opt.showmode = false
+-- vim.opt.swapfile = false
+-- vim.opt.undodir = string.format("%s/undodir", vim.fn.stdpath("cache"))
+-- vim.opt.undofile = true
+-- vim.opt.incsearch = true
+-- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
+-- vim.opt.shortmess:append("c")
+-- vim.opt.smartindent = true
+-- vim.opt.foldlevelstart = 99
+-- vim.opt.wrap = true
+-- vim.opt.wildignorecase = true
+-- vim.opt.showmatch = true
+-- vim.opt.ignorecase = true
+
+-- vim.opt.tabstop = 4
+-- vim.opt.softtabstop = 4
+-- vim.opt.shiftwidth = 4
+-- vim.opt.expandtab = true
 
 -- :so to source this file
 -- <https://github.com/ThePrimeagen/init.lua>
 -- <https://github.com/SylvanFranklin/.config/tree/main/nvim>
--- <https://github.com/Melkeydev/NvimConfig>
 -- <https://github.com/nvim-lua/kickstart.nvim>
 -- <https://github.com/alacritty/alacritty-theme/blob/master/themes/gruvbox_dark.toml>
 -- look at my old config
@@ -211,3 +250,6 @@ complete_bline 	complete line (current buffer only)
 -- r → refresh current directory
 --
 -- move off of fzf-lua (can i just use :vimgrep)
+-- :map jk
+--
+-- lang plugins lua, rust, etc..., (also dadbod for sql)
