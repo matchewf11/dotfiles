@@ -6,14 +6,12 @@ vim.g.mapleader = ' '
 vim.o.number = true
 vim.o.relativenumber = true
 
--- Cursor Shape
-vim.o.guicursor = 'a:block'
+vim.o.guicursor = 'a:block' -- Cursor Shape
+vim.o.scrolloff = 8 -- how much buffer around screen
 
--- Open netrw
-vim.keymap.set('n', '<leader>e', vim.cmd.Ex)
+vim.keymap.set('n', '<leader>e', vim.cmd.Ex) -- Open netrw
 
 -- :so to source this file
--- lsp
 -- <https://github.com/ThePrimeagen/init.lua>
 -- <https://github.com/SylvanFranklin/.config/tree/main/nvim>
 -- <https://github.com/Melkeydev/NvimConfig>
