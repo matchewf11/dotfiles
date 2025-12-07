@@ -1,6 +1,7 @@
 -- Global Options
-vim.g.mapleader = ' ' -- set global leader to <Space>
+vim.g.mapleader = ' '
 -- vim.g.maplocalleader = "\\"
+vim.g.c_syntax_for_h = true
 
 -- Opts
 vim.o.number = true
@@ -12,13 +13,13 @@ vim.o.signcolumn = "yes" -- when to show signcolumn
 vim.o.splitright = true -- split to right
 vim.o.splitbelow = true -- split to bottom
 vim.o.cursorline = true -- show line you are on
+vim.o.swapfile = false -- no swapfile
 
 -- Keymaps
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex) -- Open netrw
 vim.keymap.set('n', '<leader>n', vim.cmd.bn) -- Next buffer
 vim.keymap.set('n', '<leader>p', vim.cmd.bp) -- Prev buffer
 -- delete buffer?
-
 
 -- from melkey
 -- vim-surround
@@ -33,7 +34,6 @@ vim.keymap.set('n', '<leader>p', vim.cmd.bp) -- Prev buffer
 -- vim.keymap.set("n", "<leader>-", "<Cmd>vertical resize -5<CR>", { desc = "Resize window -5" })
 -- vim.opt.smartcase = true
 -- vim.opt.showmode = false
--- vim.opt.swapfile = false
 -- vim.opt.undodir = string.format("%s/undodir", vim.fn.stdpath("cache"))
 -- vim.opt.undofile = true
 -- vim.opt.incsearch = true
@@ -55,7 +55,6 @@ vim.keymap.set('n', '<leader>p', vim.cmd.bp) -- Prev buffer
 -- <https://github.com/ThePrimeagen/init.lua>
 -- <https://github.com/SylvanFranklin/.config/tree/main/nvim>
 -- <https://github.com/nvim-lua/kickstart.nvim>
--- <https://github.com/alacritty/alacritty-theme/blob/master/themes/gruvbox_dark.toml>
 -- look at my old config
 
 -- for diagnostics
@@ -253,3 +252,5 @@ complete_bline 	complete line (current buffer only)
 -- :map jk
 --
 -- lang plugins lua, rust, etc..., (also dadbod for sql)
+--
+-- fix up the ftplugins, to get rid of what is not necessary

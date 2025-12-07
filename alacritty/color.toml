@@ -1,23 +1,32 @@
-# <https://github.com/savq/melange-nvim?tab=readme-ov-file>
+# <https://github.com/alacritty/alacritty-theme/blob/master/themes/gruvbox_dark.toml>
 
+# Colors (Gruvbox dark)
+
+# Default colors
 [colors.primary]
-foreground = "#ECE1D7"
-background = "#292522"
+# hard contrast background = = '#1d2021'
+background = '#282828'
+# soft contrast background = = '#32302f'
+foreground = '#ebdbb2'
+
+# Normal colors
 [colors.normal]
-black = "#34302C"
-red = "#BD8183"
-green = "#78997A"
-yellow = "#E49B5D"
-blue = "#7F91B2"
-magenta = "#B380B0"
-cyan = "#7B9695"
-white = "#C1A78E"
+black   = '#282828'
+red     = '#cc241d'
+green   = '#98971a'
+yellow  = '#d79921'
+blue    = '#458588'
+magenta = '#b16286'
+cyan    = '#689d6a'
+white   = '#a89984'
+
+# Bright colors
 [colors.bright]
-black = "#867462"
-red = "#D47766"
-green = "#85B695"
-yellow = "#EBC06D"
-blue = "#A3A9CE"
-magenta = "#CF9BC2"
-cyan = "#89B3B6"
-white = "#ECE1D7"
+black   = '#928374'
+red     = '#fb4934'
+green   = '#b8bb26'
+yellow  = '#fabd2f'
+blue    = '#83a598'
+magenta = '#d3869b'
+cyan    = '#8ec07c'
+white   = '#ebdbb2'

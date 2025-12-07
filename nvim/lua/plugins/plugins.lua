@@ -2,7 +2,6 @@ return {
 	{
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
-		opts = { contrast = "hard" },
 	},
 	{
 		"saghen/blink.cmp",
@@ -22,14 +21,21 @@ return {
 		branch = "master",
 		lazy = false,
 		build = ":TSUpdate",
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        auto_install = true,
+        highlight = { enable = true },
+      }
+    end,
 	},
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			for _, server in ipairs({
+			for _, server in ipairs {
 				"lua_ls", -- pacman
-			}) do
+        "gopls", -- go
+			}  do
 				vim.lsp.enable(server)
 			end
 		end,
@@ -38,7 +44,6 @@ return {
 	{
 		"ibhagwan/fzf-lua",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {},
 		keys = {
 			{ "<leader>sb", "<CMD>FzfLua buffers<CR>", desc = "Search Buffers" },
 			{ "<leader>sf", "<CMD>FzfLua files<CR>", desc = "Search Files" },
