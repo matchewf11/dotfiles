@@ -58,12 +58,10 @@ vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = "Line diagnostics"
 
 -- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 -- vim.opt.shortmess:append("c")
--- vim.opt.foldlevelstart = 99
 
 -- :so to source this file
 -- :map jk
 -- lang plugins lua, rust, etc..., (also dadbod for sql)
-
 -- <https://github.com/ThePrimeagen/init.lua>
 -- <https://github.com/nvim-lua/kickstart.nvim>
 -- look at my old config
@@ -73,17 +71,13 @@ require 'config.lazy'
 vim.cmd.colorscheme 'gruvbox'
 
 -- marks.nvim
---
 -- vim.cmd [[set completeopt+=menuone,noselect,popup]]
---
 -- require("luasnip").setup({ enable_autosnippets = true })
 -- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
---
 -- map({ "n", "x" }, "<leader>d", '"+d')
 -- map({ "i", "s" }, "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
 -- map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
 -- map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
---
 -- vim.cmd([[
 -- 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
 -- 	nnoremap gK @='ddkPJ'<cr>| " join lines but reversed. `@=` so [count] works
@@ -94,14 +88,10 @@ vim.cmd.colorscheme 'gruvbox'
 -- 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
 -- 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
 -- ]])
---
 -- for i = 1, 8 do
 -- 	map({ "n", "t" }, "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
 -- end
---
 -- map({ "n", "v", "x" }, "<C-s>", [[:s/\V]], { desc = "Enter substitue mode in selection" })
--- map({ "v", "x", "n" }, "<C-y>", '"+y', { desc = "System clipboard yank." })
---
 -- map({ "n" }, "<leader>g", grep)
 -- map({ "n" }, "<leader>g", vimgrep)
 -- map({ "n" }, "<M-n>", "<cmd>resize +2<CR>")
@@ -113,7 +103,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- map({ "n" }, "<leader>w", "<Cmd>update<CR>", { desc = "Write the current buffer." })
 -- map({ "n" }, "<leader>q", "<Cmd>:quit<CR>", { desc = "Quit the current buffer." })
 -- map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>", { desc = "Quit all buffers and write." })
---
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- vim.keymap.set("n", "n", "nzzzv")
