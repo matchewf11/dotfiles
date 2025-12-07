@@ -1,12 +1,9 @@
--- Global Options
 vim.g.mapleader = ' '
 -- vim.g.maplocalleader = "\\"
 vim.g.c_syntax_for_h = true
 
--- Opts
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.laststatus = 3 -- status line only on last window
 vim.o.guicursor = 'a:block' -- Cursor Shape
 vim.o.scrolloff = 8 -- how much buffer around screen
 vim.o.signcolumn = "yes" -- when to show signcolumn
@@ -14,44 +11,39 @@ vim.o.splitright = true -- split to right
 vim.o.splitbelow = true -- split to bottom
 vim.o.cursorline = true -- show line you are on
 vim.o.swapfile = false -- no swapfile
+vim.o.undofile = true
+vim.o.statusline = '%f %m%r%h%w%y%q %= %l/%L:%v'
+vim.o.laststatus = 3 -- status line only on last window
 
--- Keymaps
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex) -- Open netrw
 vim.keymap.set('n', '<leader>n', vim.cmd.bn) -- Next buffer
 vim.keymap.set('n', '<leader>p', vim.cmd.bp) -- Prev buffer
--- delete buffer?
+vim.keymap.set('n', '<leader>d', vim.cmd.bd) -- Delete buffer
 
--- from melkey
 -- vim-surround
 -- autopairs
 -- nerdcommenter
 -- whichkey
 -- indent-blankline
 -- gitsigns
+-- buffer line
+-- lualine
+--
 -- find fiels, ilve_grep, help_tags, buffer, quickfix, find files, grep_string
--- vim.keymap.set("n", "<leader>+", "<Cmd>vertical resize +5<CR>", { desc = "Resize window +5" })
 -- [F] format buffer
--- vim.keymap.set("n", "<leader>-", "<Cmd>vertical resize -5<CR>", { desc = "Resize window -5" })
 -- vim.opt.smartcase = true
--- vim.opt.showmode = false
--- vim.opt.undodir = string.format("%s/undodir", vim.fn.stdpath("cache"))
--- vim.opt.undofile = true
 -- vim.opt.incsearch = true
 -- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 -- vim.opt.shortmess:append("c")
 -- vim.opt.smartindent = true
 -- vim.opt.foldlevelstart = 99
--- vim.opt.wrap = true
 -- vim.opt.wildignorecase = true
 -- vim.opt.showmatch = true
 -- vim.opt.ignorecase = true
-
--- vim.opt.tabstop = 4
--- vim.opt.softtabstop = 4
--- vim.opt.shiftwidth = 4
--- vim.opt.expandtab = true
+-- status line
 
 -- :so to source this file
+-- <https://github.com/Melkeydev/NvimConfig>
 -- <https://github.com/ThePrimeagen/init.lua>
 -- <https://github.com/SylvanFranklin/.config/tree/main/nvim>
 -- <https://github.com/nvim-lua/kickstart.nvim>
@@ -234,8 +226,9 @@ complete_bline 	complete line (current buffer only)
 -- File operations
 -- % → create new file
 -- d → delete file
--- D → create new directory
 -- R → rename file
+--
+-- D → create new directory
 -- mf → mark file (for batch operations)
 -- :Move → move marked files
 -- :Copy → copy marked files
@@ -252,5 +245,3 @@ complete_bline 	complete line (current buffer only)
 -- :map jk
 --
 -- lang plugins lua, rust, etc..., (also dadbod for sql)
---
--- fix up the ftplugins, to get rid of what is not necessary
