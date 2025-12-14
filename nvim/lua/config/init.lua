@@ -49,12 +49,10 @@ vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = "Line diagnostics"
 
 -- vim-surround
 -- autopairs
--- nerdcommenter
 -- whichkey
 -- indent-blankline
 -- gitsigns
--- buffer line
--- lualine
+-- marks.nvim
 
 -- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 -- vim.opt.shortmess:append("c")
@@ -70,7 +68,6 @@ require 'config.lazy'
 
 vim.cmd.colorscheme 'gruvbox'
 
--- marks.nvim
 -- vim.cmd [[set completeopt+=menuone,noselect,popup]]
 -- require("luasnip").setup({ enable_autosnippets = true })
 -- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })

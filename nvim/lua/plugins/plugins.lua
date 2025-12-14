@@ -1,4 +1,7 @@
 return {
+  -- config friendly-snippets
+  -- config luasnip
+  -- config nvim-web-devicons
 	{
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
@@ -35,6 +38,8 @@ return {
 			for _, server in ipairs {
 				"lua_ls", -- pacman
         "gopls", -- go
+        "clangd", -- pacman
+        "ts_ls" -- npm
 			}  do
 				vim.lsp.enable(server)
 			end
@@ -142,7 +147,6 @@ filetypes 	filetypes
 menus 	menus
 spellcheck 	misspelled words in buffer
 spell_suggest 	spelling suggestions
-packadd 	:packadd
 undotree 	history undo tree
 
 have a serach .config/nvim
