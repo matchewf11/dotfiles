@@ -44,7 +44,6 @@ return {
 			signature = { enabled = true },
 		},
 	},
-	-- chagne this to opts
 	{
 		"nvim-treesitter/nvim-treesitter",
 		branch = "master",
