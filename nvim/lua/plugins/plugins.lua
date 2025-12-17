@@ -1,10 +1,35 @@
 return {
-  -- config friendly-snippets
-  -- config luasnip
-  -- config nvim-web-devicons
+	-- config friendly-snippets
+	-- config luasnip
+	-- config nvim-web-devicons
 	{
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000,
+		"stevearc/conform.nvim",
+		cmd = { "ConformInfo" },
+		keys = {
+			{
+				"<leader>f",
+				function()
+					require("conform").format({ async = true })
+				end,
+				desc = "Format Buffer",
+			},
+		},
+		opts = {
+			formatters_by_ft = {
+				-- configure this
+				lua = { "stylua" }, -- cargo
+				javascript = { "prettier" },
+				-- ["*"] = { "codespell" },
+				-- ["_"] = { "trim_whitespace" },
+			},
+			default_format_opts = {
+				lsp_format = "fallback",
+			},
+		},
+	},
+	{
+		"ellisonleao/gruvbox.nvim",
+		priority = 1000,
 	},
 	{
 		"saghen/blink.cmp",
@@ -19,28 +44,29 @@ return {
 			signature = { enabled = true },
 		},
 	},
+	-- chagne this to opts
 	{
 		"nvim-treesitter/nvim-treesitter",
 		branch = "master",
 		lazy = false,
 		build = ":TSUpdate",
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        auto_install = true,
-        highlight = { enable = true },
-      }
-    end,
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				auto_install = true,
+				highlight = { enable = true },
+			})
+		end,
 	},
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			for _, server in ipairs {
+			for _, server in ipairs({
 				"lua_ls", -- pacman
-        "gopls", -- go
-        "clangd", -- pacman
-        "ts_ls" -- npm
-			}  do
+				"gopls", -- go
+				"clangd", -- pacman
+				"ts_ls", -- npm
+			}) do
 				vim.lsp.enable(server)
 			end
 		end,
