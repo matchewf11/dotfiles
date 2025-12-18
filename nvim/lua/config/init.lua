@@ -61,7 +61,6 @@ vim.keymap.set("n", "<leader>Q", vim.cmd.Q, { desc = "Quit and Write all Buffers
 -- :so to source this file
 -- :map jk
 -- lang plugins lua, rust, c, bash, sql, etc..., (also dadbod for sql)(i use go, js, rust alot too)
--- <https://github.com/ThePrimeagen/init.lua>
 -- look at my old config
 
 require("config.lazy")
@@ -120,6 +119,7 @@ vim.cmd.colorscheme("gruvbox")
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+--
 -- { windwp/nvim-autopairs }
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
 -- { todo-comments.nvim }
@@ -129,9 +129,10 @@ vim.cmd.colorscheme("gruvbox")
 -- { neo-tree.nvim }
 -- { 'j-hui/fidget.nvim' }
 -- {'folke/which-key.nvim' }
--- {'NMAC427/guess-indent.nvim' } 
+-- {'NMAC427/guess-indent.nvim' }
 -- { 'lewis6991/gitsigns.nvim' },
 -- { mini.nvim } stuff (surround, ai)
+--
 -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 -- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -145,3 +146,153 @@ vim.cmd.colorscheme("gruvbox")
 ---     vim.hl.on_yank()
 ---   end,
 --- })
+
+-- ThePrimeagen -------------------------------------------------------------------------
+-- remove whitespace
+-- autocmd({"BufWritePre"}, {
+--     group = ThePrimeagenGroup,
+--     pattern = "*",
+--     command = [[%s/\s\+$//e]],
+-- })
+--
+-- vim.g.netrw_browse_split = 0
+-- vim.g.netrw_banner = 0
+-- vim.g.netrw_winsize = 25
+--
+--vim.g.mapleader = " "
+-- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+--
+-- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+-- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+--
+-- vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
+--
+-- vim.keymap.set("n", "J", "mzJ`z")
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz")
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- vim.keymap.set("n", "n", "nzzzv")
+-- vim.keymap.set("n", "N", "Nzzzv")
+-- vim.keymap.set("n", "=ap", "ma=ap'a")
+-- vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
+--
+-- vim.keymap.set("n", "<leader>vwm", function()
+--     require("vim-with-me").StartVimWithMe()
+-- end)
+-- vim.keymap.set("n", "<leader>svwm", function()
+--     require("vim-with-me").StopVimWithMe()
+-- end)
+-- vim.keymap.set("n", "<leader>lt", function()
+--     vim.cmd [[ PlenaryBustedFile % ]]
+-- end)
+--
+-- -- greatest remap ever
+-- vim.keymap.set("x", "<leader>p", [["_dP]])
+--
+-- -- next greatest remap ever : asbjornHaland
+-- vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+-- vim.keymap.set("n", "<leader>Y", [["+Y]])
+--
+-- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
+--
+-- -- This is going to get me cancelled
+-- vim.keymap.set("i", "<C-c>", "<Esc>")
+--
+-- vim.keymap.set("n", "Q", "<nop>")
+-- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+-- vim.keymap.set("n", "<M-h>", "<cmd>silent !tmux-sessionizer -s 0 --vsplit<CR>")
+-- vim.keymap.set("n", "<M-H>", "<cmd>silent !tmux neww tmux-sessionizer -s 0<CR>")
+--
+-- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+-- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+--
+-- vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+-- vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+--
+-- vim.keymap.set(
+--     "n",
+--     "<leader>ee",
+--     "oif err != nil {<CR>}<Esc>Oreturn err<Esc>"
+-- )
+--
+-- vim.keymap.set(
+--     "n",
+--     "<leader>ea",
+--     "oassert.NoError(err, \"\")<Esc>F\";a"
+-- )
+--
+-- vim.keymap.set(
+--     "n",
+--     "<leader>ef",
+--     "oif err != nil {<CR>}<Esc>Olog.Fatalf(\"error: %s\\n\", err.Error())<Esc>jj"
+-- )
+--
+-- vim.keymap.set(
+--     "n",
+--     "<leader>el",
+--     "oif err != nil {<CR>}<Esc>O.logger.Error(\"error\", \"error\", err)<Esc>F.;i"
+-- )
+--
+-- vim.keymap.set("n", "<leader>ca", function()
+--     require("cellular-automaton").start_animation("make_it_rain")
+-- end)
+--
+-- vim.keymap.set("n", "<leader><leader>", function()
+--     vim.cmd("so")
+-- end)
+
+-- vim.opt.guicursor = ""
+--
+-- vim.opt.nu = true
+-- vim.opt.relativenumber = true
+--
+-- vim.opt.tabstop = 4
+-- vim.opt.softtabstop = 4
+-- vim.opt.shiftwidth = 4
+-- vim.opt.expandtab = true
+--
+-- vim.opt.smartindent = true
+--
+-- vim.opt.wrap = false
+--
+-- vim.opt.swapfile = false
+-- vim.opt.backup = false
+-- vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+-- vim.opt.undofile = true
+--
+-- vim.opt.hlsearch = false
+-- vim.opt.incsearch = true
+--
+-- vim.opt.termguicolors = true
+--
+-- vim.opt.scrolloff = 8
+-- vim.opt.signcolumn = "yes"
+-- vim.opt.isfname:append("@-@")
+--
+-- vim.opt.updatetime = 50
+--
+-- vim.opt.colorcolumn = "80"
+
+-- { trouble.nvim }
+-- { mbbill/undotree }
+-- { vim-be-good }
+-- { zen-mode.nvim }
+-- { nvim-lspconfig }
+-- { conform}
+-- {cmp-nvim-lsp}
+-- {cmp-buffer}
+-- {cmp-path}
+-- {cmp-cmdline}
+-- {nvim-cmp}
+-- {LuaSnip}
+-- {cmp_luasnip}
+-- {fidget.nvim}
+-- { peek.nvim }
+-- { friendly-snippets}
+-- { cloack.nvim }
+-- { harpoon }
+-- { vuciv/golf }
+-- {vim-fugitive}
+-- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
+-- {nvim-dap, nvim-dap-ui,nvim-nio}
