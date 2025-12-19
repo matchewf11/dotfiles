@@ -13,7 +13,6 @@ vim.o.cursorline = true
 vim.o.swapfile = false
 vim.o.undofile = true
 vim.o.hlsearch = false
-vim.o.statusline = "%f %m%r%h%w%y%q %= %l/%L:%v"
 vim.o.laststatus = 3
 vim.o.showtabline = 2
 vim.o.smartindent = true
@@ -54,23 +53,32 @@ vim.keymap.set("n", "<leader>Q", vim.cmd.Q, { desc = "Quit and Write all Buffers
 -- vim-surround
 -- autopairs
 -- whichkey
--- indent-blankline
 -- gitsigns
 -- marks.nvim
 
 -- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 -- vim.opt.shortmess:append("c")
 
+-- look at my old config
 -- :so to source this file
 -- :map jk
--- lang plugins lua, rust, c, bash, sql, etc..., (also dadbod for sql)(i use go, js, rust alot too)
--- look at my old config
+
+-- <https://www.youtube.com/watch?v=ALGBuFLzDSA>
+-- vim-dadbod
+-- vim-dadbod-completion
+-- vim-dadbod-ui
 
 require("config.lazy")
 
+vim.o.statusline = "%f %m%r%h%w%y%q %= %l/%L:%v"
+
 vim.cmd.colorscheme("gruvbox")
 
--- set up lsp, linters, and fmt for each lang that I use
+-- lsp, linter, fmt, debugger? for:
+-- bash
+-- lua
+-- c
+-- sql
 
 -- vim.cmd [[set completeopt+=menuone,noselect,popup]]
 -- require("luasnip").setup({ enable_autosnippets = true })
@@ -127,8 +135,7 @@ vim.cmd.colorscheme("gruvbox")
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
 -- { todo-comments.nvim }
 -- { gitsigns.nvim }
--- { indent-blankline.nvim }
--- { nvim-lint}
+-- { nvim-lint }
 -- { neo-tree.nvim }
 -- { 'j-hui/fidget.nvim' }
 -- {'folke/which-key.nvim' }
@@ -151,8 +158,8 @@ vim.cmd.colorscheme("gruvbox")
 --- })
 
 -- ThePrimeagen -------------------------------------------------------------------------
--- remove whitespace
 --
+-- remove whitespace
 -- autocmd({"BufWritePre"}, {
 --     group = ThePrimeagenGroup,
 --     pattern = "*",
