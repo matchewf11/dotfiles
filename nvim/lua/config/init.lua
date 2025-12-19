@@ -1,5 +1,7 @@
 vim.g.mapleader = " " -- vim.g.maplocalleader = "\\"
 vim.g.c_syntax_for_h = true
+-- vim.g.netrw_banner = false
+
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.guicursor = "a:block"
@@ -10,6 +12,7 @@ vim.o.splitbelow = true
 vim.o.cursorline = true
 vim.o.swapfile = false
 vim.o.undofile = true
+vim.o.hlsearch = false
 vim.o.statusline = "%f %m%r%h%w%y%q %= %l/%L:%v"
 vim.o.laststatus = 3
 vim.o.showtabline = 2
@@ -149,23 +152,18 @@ vim.cmd.colorscheme("gruvbox")
 
 -- ThePrimeagen -------------------------------------------------------------------------
 -- remove whitespace
+--
 -- autocmd({"BufWritePre"}, {
 --     group = ThePrimeagenGroup,
 --     pattern = "*",
 --     command = [[%s/\s\+$//e]],
 -- })
 --
--- vim.g.netrw_browse_split = 0
--- vim.g.netrw_banner = 0
 -- vim.g.netrw_winsize = 25
 --
---vim.g.mapleader = " "
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
---
 -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
---
--- vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
 --
 -- vim.keymap.set("n", "J", "mzJ`z")
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -175,16 +173,6 @@ vim.cmd.colorscheme("gruvbox")
 -- vim.keymap.set("n", "=ap", "ma=ap'a")
 -- vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 --
--- vim.keymap.set("n", "<leader>vwm", function()
---     require("vim-with-me").StartVimWithMe()
--- end)
--- vim.keymap.set("n", "<leader>svwm", function()
---     require("vim-with-me").StopVimWithMe()
--- end)
--- vim.keymap.set("n", "<leader>lt", function()
---     vim.cmd [[ PlenaryBustedFile % ]]
--- end)
---
 -- -- greatest remap ever
 -- vim.keymap.set("x", "<leader>p", [["_dP]])
 --
@@ -193,9 +181,6 @@ vim.cmd.colorscheme("gruvbox")
 -- vim.keymap.set("n", "<leader>Y", [["+Y]])
 --
 -- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
---
--- -- This is going to get me cancelled
--- vim.keymap.set("i", "<C-c>", "<Esc>")
 --
 -- vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
@@ -210,69 +195,15 @@ vim.cmd.colorscheme("gruvbox")
 -- vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 --
--- vim.keymap.set(
---     "n",
---     "<leader>ee",
---     "oif err != nil {<CR>}<Esc>Oreturn err<Esc>"
--- )
---
--- vim.keymap.set(
---     "n",
---     "<leader>ea",
---     "oassert.NoError(err, \"\")<Esc>F\";a"
--- )
---
--- vim.keymap.set(
---     "n",
---     "<leader>ef",
---     "oif err != nil {<CR>}<Esc>Olog.Fatalf(\"error: %s\\n\", err.Error())<Esc>jj"
--- )
---
--- vim.keymap.set(
---     "n",
---     "<leader>el",
---     "oif err != nil {<CR>}<Esc>O.logger.Error(\"error\", \"error\", err)<Esc>F.;i"
--- )
---
--- vim.keymap.set("n", "<leader>ca", function()
---     require("cellular-automaton").start_animation("make_it_rain")
--- end)
---
 -- vim.keymap.set("n", "<leader><leader>", function()
 --     vim.cmd("so")
 -- end)
 
 -- vim.opt.guicursor = ""
---
--- vim.opt.nu = true
--- vim.opt.relativenumber = true
---
--- vim.opt.tabstop = 4
--- vim.opt.softtabstop = 4
--- vim.opt.shiftwidth = 4
--- vim.opt.expandtab = true
---
--- vim.opt.smartindent = true
---
 -- vim.opt.wrap = false
---
--- vim.opt.swapfile = false
--- vim.opt.backup = false
--- vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
--- vim.opt.undofile = true
---
--- vim.opt.hlsearch = false
--- vim.opt.incsearch = true
---
--- vim.opt.termguicolors = true
---
--- vim.opt.scrolloff = 8
 -- vim.opt.signcolumn = "yes"
 -- vim.opt.isfname:append("@-@")
---
 -- vim.opt.updatetime = 50
---
--- vim.opt.colorcolumn = "80"
 
 -- { trouble.nvim }
 -- { mbbill/undotree }
@@ -292,7 +223,6 @@ vim.cmd.colorscheme("gruvbox")
 -- { friendly-snippets}
 -- { cloack.nvim }
 -- { harpoon }
--- { vuciv/golf }
 -- {vim-fugitive}
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
 -- {nvim-dap, nvim-dap-ui,nvim-nio}
