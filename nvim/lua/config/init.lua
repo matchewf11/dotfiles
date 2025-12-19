@@ -4,7 +4,7 @@ vim.g.c_syntax_for_h = true
 
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.guicursor = "a:block"
+vim.o.guicursor = ""
 vim.o.scrolloff = 10
 vim.o.signcolumn = "yes"
 vim.o.splitright = true
@@ -17,7 +17,7 @@ vim.o.statusline = "%f %m%r%h%w%y%q %= %l/%L:%v"
 vim.o.laststatus = 3
 vim.o.showtabline = 2
 vim.o.smartindent = true
-vim.o.updatetime = 250 -- prime has 50
+vim.o.updatetime = 100
 
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Open Netrw" })
 
@@ -199,29 +199,11 @@ vim.cmd.colorscheme("gruvbox")
 --     vim.cmd("so")
 -- end)
 
--- vim.opt.guicursor = ""
--- vim.opt.wrap = false
--- vim.opt.signcolumn = "yes"
 -- vim.opt.isfname:append("@-@")
--- vim.opt.updatetime = 50
 
 -- { trouble.nvim }
 -- { mbbill/undotree }
--- { vim-be-good }
--- { zen-mode.nvim }
--- { nvim-lspconfig }
--- { conform}
--- {cmp-nvim-lsp}
--- {cmp-buffer}
--- {cmp-path}
--- {cmp-cmdline}
--- {nvim-cmp}
--- {LuaSnip}
--- {cmp_luasnip}
 -- {fidget.nvim}
--- { peek.nvim }
--- { friendly-snippets}
--- { cloack.nvim }
 -- { harpoon }
 -- {vim-fugitive}
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}

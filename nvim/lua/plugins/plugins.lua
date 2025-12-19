@@ -1,7 +1,17 @@
 return {
-	-- config friendly-snippets
-	-- config luasnip
-	-- config nvim-web-devicons
+	{
+		"rafamadriz/friendly-snippets",
+		lazy = true,
+	},
+	{
+		"nvim-tree/nvim-web-devicons",
+		lazy = true,
+	},
+	{
+		"L3MON4D3/LuaSnip",
+		version = "v2.*",
+		lazy = true,
+	},
 	{
 		"stevearc/conform.nvim",
 		cmd = { "ConformInfo" },
@@ -18,7 +28,7 @@ return {
 			formatters_by_ft = {
 				-- configure this
 				lua = { "stylua" }, -- cargo
-				javascript = { "prettier" },
+				javascript = { "prettier" }, -- npm
 				-- ["*"] = { "codespell" },
 				-- ["_"] = { "trim_whitespace" },
 			},
@@ -37,7 +47,7 @@ return {
 		event = "InsertEnter",
 		dependencies = {
 			"rafamadriz/friendly-snippets",
-			{ "L3MON4D3/LuaSnip", version = "v2.*" },
+			"L3MON4D3/LuaSnip",
 		},
 		opts = {
 			snippets = { preset = "luasnip" },
@@ -70,7 +80,6 @@ return {
 			end
 		end,
 	},
-	-- try using :vimgrep and :grep
 	{
 		"ibhagwan/fzf-lua",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -85,6 +94,7 @@ return {
 }
 
 --[[
+-- try using :vimgrep and :grep
 quickfix 	quickfix list
 quickfix_stack 	quickfix stack
 loclist 	location list
