@@ -70,7 +70,14 @@ vim.keymap.set("n", "<leader>Q", vim.cmd.Q, { desc = "Quit and Write all Buffers
 
 require("config.lazy")
 
-vim.o.statusline = "%f %m%r%h%w%y%q %= %l/%L:%v"
+vim.o.statusline = table.concat({
+	"%f",
+	"%m%r%h%w%y%q",
+	"%{get(b:,'gitsigns_head','')}",
+	"%{get(b:,'gitsigns_status','')}",
+	"%=",
+	"%l/%L:%v",
+}, " ")
 
 vim.cmd.colorscheme("gruvbox")
 
@@ -215,3 +222,5 @@ vim.cmd.colorscheme("gruvbox")
 -- {vim-fugitive}
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
 -- {nvim-dap, nvim-dap-ui,nvim-nio}
+--
+-- set up ftplugin for c, bash, lua, and sql
