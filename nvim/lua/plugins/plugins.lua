@@ -58,19 +58,9 @@ return {
       end,
     },
   },
-  {
-    'rafamadriz/friendly-snippets',
-    lazy = true,
-  },
-  {
-    'nvim-tree/nvim-web-devicons',
-    lazy = true,
-  },
-  {
-    'L3MON4D3/LuaSnip',
-    version = 'v2.*',
-    lazy = true,
-  },
+  { 'rafamadriz/friendly-snippets', lazy = true },
+  { 'nvim-tree/nvim-web-devicons', lazy = true },
+  { 'L3MON4D3/LuaSnip', version = 'v2.*', lazy = true },
   {
     'stevearc/conform.nvim',
     cmd = { 'ConformInfo' },
@@ -91,15 +81,10 @@ return {
         -- ["*"] = { "codespell" },
         -- ["_"] = { "trim_whitespace" },
       },
-      default_format_opts = {
-        lsp_format = 'fallback',
-      },
+      default_format_opts = { lsp_format = 'fallback' },
     },
   },
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000,
-  },
+  { 'ellisonleao/gruvbox.nvim', priority = 1000 },
   {
     'saghen/blink.cmp',
     version = '1.*',
