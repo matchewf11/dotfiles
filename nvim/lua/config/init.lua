@@ -133,7 +133,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
 -- { todo-comments.nvim }
 -- { gitsigns.nvim }
--- { nvim-lint }
 -- { neo-tree.nvim }
 -- { 'j-hui/fidget.nvim' }
 -- {'folke/which-key.nvim' }
