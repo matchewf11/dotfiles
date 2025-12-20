@@ -1,5 +1,22 @@
 return {
   {
+    'mfussenegger/nvim-lint',
+    event = 'BufReadPost',
+    config = function()
+      local lint = require 'lint'
+      lint.linters_by_ft = {
+        -- lua = {'lua_lint'},
+      }
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          -- seperate from ft
+          -- tries lint (can add another w/ lint name)
+          require('lint').try_lint()
+        end,
+      })
+    end,
+  },
+  {
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
