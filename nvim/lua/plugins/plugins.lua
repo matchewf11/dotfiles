@@ -268,6 +268,7 @@ complete_bline 	complete line (current buffer only)
 -- ['<C-u>'] = { 'scroll_signature_up', 'fallback' },
 -- ['<C-d>'] = { 'scroll_signature_down', 'fallback' },
 --
+-- Gitsigns
 -- :Gitsigns blame/blame_line
 -- :Gitsigns change_base <REVISION>
 -- :Gitsign setqflist/setloclist (target=all/attached/[int])
