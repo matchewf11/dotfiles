@@ -20,21 +20,12 @@ vim.o.updatetime = 100
 
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Open Netrw" })
 
-vim.keymap.set("n", "<leader>n", vim.cmd.bn, { desc = "Next Buffer" })
-vim.keymap.set("n", "<leader>p", vim.cmd.bp, { desc = "Prev Buffer" })
-vim.keymap.set("n", "<leader>d", vim.cmd.bd, { desc = "Del Buffer" })
-
-vim.keymap.set("n", "<leader>t", vim.cmd.tabnew, { desc = "Open Tab" })
-vim.keymap.set("n", "<leader>x", vim.cmd.tabclose, { desc = "Close Tab" })
-
-vim.keymap.set("n", "<leader>v", vim.cmd.vs, { desc = "V Split" })
-vim.keymap.set("n", "<leader>h", vim.cmd.sp, { desc = "H Split" })
+-- vim.keymap.set("n", "<leader>t", vim.cmd.tabnew, { desc = "Open Tab" })
+-- vim.keymap.set("n", "<leader>x", vim.cmd.tabclose, { desc = "Close Tab" })
 
 vim.keymap.set({ "n", "x", "v" }, "<leader>y", '"+y')
 
-vim.keymap.set("n", "<leader>zn", function()
-	vim.cmd.term()
-end, { desc = "Open Terminal" })
+vim.keymap.set("n", "<leader>zn", vim.cmd.term, { desc = "Open Terminal" })
 vim.keymap.set("n", "<leader>zv", function()
 	vim.cmd.vs()
 	vim.cmd.term()
@@ -224,3 +215,5 @@ vim.cmd.colorscheme("gruvbox")
 -- {nvim-dap, nvim-dap-ui,nvim-nio}
 --
 -- set up ftplugin for c, bash, lua, and sql
+--
+-- ]b to move to next buffer
