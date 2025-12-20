@@ -1,12 +1,12 @@
-vim.g.mapleader = " " -- vim.g.maplocalleader = "\\"
+vim.g.mapleader = ' ' -- vim.g.maplocalleader = "\\"
 vim.g.c_syntax_for_h = true
 -- vim.g.netrw_banner = false
 
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.guicursor = ""
+vim.o.guicursor = ''
 vim.o.scrolloff = 10
-vim.o.signcolumn = "yes"
+vim.o.signcolumn = 'yes'
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.cursorline = true
@@ -18,28 +18,28 @@ vim.o.showtabline = 2
 vim.o.smartindent = true
 vim.o.updatetime = 100
 
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Open Netrw" })
+vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Open Netrw' })
 
 -- vim.keymap.set("n", "<leader>t", vim.cmd.tabnew, { desc = "Open Tab" })
 -- vim.keymap.set("n", "<leader>x", vim.cmd.tabclose, { desc = "Close Tab" })
 
-vim.keymap.set({ "n", "x", "v" }, "<leader>y", '"+y')
+vim.keymap.set({ 'n', 'x', 'v' }, '<leader>y', '"+y')
 
-vim.keymap.set("n", "<leader>zn", vim.cmd.term, { desc = "Open Terminal" })
-vim.keymap.set("n", "<leader>zv", function()
-	vim.cmd.vs()
-	vim.cmd.term()
-end, { desc = "Open Terminal in Vertical Split" })
-vim.keymap.set("n", "<leader>zh", function()
-	vim.cmd.sp()
-	vim.cmd.term()
-end, { desc = "Open Terminal in Horiz Split" })
+vim.keymap.set('n', '<leader>zn', vim.cmd.term, { desc = 'Open Terminal' })
+vim.keymap.set('n', '<leader>zv', function()
+  vim.cmd.vs()
+  vim.cmd.term()
+end, { desc = 'Open Terminal in Vertical Split' })
+vim.keymap.set('n', '<leader>zh', function()
+  vim.cmd.sp()
+  vim.cmd.term()
+end, { desc = 'Open Terminal in Horiz Split' })
 
-vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Line diagnostics' })
 
-vim.keymap.set("n", "<leader>w", vim.cmd.w, { desc = "Write Buffer" })
-vim.keymap.set("n", "<leader>q", vim.cmd.q, { desc = "Quit Buffer" })
-vim.keymap.set("n", "<leader>Q", vim.cmd.Q, { desc = "Quit and Write all Buffers" })
+vim.keymap.set('n', '<leader>w', vim.cmd.w, { desc = 'Write Buffer' })
+vim.keymap.set('n', '<leader>q', vim.cmd.q, { desc = 'Quit Buffer' })
+vim.keymap.set('n', '<leader>Q', vim.cmd.Q, { desc = 'Quit and Write all Buffers' })
 
 -- vim-surround
 -- autopairs
@@ -59,18 +59,18 @@ vim.keymap.set("n", "<leader>Q", vim.cmd.Q, { desc = "Quit and Write all Buffers
 -- vim-dadbod-completion
 -- vim-dadbod-ui
 
-require("config.lazy")
+require 'config.lazy'
 
 vim.o.statusline = table.concat({
-	"%f",
-	"%m%r%h%w%y%q",
-	"%{get(b:,'gitsigns_head','')}",
-	"%{get(b:,'gitsigns_status','')}",
-	"%=",
-	"%l/%L:%v",
-}, " ")
+  '%f',
+  '%m%r%h%w%y%q',
+  "%{get(b:,'gitsigns_head','')}",
+  "%{get(b:,'gitsigns_status','')}",
+  '%=',
+  '%l/%L:%v',
+}, ' ')
 
-vim.cmd.colorscheme("gruvbox")
+vim.cmd.colorscheme 'gruvbox'
 
 -- lsp, linter, fmt, debugger? for:
 -- bash

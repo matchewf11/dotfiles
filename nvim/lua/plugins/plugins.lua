@@ -1,155 +1,155 @@
 return {
-	{
-		"lewis6991/gitsigns.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		opts = {
-			on_attach = function(bufnr)
-				local gitsigns = require("gitsigns")
+  {
+    'lewis6991/gitsigns.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
+    opts = {
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
 
-				local function map(mode, l, r, opts)
-					opts = opts or {}
-					opts.buffer = bufnr
-					vim.keymap.set(mode, l, r, opts)
-				end
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
 
-				map("n", "]c", function()
-					if vim.wo.diff then
-						vim.cmd.normal({ "]c", bang = true })
-					else
-						gitsigns.nav_hunk("next")
-					end
-				end)
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
+          else
+            gitsigns.nav_hunk 'next'
+          end
+        end)
 
-				map("n", "[c", function()
-					if vim.wo.diff then
-						vim.cmd.normal({ "[c", bang = true })
-					else
-						gitsigns.nav_hunk("prev")
-					end
-				end)
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
+          else
+            gitsigns.nav_hunk 'prev'
+          end
+        end)
 
-				map("n", "<leader>hs", gitsigns.stage_hunk)
-				map("n", "<leader>hr", gitsigns.reset_hunk)
-				map("v", "<leader>hs", function()
-					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end)
-				map("v", "<leader>hr", function()
-					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end)
+        map('n', '<leader>hs', gitsigns.stage_hunk)
+        map('n', '<leader>hr', gitsigns.reset_hunk)
+        map('v', '<leader>hs', function()
+          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end)
+        map('v', '<leader>hr', function()
+          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end)
 
-				map("n", "<leader>hS", gitsigns.stage_buffer)
-				map("n", "<leader>hR", gitsigns.reset_buffer)
-				map("n", "<leader>hp", gitsigns.preview_hunk)
-				map("n", "<leader>hi", gitsigns.preview_hunk_inline)
-				map("n", "<leader>hb", function()
-					gitsigns.blame_line({ full = true })
-				end)
-				map("n", "<leader>hd", gitsigns.diffthis)
-				map("n", "<leader>hD", function()
-					gitsigns.diffthis("~")
-				end)
-				map("n", "<leader>hQ", function()
-					gitsigns.setqflist("all")
-				end)
-				map("n", "<leader>hq", gitsigns.setqflist)
-				map("n", "<leader>tb", gitsigns.toggle_current_line_blame)
-				map("n", "<leader>tw", gitsigns.toggle_word_diff)
-				map({ "o", "x" }, "ih", gitsigns.select_hunk)
-			end,
-		},
-	},
-	{
-		"rafamadriz/friendly-snippets",
-		lazy = true,
-	},
-	{
-		"nvim-tree/nvim-web-devicons",
-		lazy = true,
-	},
-	{
-		"L3MON4D3/LuaSnip",
-		version = "v2.*",
-		lazy = true,
-	},
-	{
-		"stevearc/conform.nvim",
-		cmd = { "ConformInfo" },
-		keys = {
-			{
-				"<leader>f",
-				function()
-					require("conform").format({ async = true })
-				end,
-				desc = "Format Buffer",
-			},
-		},
-		opts = {
-			formatters_by_ft = {
-				-- configure this
-				lua = { "stylua" }, -- cargo
-				javascript = { "prettier" }, -- npm
-				-- ["*"] = { "codespell" },
-				-- ["_"] = { "trim_whitespace" },
-			},
-			default_format_opts = {
-				lsp_format = "fallback",
-			},
-		},
-	},
-	{
-		"ellisonleao/gruvbox.nvim",
-		priority = 1000,
-	},
-	{
-		"saghen/blink.cmp",
-		version = "1.*",
-		event = "InsertEnter",
-		dependencies = {
-			"rafamadriz/friendly-snippets",
-			"L3MON4D3/LuaSnip",
-		},
-		opts = {
-			snippets = { preset = "luasnip" },
-			signature = { enabled = true },
-		},
-	},
-	{
-		"nvim-treesitter/nvim-treesitter",
-		branch = "master",
-		lazy = false,
-		build = ":TSUpdate",
-		config = function()
-			require("nvim-treesitter.configs").setup({
-				auto_install = true,
-				highlight = { enable = true },
-			})
-		end,
-	},
-	{
-		"neovim/nvim-lspconfig",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			for _, server in ipairs({
-				"lua_ls", -- pacman
-				"gopls", -- go
-				"clangd", -- pacman
-				"ts_ls", -- npm
-			}) do
-				vim.lsp.enable(server)
-			end
-		end,
-	},
-	{
-		"ibhagwan/fzf-lua",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		keys = {
-			{ "<leader>sb", "<CMD>FzfLua buffers<CR>", desc = "Search Buffers" },
-			{ "<leader>sf", "<CMD>FzfLua files<CR>", desc = "Search Files" },
-			{ "<leader>so", "<CMD>FzfLua oldfiles<CR>", desc = "Search Oldfiles" },
-			{ "<leader>sl", "<CMD>FzfLua blines<CR>", desc = "Search BLines" },
-		},
-		cmd = { "FzfLua" },
-	},
+        map('n', '<leader>hS', gitsigns.stage_buffer)
+        map('n', '<leader>hR', gitsigns.reset_buffer)
+        map('n', '<leader>hp', gitsigns.preview_hunk)
+        map('n', '<leader>hi', gitsigns.preview_hunk_inline)
+        map('n', '<leader>hb', function()
+          gitsigns.blame_line { full = true }
+        end)
+        map('n', '<leader>hd', gitsigns.diffthis)
+        map('n', '<leader>hD', function()
+          gitsigns.diffthis '~'
+        end)
+        map('n', '<leader>hQ', function()
+          gitsigns.setqflist 'all'
+        end)
+        map('n', '<leader>hq', gitsigns.setqflist)
+        map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+        map('n', '<leader>tw', gitsigns.toggle_word_diff)
+        map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
+      end,
+    },
+  },
+  {
+    'rafamadriz/friendly-snippets',
+    lazy = true,
+  },
+  {
+    'nvim-tree/nvim-web-devicons',
+    lazy = true,
+  },
+  {
+    'L3MON4D3/LuaSnip',
+    version = 'v2.*',
+    lazy = true,
+  },
+  {
+    'stevearc/conform.nvim',
+    cmd = { 'ConformInfo' },
+    keys = {
+      {
+        '<leader>f',
+        function()
+          require('conform').format { async = true }
+        end,
+        desc = 'Format Buffer',
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        -- configure this
+        lua = { 'stylua' }, -- cargo
+        javascript = { 'prettier' }, -- npm
+        -- ["*"] = { "codespell" },
+        -- ["_"] = { "trim_whitespace" },
+      },
+      default_format_opts = {
+        lsp_format = 'fallback',
+      },
+    },
+  },
+  {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+  },
+  {
+    'saghen/blink.cmp',
+    version = '1.*',
+    event = 'InsertEnter',
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+      'L3MON4D3/LuaSnip',
+    },
+    opts = {
+      snippets = { preset = 'luasnip' },
+      signature = { enabled = true },
+    },
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
+    lazy = false,
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        auto_install = true,
+        highlight = { enable = true },
+      }
+    end,
+  },
+  {
+    'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      for _, server in ipairs {
+        'lua_ls', -- pacman
+        'gopls', -- go
+        'clangd', -- pacman
+        'ts_ls', -- npm
+      } do
+        vim.lsp.enable(server)
+      end
+    end,
+  },
+  {
+    'ibhagwan/fzf-lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = {
+      { '<leader>sb', '<CMD>FzfLua buffers<CR>', desc = 'Search Buffers' },
+      { '<leader>sf', '<CMD>FzfLua files<CR>', desc = 'Search Files' },
+      { '<leader>so', '<CMD>FzfLua oldfiles<CR>', desc = 'Search Oldfiles' },
+      { '<leader>sl', '<CMD>FzfLua blines<CR>', desc = 'Search BLines' },
+    },
+    cmd = { 'FzfLua' },
+  },
 }
 
 --[[
