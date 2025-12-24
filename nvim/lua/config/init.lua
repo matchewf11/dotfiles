@@ -41,11 +41,25 @@ vim.keymap.set('n', '<leader>w', vim.cmd.w, { desc = 'Write Buffer' })
 vim.keymap.set('n', '<leader>q', vim.cmd.q, { desc = 'Quit Buffer' })
 vim.keymap.set('n', '<leader>Q', vim.cmd.Q, { desc = 'Quit and Write all Buffers' })
 
+-- <https://www.youtube.com/watch?v=ALGBuFLzDSA>
+-- vim-dadbod
+-- vim-dadbod-completion
+-- vim-dadbod-ui
+
 -- vim-surround
 -- autopairs
 -- whichkey
 -- gitsigns
 -- marks.nvim
+--
+-- vim-abolish
+-- vim-swap
+-- vim-commentary
+-- vim-eunuch
+-- vim-sandwich
+-- vim-surround
+-- vim-pathogen
+-- tabular
 
 -- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 -- vim.opt.shortmess:append("c")
@@ -54,13 +68,9 @@ vim.keymap.set('n', '<leader>Q', vim.cmd.Q, { desc = 'Quit and Write all Buffers
 -- :so to source this file
 -- :map jk
 
--- <https://www.youtube.com/watch?v=ALGBuFLzDSA>
--- vim-dadbod
--- vim-dadbod-completion
--- vim-dadbod-ui
-
 require 'config.lazy'
 
+-- add lsp's and diagnostics
 vim.o.statusline = table.concat({
   '%f',
   '%m%r%h%w%y%q',

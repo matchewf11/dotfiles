@@ -10,7 +10,7 @@ return {
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
           -- seperate from ft
-          -- tries lint (can add another w/ lint name)
+          -- tries lint (can add another w/ lint name) (cspell?)
           require('lint').try_lint()
         end,
       })
