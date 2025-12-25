@@ -2,22 +2,11 @@ return {
   {
     'tpope/vim-dadbod',
     cmd = { 'DB' },
-    -- spawn interactice
-    -- DB postgressql:///foobar
-    --
-    -- results dispalyed in window
-    -- DB sqlite:myfile.sqlite3 select count(*) from foo
-    -- Db redis:/// CLIENT LIST
-    --
-    -- Range to run buffer as query
-    -- %DB mysql://root@localhost/bazquux
-    --
-    -- Pass in file name
-    -- :DB postgressql:///test < filename.js
-    --
-    -- Save url into vairable
-    -- :DB g:prod = postgres://user:pass@db.example.com/production_database
-    -- :DB g:prod drop table users
+    dependencies = { 'tpope/vim-dotenv' },
+  },
+  {
+    'tpope/vim-dotenv',
+    cmd = { 'Dotenv' },
   },
   {
     'mfussenegger/nvim-lint',

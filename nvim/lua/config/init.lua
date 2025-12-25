@@ -210,3 +210,5 @@ vim.cmd.colorscheme 'gruvbox'
 -- set up ftplugin for c, bash, lua, and sql
 --
 -- ]b to move to next buffer
+--
+-- other tpope plugins
