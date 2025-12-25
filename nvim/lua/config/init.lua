@@ -25,11 +25,6 @@ vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Open Netrw' })
 vim.keymap.set({ 'n', 'x', 'v' }, '<leader>y', '"+y')
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Line diagnostics' })
 
--- <https://www.youtube.com/watch?v=ALGBuFLzDSA>
--- vim-dadbod
--- vim-dadbod-completion
--- vim-dadbod-ui
-
 -- vim-surround
 -- autopairs
 -- whichkey
@@ -111,7 +106,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.o.timeoutlen = 300
 -- vim.o.list = true
 -- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
--- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 -- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -139,14 +133,14 @@ vim.cmd.colorscheme 'gruvbox'
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 --
 -- highlight same vars? (look at kickstart)
---
------ vim.api.nvim_create_autocmd('TextYankPost', {
----   desc = 'Highlight when yanking (copying) text',
----   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
----   callback = function()
----     vim.hl.on_yank()
----   end,
---- })
+
+-- vim.api.nvim_create_autocmd('TextYankPost', {
+--   desc = 'Highlight when yanking (copying) text',
+--   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+--   callback = function()
+--     vim.hl.on_yank()
+--   end,
+-- })
 
 -- ThePrimeagen -------------------------------------------------------------------------
 --
