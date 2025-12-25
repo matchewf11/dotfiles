@@ -10,5 +10,6 @@
   "nvim-lint": { "branch": "master", "commit": "7a64f4067065c16a355d40d0d599b8ca6b25de6d" },
   "nvim-lspconfig": { "branch": "master", "commit": "0d7d33e40f0c27f57cb29654ed78cab17d705e68" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
-  "nvim-web-devicons": { "branch": "master", "commit": "8dcb311b0c92d460fac00eac706abd43d94d68af" }
+  "nvim-web-devicons": { "branch": "master", "commit": "8dcb311b0c92d460fac00eac706abd43d94d68af" },
+  "vim-dadbod": { "branch": "master", "commit": "e95afed23712f969f83b4857a24cf9d59114c2e6" }
 }
