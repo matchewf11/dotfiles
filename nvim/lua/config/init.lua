@@ -51,9 +51,6 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Diagnostic
 -- vim-pathogen
 -- tabular
 
--- vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
--- vim.opt.shortmess:append("c")
-
 -- look at my old config
 -- :so to source this file
 -- :map jk
@@ -116,7 +113,6 @@ vim.o.statusline = table.concat({
 
 vim.cmd.colorscheme 'gruvbox'
 
--- vim.cmd [[set completeopt+=menuone,noselect,popup]]
 -- require("luasnip").setup({ enable_autosnippets = true })
 -- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
 -- map({ "n", "x" }, "<leader>d", '"+d')
