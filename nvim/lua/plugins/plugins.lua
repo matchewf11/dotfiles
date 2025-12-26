@@ -4,10 +4,7 @@ return {
     cmd = { 'DB' },
     dependencies = { 'tpope/vim-dotenv' },
   },
-  {
-    'tpope/vim-dotenv',
-    cmd = { 'Dotenv' },
-  },
+  { 'tpope/vim-dotenv', cmd = { 'Dotenv' } },
   {
     'mfussenegger/nvim-lint',
     event = 'BufReadPost',
@@ -20,7 +17,7 @@ return {
         callback = function()
           -- seperate from ft
           -- tries lint (can add another w/ lint name) (cspell?)
-          require('lint').try_lint()
+          lint.try_lint()
         end,
       })
     end,

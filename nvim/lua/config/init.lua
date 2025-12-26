@@ -1,5 +1,6 @@
 vim.g.mapleader = ' '
 -- vim.g.maplocalleader = "\\"
+
 vim.g.c_syntax_for_h = true
 vim.g.netrw_banner = false
 
@@ -51,6 +52,10 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Diagnostic
 -- vim-surround
 -- vim-pathogen
 -- tabular
+-- { windwp/nvim-autopairs }
+-- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
+-- {'folke/which-key.nvim' }
+-- { mini.nvim } stuff (surround, ai)
 
 -- :so to source this file
 -- :map jk
@@ -150,12 +155,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
---
--- { windwp/nvim-autopairs }
--- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
--- { neo-tree.nvim }
--- {'folke/which-key.nvim' }
--- { mini.nvim } stuff (surround, ai)
 
 -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 -- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
