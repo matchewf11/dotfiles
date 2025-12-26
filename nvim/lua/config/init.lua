@@ -1,6 +1,6 @@
 vim.g.mapleader = ' ' -- vim.g.maplocalleader = "\\"
 vim.g.c_syntax_for_h = true
--- vim.g.netrw_banner = false
+vim.g.netrw_banner = false
 
 vim.o.number = true
 vim.o.relativenumber = true
@@ -32,7 +32,7 @@ vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Line diagnostics'
 -- whichkey
 -- gitsigns
 -- marks.nvim
---
+
 -- vim-abolish
 -- vim-swap
 -- vim-commentary
@@ -49,17 +49,54 @@ vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Line diagnostics'
 -- :so to source this file
 -- :map jk
 
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
+
 require 'config.lazy'
 
--- add lsp's and diagnostics
+function Diagnostics()
+  local counts = vim.diagnostic.count(0)
+  local letters = {
+    [vim.diagnostic.severity.ERROR] = 'E',
+    [vim.diagnostic.severity.WARN] = 'W',
+    [vim.diagnostic.severity.INFO] = 'I',
+    [vim.diagnostic.severity.HINT] = 'H',
+  }
+
+  local parts = {}
+  for severity, letter in pairs(letters) do
+    local n = counts[severity]
+    if n and n > 0 then
+      table.insert(parts, string.format('%s:%d', letter, n))
+    end
+  end
+  return table.concat(parts, ' ')
+end
+
+function Clients()
+  return table.concat(
+    vim.tbl_map(function(client)
+      return client.name
+    end, vim.lsp.get_clients { bufnr = 0 }),
+    ' '
+  )
+end
+
 vim.o.statusline = table.concat({
   '%f',
   '%m%r%h%w%y%q',
   "%{get(b:,'gitsigns_head','')}",
   "%{get(b:,'gitsigns_status','')}",
   '%=',
+  '%{v:lua.Diagnostics()}',
+  '%{v:lua.Clients()}',
   '%l/%L:%v',
-}, ' ')
+}, ' | ')
 
 vim.cmd.colorscheme 'gruvbox'
 
@@ -90,14 +127,12 @@ vim.cmd.colorscheme 'gruvbox'
 -- 	map({ "n", "t" }, "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
 -- end
 -- map({ "n", "v", "x" }, "<C-s>", [[:s/\V]], { desc = "Enter substitue mode in selection" })
--- map({ "n" }, "<leader>g", grep)
--- map({ "n" }, "<leader>g", vimgrep)
 -- map({ "n" }, "<M-n>", "<cmd>resize +2<CR>")
 -- map({ "n" }, "<M-e>", "<cmd>resize -2<CR>")
 -- map({ "n" }, "<M-i>", "<cmd>vertical resize +5<CR>")
 -- map({ "n" }, "<M-m>", "<cmd>vertical resize -5<CR>")
 -- map({ "n" }, "<leader>c", "1z=")
--- map({ "n" }, "<C-q>", ":copen<CR>", { silent = true })
+--
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- vim.keymap.set("n", "n", "nzzzv")
@@ -122,12 +157,10 @@ vim.cmd.colorscheme 'gruvbox'
 -- { windwp/nvim-autopairs }
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
 -- { todo-comments.nvim }
--- { gitsigns.nvim }
 -- { neo-tree.nvim }
 -- { 'j-hui/fidget.nvim' }
 -- {'folke/which-key.nvim' }
 -- {'NMAC427/guess-indent.nvim' }
--- { 'lewis6991/gitsigns.nvim' },
 -- { mini.nvim } stuff (surround, ai)
 --
 -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
@@ -135,14 +168,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 --
 -- highlight same vars? (look at kickstart)
-
--- vim.api.nvim_create_autocmd('TextYankPost', {
---   desc = 'Highlight when yanking (copying) text',
---   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
---   callback = function()
---     vim.hl.on_yank()
---   end,
--- })
 
 -- ThePrimeagen -------------------------------------------------------------------------
 --
@@ -176,26 +201,12 @@ vim.cmd.colorscheme 'gruvbox'
 --
 -- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 --
--- vim.keymap.set("n", "Q", "<nop>")
--- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
--- vim.keymap.set("n", "<M-h>", "<cmd>silent !tmux-sessionizer -s 0 --vsplit<CR>")
--- vim.keymap.set("n", "<M-H>", "<cmd>silent !tmux neww tmux-sessionizer -s 0<CR>")
---
--- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
--- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
--- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
--- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
---
--- vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
--- vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
---
 -- vim.keymap.set("n", "<leader><leader>", function()
 --     vim.cmd("so")
 -- end)
 
 -- vim.opt.isfname:append("@-@")
 
--- { trouble.nvim }
 -- { mbbill/undotree }
 -- {fidget.nvim}
 -- { harpoon }
