@@ -23,7 +23,13 @@ vim.keymap.set('n', '<leader>c', vim.cmd.tabclose, { desc = 'Close Tab' })
 
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Open Netrw' })
 
-vim.keymap.set({ 'n', 'x', 'v' }, '<leader>y', '"+y')
+vim.keymap.set({ 'n', 'x', 'v' }, '<leader>y', '"+y', {
+  desc = 'Yank Clipboard',
+})
+
+vim.keymap.set({ 'n', 'x', 'v' }, '<leader>p', '"+p', {
+  desc = 'Paste Clipboard',
+})
 
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Line diagnostics' })
 
@@ -55,6 +61,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.hl.on_yank()
   end,
+})
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  desc = 'Delete Trailing Whitespace',
+  group = vim.api.nvim_create_augroup('prime-delete-whitespace', {}),
+  pattern = '*',
+  command = [[%s/\s\+$//e]],
 })
 
 require 'config.lazy'
@@ -123,15 +136,10 @@ vim.cmd.colorscheme 'gruvbox'
 -- 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
 -- 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
 -- ]])
--- for i = 1, 8 do
--- 	map({ "n", "t" }, "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
--- end
+--
 -- map({ "n", "v", "x" }, "<C-s>", [[:s/\V]], { desc = "Enter substitue mode in selection" })
--- map({ "n" }, "<M-n>", "<cmd>resize +2<CR>")
--- map({ "n" }, "<M-e>", "<cmd>resize -2<CR>")
--- map({ "n" }, "<M-i>", "<cmd>vertical resize +5<CR>")
--- map({ "n" }, "<M-m>", "<cmd>vertical resize -5<CR>")
--- map({ "n" }, "<leader>c", "1z=")
+--
+-- Map({ "n" }, "<leader>c", "1z=")
 --
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -171,15 +179,6 @@ vim.cmd.colorscheme 'gruvbox'
 
 -- ThePrimeagen -------------------------------------------------------------------------
 --
--- remove whitespace
--- autocmd({"BufWritePre"}, {
---     group = ThePrimeagenGroup,
---     pattern = "*",
---     command = [[%s/\s\+$//e]],
--- })
---
--- vim.g.netrw_winsize = 25
---
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -200,10 +199,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "<leader>Y", [["+Y]])
 --
 -- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
---
--- vim.keymap.set("n", "<leader><leader>", function()
---     vim.cmd("so")
--- end)
 
 -- vim.opt.isfname:append("@-@")
 
