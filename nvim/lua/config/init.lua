@@ -90,8 +90,7 @@ end
 vim.o.statusline = table.concat({
   '%f',
   '%m%r%h%w%y%q',
-  "%{get(b:,'gitsigns_head','')}",
-  "%{get(b:,'gitsigns_status','')}",
+  "%{get(b:,'gitsigns_head','')} %{get(b:,'gitsigns_status','')}",
   '%=',
   '%{v:lua.Diagnostics()}',
   '%{v:lua.Clients()}',
