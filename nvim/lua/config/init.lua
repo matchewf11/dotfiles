@@ -163,7 +163,6 @@ vim.cmd.colorscheme 'gruvbox'
 --
 -- { windwp/nvim-autopairs }
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
--- { todo-comments.nvim }
 -- { neo-tree.nvim }
 -- {'folke/which-key.nvim' }
 -- { mini.nvim } stuff (surround, ai)
