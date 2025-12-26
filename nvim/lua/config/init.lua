@@ -1,4 +1,5 @@
-vim.g.mapleader = ' ' -- vim.g.maplocalleader = "\\"
+vim.g.mapleader = ' '
+-- vim.g.maplocalleader = "\\"
 vim.g.c_syntax_for_h = true
 vim.g.netrw_banner = false
 
