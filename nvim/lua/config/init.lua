@@ -208,13 +208,11 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.opt.isfname:append("@-@")
 
 -- { mbbill/undotree }
--- {fidget.nvim}
+-- { fidget.nvim }
 -- { harpoon }
 -- {vim-fugitive}
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
 -- {nvim-dap, nvim-dap-ui,nvim-nio}
---
--- set up ftplugin for c, bash, lua, and sql
 --
 -- ]b to move to next buffer
 --
