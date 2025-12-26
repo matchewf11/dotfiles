@@ -22,7 +22,9 @@ vim.o.updatetime = 100
 -- vim.keymap.set("n", "<leader>x", vim.cmd.tabclose, { desc = "Close Tab" })
 
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Open Netrw' })
+
 vim.keymap.set({ 'n', 'x', 'v' }, '<leader>y', '"+y')
+
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Line diagnostics' })
 
 -- vim-surround
