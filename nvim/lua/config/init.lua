@@ -18,8 +18,8 @@ vim.o.showtabline = 2
 vim.o.smartindent = true
 vim.o.updatetime = 100
 
--- vim.keymap.set("n", "<leader>t", vim.cmd.tabnew, { desc = "Open Tab" })
--- vim.keymap.set("n", "<leader>x", vim.cmd.tabclose, { desc = "Close Tab" })
+vim.keymap.set('n', '<leader>n', vim.cmd.tabnew, { desc = 'Open Tab' })
+vim.keymap.set('n', '<leader>c', vim.cmd.tabclose, { desc = 'Close Tab' })
 
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Open Netrw' })
 
