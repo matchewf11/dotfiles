@@ -114,12 +114,6 @@ vim.o.statusline = table.concat({
 
 vim.cmd.colorscheme 'gruvbox'
 
--- lsp, linter, fmt, debugger? for:
--- bash
--- lua
--- c
--- sql
-
 -- vim.cmd [[set completeopt+=menuone,noselect,popup]]
 -- require("luasnip").setup({ enable_autosnippets = true })
 -- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
@@ -189,13 +183,8 @@ vim.cmd.colorscheme 'gruvbox'
 -- -- greatest remap ever
 -- vim.keymap.set("x", "<leader>p", [["_dP]])
 --
--- -- next greatest remap ever : asbjornHaland
--- vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
--- vim.keymap.set("n", "<leader>Y", [["+Y]])
 --
 -- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
-
--- vim.opt.isfname:append("@-@")
 
 -- { mbbill/undotree }
 -- { harpoon }

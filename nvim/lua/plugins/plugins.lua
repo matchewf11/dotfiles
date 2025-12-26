@@ -289,3 +289,9 @@ complete_bline 	complete line (current buffer only)
 -- :Gitsigns toggle_linehl
 -- :Gitsigns toggle_word_diff
 -- :Gitsigns toggle_current_line_blame
+
+-- lsp, linter, fmt, debugger? for:
+-- bash
+-- lua
+-- c
+-- sql
