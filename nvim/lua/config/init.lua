@@ -147,11 +147,9 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "N", "Nzzzv")
 
 -- KICKSTART!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
---
--- vim.o.timeoutlen = 300
--- vim.o.list = true
--- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
 -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
 -- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 -- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 -- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -166,11 +164,9 @@ vim.cmd.colorscheme 'gruvbox'
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
 -- { todo-comments.nvim }
 -- { neo-tree.nvim }
--- { 'j-hui/fidget.nvim' }
 -- {'folke/which-key.nvim' }
--- {'NMAC427/guess-indent.nvim' }
 -- { mini.nvim } stuff (surround, ai)
---
+
 -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 -- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -179,7 +175,6 @@ vim.cmd.colorscheme 'gruvbox'
 
 -- ThePrimeagen -------------------------------------------------------------------------
 --
--- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 --
@@ -203,7 +198,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.opt.isfname:append("@-@")
 
 -- { mbbill/undotree }
--- { fidget.nvim }
 -- { harpoon }
 -- {vim-fugitive}
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
