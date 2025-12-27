@@ -130,6 +130,12 @@ return {
       require('nvim-treesitter.configs').setup {
         auto_install = true,
         highlight = { enable = true },
+        -- {
+        --   'nvim-treesitter/nvim-treesitter-context',
+        -- },
+        -- {
+        --   'nvim-treesitter/nvim-treesitter-textobjects',
+        -- },
       }
     end,
   },
@@ -292,3 +298,29 @@ complete_bline 	complete line (current buffer only)
 -- lua
 -- c
 -- sql
+--
+-- 'rust_analyzer', -- rustup
+-- 'lua_ls', -- pacman
+-- 'gopls', -- go
+-- 'clangd', -- pacman
+-- 'taplo', -- cargo
+-- 'hls', -- ghcup
+-- 'pyright', -- npm
+--
+--
+--         lua = { 'stylua' }, -- installed thru cargo
+--         go = { 'gofumpt', 'goimports' }, -- thru go (both)
+--         c = { 'clang-format' }, -- sudo pacman
+--         rust = { 'rustfmt' },
+--         toml = { 'taplo' },
+--         --["*"] = { "codespell" },
+--         --["*"] = { "trimwhitespace" },
+--         --   "shfmt",         -- Shell
+--         --   "sql-formatter", -- SQL
+--         --   prettier?
+--
+--         lua = { 'luacheck' }, -- luarocks
+--         go = { 'golangcilint' }, -- pacman
+--         c = { 'clangtidy' },
+--         make = { 'checkmake' }, -- go
+--         rust = { 'clippy' },
