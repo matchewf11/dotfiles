@@ -34,6 +34,7 @@ map('gl', vim.diagnostic.open_float, 'Line diagnostics')
 map('<leader>d', vim.diagnostic.setloclist, 'Diagnostics in LocList')
 map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
+map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 
 -- vim-surround
 -- vim-abolish
@@ -81,6 +82,11 @@ map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 -- 'gbprod/substitute.nvim',
 -- 'AndrewRadev/splitjoin.vim',
 -- 'ntpeters/vim-better-whitespace',
+-- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+-- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+-- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+-- other tpope plugins
+-- other mini stuff
 
 -- :so to source this file
 -- :map jk
@@ -181,9 +187,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
--- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
--- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
--- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 --
 -- highlight same vars? (look at kickstart)
 --
@@ -197,9 +200,6 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "=ap", "ma=ap'a")
 -- vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 -- vim.keymap.set("x", "<leader>p", [["_dP]])
--- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
 -- ]b to move to next buffer
--- other tpope plugins
--- other mini stuff
 -- tabs, windows, splits, tmux, i3

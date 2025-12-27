@@ -130,15 +130,18 @@ return {
       require('nvim-treesitter.configs').setup {
         auto_install = true,
         highlight = { enable = true },
-        -- {
-        --   'nvim-treesitter/nvim-treesitter-context',
-        -- },
-        -- {
-        --   'nvim-treesitter/nvim-treesitter-textobjects',
-        -- },
       }
     end,
   },
+  {
+
+  },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-context',
+  -- },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-textobjects',
+  -- },
   {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -308,9 +311,9 @@ complete_bline 	complete line (current buffer only)
 -- 'pyright', -- npm
 --
 --
---         lua = { 'stylua' }, -- installed thru cargo
---         go = { 'gofumpt', 'goimports' }, -- thru go (both)
---         c = { 'clang-format' }, -- sudo pacman
+-- lua = { 'stylua' }, -- installed thru cargo
+-- go = { 'gofumpt', 'goimports' }, -- thru go (both)
+-- c = { 'clang-format' }, -- sudo pacman
 --         rust = { 'rustfmt' },
 --         toml = { 'taplo' },
 --         --["*"] = { "codespell" },
