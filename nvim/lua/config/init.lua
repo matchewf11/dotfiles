@@ -36,10 +36,6 @@ map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 
 -- vim-surround
--- autopairs
--- whichkey
--- gitsigns
--- marks.nvim
 -- vim-abolish
 -- vim-swap
 -- vim-commentary
@@ -55,17 +51,36 @@ map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 -- { mbbill/undotree }
 -- { harpoon }
 -- {vim-fugitive}
--- guess-indent
--- todo comments
 -- mini.ai
 -- mini.surround
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
 -- {nvim-dap, nvim-dap-ui,nvim-nio}
 -- vim.pack
--- toggle term
 -- comment.vim
 -- vim-fugitive
--- which-key
+-- 'windwp/nvim-autopairs',
+-- 'mfussenegger/nvim-dap',
+-- 'ThePrimeagen/harpoon',
+-- 'chentoast/marks.nvim',
+-- -- Comment.nvim
+-- 'tpope/vim-commentary',
+-- 'junegunn/vim-easy-align',
+-- -- mini.bracketed
+-- 'tpope/vim-unimpaired',
+-- -- nvim-surround
+-- -- mini.surround
+-- 'tpope/vim-surround',
+-- -- mini.ai
+-- -- targets.vim
+-- -- mini.jump
+-- -- vim-sneak
+-- -- mini jump2d
+-- -- leap.nvim
+-- (maybe flash.nvim)
+-- 'matze/vim-move',
+-- 'gbprod/substitute.nvim',
+-- 'AndrewRadev/splitjoin.vim',
+-- 'ntpeters/vim-better-whitespace',
 
 -- :so to source this file
 -- :map jk
@@ -171,12 +186,9 @@ vim.cmd.colorscheme 'gruvbox'
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 --
 -- highlight same vars? (look at kickstart)
-
--- ThePrimeagen -------------------------------------------------------------------------
 --
 -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
---
 -- vim.keymap.set("n", "J", "mzJ`z")
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -184,85 +196,10 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "N", "Nzzzv")
 -- vim.keymap.set("n", "=ap", "ma=ap'a")
 -- vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
---
--- -- greatest remap ever
 -- vim.keymap.set("x", "<leader>p", [["_dP]])
---
 -- vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
 -- ]b to move to next buffer
---
 -- other tpope plugins
 -- other mini stuff
 -- tabs, windows, splits, tmux, i3
---
--- My config ------------------------------------------------
---
---   {
---     'windwp/nvim-autopairs',
---     event = 'InsertEnter',
---     config = true,
---     -- use opts = {} for passing setup options
---     -- this is equivalent to setup({}) function
---   },
---   -- {
---   --   'mfussenegger/nvim-dap',
---   --   lazy = true,
---   -- },
---   -- {
---   --   'ThePrimeagen/harpoon',
---   --   lazy = true,
---   -- },
---   -- {
---   --   'chentoast/marks.nvim',
---   --   lazy = true,
---   -- },
---   -- {
---   --   -- Comment.nvim
---   --   'tpope/vim-commentary',
---   --   lazy = true,
---   -- },
---   -- {
---   --   'junegunn/vim-easy-align',
---   --   lazy = true,
---   -- },
---   -- {
---   --   -- mini.bracketed
---   --   'tpope/vim-unimpaired',
---   --   lazy = true,
---   -- },
---   -- {
---   --   -- nvim-surround
---   --   -- mini.surround
---   --   'tpope/vim-surround',
---   --   lazy = true,
---   -- },
---   -- {
---   --   -- mini.ai
---   --   -- targets.vim
---   -- },
---   -- {
---   --   -- mini.jump
---   --   -- vim-sneak
---   -- },
---   -- {
---   --   -- mini jump2d
---   --   -- leap.nvim
---   --   (maybe flash.nvim)
---   -- },
---   -- {
---   --   'matze/vim-move',
---   --   lazy = true,
---   -- },
---   -- {
---   --   'gbprod/substitute.nvim',
---   --   lazy = true,
---   -- },
---   -- {
---   --   'AndrewRadev/splitjoin.vim',
---   --   lazy = true,
---   -- },
---   -- {
---   --   'ntpeters/vim-better-whitespace',
---   --   lazy = true,
---   -- },
