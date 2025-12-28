@@ -45,7 +45,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- vim-surround
 -- vim-pathogen
 -- tabular
--- { windwp/nvim-autopairs }
 -- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
 -- {'folke/which-key.nvim' }
 -- { mini.nvim } stuff (surround, ai)
@@ -59,7 +58,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- vim.pack
 -- comment.vim
 -- vim-fugitive
--- 'windwp/nvim-autopairs',
 -- 'mfussenegger/nvim-dap',
 -- 'ThePrimeagen/harpoon',
 -- 'chentoast/marks.nvim',
@@ -165,11 +163,11 @@ vim.cmd.colorscheme 'gruvbox'
 -- 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
 -- 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
 -- ]])
---
+
 -- map({ "n", "v", "x" }, "<C-s>", [[:s/\V]], { desc = "Enter substitue mode in selection" })
---
+
 -- Map({ "n" }, "<leader>c", "1z=")
---
+
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz")
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- vim.keymap.set("n", "n", "nzzzv")
@@ -187,9 +185,8 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
---
 -- highlight same vars? (look at kickstart)
---
+
 -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 -- vim.keymap.set("n", "J", "mzJ`z")
