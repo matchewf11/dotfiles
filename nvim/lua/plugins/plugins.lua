@@ -126,22 +126,25 @@ return {
     branch = 'master',
     lazy = false,
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        auto_install = true,
-        highlight = { enable = true },
-      }
-    end,
+    main = 'nvim-treesitter.configs',
+    opts = {
+      auto_install = true,
+      highlight = { enable = true },
+    },
   },
   {
-
+    'nvim-treesitter/nvim-treesitter-context',
+    event = { 'BufReadPost', 'BufNewFile' },
+    keys = {
+      {
+        '[C',
+        function()
+          require('treesitter-context').go_to_context(vim.v.count1)
+        end,
+        desc = 'Jump Context',
+      },
+    },
   },
-  -- {
-  --   'nvim-treesitter/nvim-treesitter-context',
-  -- },
-  -- {
-  --   'nvim-treesitter/nvim-treesitter-textobjects',
-  -- },
   {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -327,3 +330,7 @@ complete_bline 	complete line (current buffer only)
 --         c = { 'clangtidy' },
 --         make = { 'checkmake' }, -- go
 --         rust = { 'clippy' },
+--
+-- {
+--   'nvim-treesitter/nvim-treesitter-textobjects',
+-- },
