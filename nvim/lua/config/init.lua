@@ -43,15 +43,13 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- vim-sandwich
 -- vim-pathogen
 -- tabular
---
 -- {'folke/which-key.nvim' }
 -- { mini.nvim } stuff (surround, ai)
 -- { mbbill/undotree }
 -- { harpoon }
 -- {vim-fugitive}
--- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
 -- vim.pack
--- comment.vim
+-- comment.nvim
 -- vim-fugitive
 -- 'mfussenegger/nvim-dap',
 -- 'ThePrimeagen/harpoon',
