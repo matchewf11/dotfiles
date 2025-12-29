@@ -38,7 +38,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 
 -- vim-abolish
 -- vim-swap
--- vim-commentary
 -- vim-eunuch
 -- vim-pathogen
 -- tabular
@@ -52,7 +51,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- 'ThePrimeagen/harpoon',
 -- 'chentoast/marks.nvim',
 -- -- Comment.nvim
--- 'tpope/vim-commentary',
 -- 'junegunn/vim-easy-align',
 -- -- mini.bracketed
 -- 'tpope/vim-unimpaired',
@@ -184,3 +182,5 @@ vim.cmd.colorscheme 'gruvbox'
 
 -- ]b to move to next buffer
 -- tabs, windows, splits, tmux, i3
+--
+-- gc ap (around paragragh)
