@@ -36,25 +36,20 @@ map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 
--- vim-surround
 -- vim-abolish
 -- vim-swap
 -- vim-commentary
 -- vim-eunuch
 -- vim-sandwich
--- vim-surround
 -- vim-pathogen
 -- tabular
--- { nvim-dap  (nvim-dap-ui), (nvim-nio), (nvim-dap-go) }
+--
 -- {'folke/which-key.nvim' }
 -- { mini.nvim } stuff (surround, ai)
 -- { mbbill/undotree }
 -- { harpoon }
 -- {vim-fugitive}
--- mini.ai
--- mini.surround
 -- {neotest, nvim-nio,fixcursorhold,neotest-golang,nvim-dap-go}
--- {nvim-dap, nvim-dap-ui,nvim-nio}
 -- vim.pack
 -- comment.vim
 -- vim-fugitive
@@ -68,7 +63,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- 'tpope/vim-unimpaired',
 -- -- nvim-surround
 -- -- mini.surround
--- 'tpope/vim-surround',
 -- -- mini.ai
 -- -- targets.vim
 -- -- mini.jump
