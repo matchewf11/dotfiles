@@ -1,11 +1,16 @@
 return {
   {
-    -- look into config info
-    -- look into all mini-plugins
     'nvim-mini/mini.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
     config = function()
-      -- require('mini.surround').setup {}
+      -- sa (add surround)
+      -- sd (delete surround)
+      -- sr (replace surround)
+      -- sf/F (find surround)
+      -- sh (highlight surround)
+      -- sa <motion> <surround>
+      -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
+      require('mini.surround').setup()
     end,
   },
   {
@@ -13,7 +18,6 @@ return {
     cmd = { 'DB' },
     dependencies = { 'tpope/vim-dotenv' },
   },
-  { 'tpope/vim-dotenv', cmd = { 'Dotenv' } },
   {
     'mfussenegger/nvim-lint',
     event = 'BufReadPost',
@@ -90,9 +94,6 @@ return {
       end,
     },
   },
-  { 'rafamadriz/friendly-snippets', lazy = true },
-  { 'nvim-tree/nvim-web-devicons', lazy = true },
-  { 'L3MON4D3/LuaSnip', version = 'v2.*', lazy = true },
   {
     'stevearc/conform.nvim',
     cmd = { 'ConformInfo' },
@@ -123,7 +124,7 @@ return {
     event = 'InsertEnter',
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'L3MON4D3/LuaSnip',
+      { 'L3MON4D3/LuaSnip', version = 'v2.*' },
     },
     opts = {
       snippets = { preset = 'luasnip' },
@@ -343,3 +344,47 @@ complete_bline 	complete line (current buffer only)
 -- {
 --   'nvim-treesitter/nvim-treesitter-textobjects',
 -- },
+--
+-- mini.ai 	Extend and create a/i textobjects
+-- mini.align 	Align text interactively
+-- mini.comment 	Comment lines
+-- mini.completion 	Completion and signature help
+-- mini.keymap 	Special key mappings
+-- mini.move 	Move any selection in any direction
+-- mini.operators 	Text edit operators
+-- mini.pairs 	Autopairs
+-- mini.snippets 	Manage and expand snippets
+-- mini.splitjoin 	Split and join arguments
+-- mini.basics 	Common configuration presets
+-- mini.bracketed 	Go forward/backward with square brackets
+-- mini.bufremove 	Remove buffers
+-- mini.clue 	Show next key clues
+-- mini.cmdline 	Command line tweaks
+-- mini.deps 	Plugin manager
+-- mini.diff 	Work with diff hunks
+-- mini.extra 	Extra 'mini.nvim' functionality
+-- mini.files 	Navigate and manipulate file system
+-- mini.git 	Git integration
+-- mini.jump 	Jump to next/previous single character
+-- mini.jump2d 	Jump within visible lines
+-- mini.misc 	Miscellaneous functions
+-- mini.pick 	Pick anything
+-- mini.sessions 	Session management
+-- mini.visits 	Track and reuse file system visits
+-- mini.animate 	Animate common Neovim actions
+-- mini.base16 	Base16 colorscheme creation
+-- mini.colors 	Tweak and save any color scheme
+-- mini.cursorword 	Autohighlight word under cursor
+-- mini.hipatterns 	Highlight patterns in text
+-- mini.hues 	Generate configurable color scheme
+-- mini.icons 	Icon provider
+-- mini.indentscope 	Visualize and work with indent scope
+-- mini.map 	Window with buffer text overview
+-- mini.notify 	Show notifications
+-- mini.starter 	Start screen
+-- mini.statusline 	Statusline
+-- mini.tabline 	Tabline
+-- mini.trailspace 	Trailspace (highlight and remove)
+-- mini.doc 	Generate Neovim help files
+-- mini.fuzzy 	Fuzzy matching
+-- mini.test 	Test Neovim plugins

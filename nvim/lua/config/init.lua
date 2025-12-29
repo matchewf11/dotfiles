@@ -40,17 +40,13 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- vim-swap
 -- tabular
 -- {'folke/which-key.nvim' }
--- { mini.nvim } stuff ()
 -- { mbbill/undotree }
 -- { harpoon }
 -- {vim-fugitive}
 -- 'chentoast/marks.nvim',
 -- 'junegunn/vim-easy-align',
--- -- mini.ai
 -- -- targets.vim
--- -- mini.jump
 -- -- vim-sneak
--- -- mini jump2d
 -- -- leap.nvim
 -- (maybe flash.nvim)
 -- 'matze/vim-move',
@@ -59,7 +55,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 -- other tpope plugins
--- other mini stuff
 
 -- :so to source this file
 -- :map jk
@@ -176,3 +171,4 @@ vim.cmd.colorscheme 'gruvbox'
 -- tabs, windows, splits, tmux, i3
 --
 -- gc ap (around paragragh)
+-- <https://nvim-mini.org/MiniMax>
