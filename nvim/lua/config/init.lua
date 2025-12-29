@@ -49,9 +49,7 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- { harpoon }
 -- {vim-fugitive}
 -- vim.pack
--- comment.nvim
 -- vim-fugitive
--- 'mfussenegger/nvim-dap',
 -- 'ThePrimeagen/harpoon',
 -- 'chentoast/marks.nvim',
 -- -- Comment.nvim
