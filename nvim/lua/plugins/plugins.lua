@@ -1,5 +1,15 @@
 return {
   {
+    'tpope/vim-surround',
+    event = { 'BufReadPost', 'BufNewFile' },
+    -- cs"' to change surround
+    -- cs'<q> to change surround to tags
+    -- cst" to go around again
+    -- ds" to remove delimeters
+    -- ysiw] ([ adds a space) (iw is text object)
+    -- yssb or yss) to wrap line
+  },
+  {
     'tpope/vim-dadbod',
     cmd = { 'DB' },
     dependencies = { 'tpope/vim-dotenv' },
