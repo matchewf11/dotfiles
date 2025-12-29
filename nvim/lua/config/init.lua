@@ -40,11 +40,10 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- vim-swap
 -- vim-commentary
 -- vim-eunuch
--- vim-sandwich
 -- vim-pathogen
 -- tabular
 -- {'folke/which-key.nvim' }
--- { mini.nvim } stuff (surround, ai)
+-- { mini.nvim } stuff ()
 -- { mbbill/undotree }
 -- { harpoon }
 -- {vim-fugitive}
@@ -57,8 +56,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- 'junegunn/vim-easy-align',
 -- -- mini.bracketed
 -- 'tpope/vim-unimpaired',
--- -- nvim-surround
--- -- mini.surround
 -- -- mini.ai
 -- -- targets.vim
 -- -- mini.jump
@@ -69,7 +66,6 @@ map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 -- 'matze/vim-move',
 -- 'gbprod/substitute.nvim',
 -- 'AndrewRadev/splitjoin.vim',
--- 'ntpeters/vim-better-whitespace',
 -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 -- other tpope plugins
