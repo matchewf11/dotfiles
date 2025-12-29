@@ -1,13 +1,12 @@
 return {
   {
-    'tpope/vim-surround',
+    -- look into config info
+    -- look into all mini-plugins
+    'nvim-mini/mini.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
-    -- cs"' to change surround
-    -- cs'<q> to change surround to tags
-    -- cst" to go around again
-    -- ds" to remove delimeters
-    -- ysiw] ([ adds a space) (iw is text object)
-    -- yssb or yss) to wrap line
+    config = function()
+      -- require('mini.surround').setup {}
+    end,
   },
   {
     'tpope/vim-dadbod',
