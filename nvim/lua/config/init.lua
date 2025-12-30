@@ -33,7 +33,7 @@ map('<leader>n', vim.cmd.tabnew, 'Open Tab')
 map('<leader>c', vim.cmd.tabclose, 'Close Tab')
 
 map('gl', vim.diagnostic.open_float, 'Line diagnostics')
-map('<leader>d', vim.diagnostic.setloclist, 'Diagnostics in LocList')
+map('<leader>l', vim.diagnostic.setloclist, 'Diagnostics in LocList')
 
 map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
