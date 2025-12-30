@@ -35,16 +35,25 @@ map('<leader>d', vim.diagnostic.setloclist, 'Diagnostics in LocList')
 map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
+map('J', ":m '>+1<CR>gv=gv", 'Move Line Down', 'v')
+map('K', ":m '<-2<CR>gv=gv", 'Move Line Up', 'v')
+
+-- vim.keymap.set("n", "J", "mzJ`z")
+
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz")
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- vim.keymap.set("n", "n", "nzzzv")
+-- vim.keymap.set("n", "N", "Nzzzv")
+-- vim.keymap.set("n", "=ap", "ma=ap'a")
+-- vim.keymap.set("x", "<leader>p", [["_dP]])
+
+-- look at syl
 
 -- vim-abolish
 -- vim-swap
--- tabular
 -- {'folke/which-key.nvim' }
--- { mbbill/undotree }
--- { harpoon }
 -- {vim-fugitive}
 -- 'chentoast/marks.nvim',
--- 'junegunn/vim-easy-align',
 -- -- targets.vim
 -- -- vim-sneak
 -- -- leap.nvim
@@ -154,21 +163,10 @@ vim.cmd.colorscheme 'gruvbox'
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
--- highlight same vars? (look at kickstart)
-
--- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
--- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
--- vim.keymap.set("n", "J", "mzJ`z")
--- vim.keymap.set("n", "<C-d>", "<C-d>zz")
--- vim.keymap.set("n", "<C-u>", "<C-u>zz")
--- vim.keymap.set("n", "n", "nzzzv")
--- vim.keymap.set("n", "N", "Nzzzv")
--- vim.keymap.set("n", "=ap", "ma=ap'a")
--- vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
--- vim.keymap.set("x", "<leader>p", [["_dP]])
-
 -- ]b to move to next buffer
 -- tabs, windows, splits, tmux, i3
 --
 -- gc ap (around paragragh)
 -- <https://nvim-mini.org/MiniMax>
+-- highlight same vars? (look at kickstart)
+-- norm command?

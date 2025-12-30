@@ -352,7 +352,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.keymap 	Special key mappings
 -- mini.move 	Move any selection in any direction
 -- mini.operators 	Text edit operators
--- mini.pairs 	Autopairs
 -- mini.snippets 	Manage and expand snippets
 -- mini.splitjoin 	Split and join arguments
 -- mini.basics 	Common configuration presets
