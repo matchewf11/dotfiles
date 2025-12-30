@@ -387,3 +387,31 @@ complete_bline 	complete line (current buffer only)
 -- mini.doc 	Generate Neovim help files
 -- mini.fuzzy 	Fuzzy matching
 -- mini.test 	Test Neovim plugins
+
+-- ]b to move to next buffer
+-- tabs, windows, splits, tmux, i3
+-- gc ap (around paragragh)
+-- <https://nvim-mini.org/MiniMax>
+-- highlight same vars? (look at kickstart)
+
+-- vim-abolish
+-- vim-swap
+--
+-- {'folke/which-key.nvim' }
+-- {vim-fugitive}
+-- 'chentoast/marks.nvim',
+--
+-- -- targets.vim
+-- -- vim-sneak
+-- -- leap.nvim
+-- (maybe flash.nvim)
+--
+-- 'matze/vim-move',
+-- 'gbprod/substitute.nvim',
+--
+-- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+-- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+--
+-- other tpope plugins
+-- :so to source this file
+-- :map jk

@@ -27,46 +27,20 @@ local function map(left, right, description, modes)
   vim.keymap.set(modes, left, right, { desc = description })
 end
 
+map('<leader>e', vim.cmd.Ex, 'Open Netrw')
+
 map('<leader>n', vim.cmd.tabnew, 'Open Tab')
 map('<leader>c', vim.cmd.tabclose, 'Close Tab')
-map('<leader>e', vim.cmd.Ex, 'Open Netrw')
+
 map('gl', vim.diagnostic.open_float, 'Line diagnostics')
 map('<leader>d', vim.diagnostic.setloclist, 'Diagnostics in LocList')
+
 map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
-map('J', ":m '>+1<CR>gv=gv", 'Move Line Down', 'v')
-map('K', ":m '<-2<CR>gv=gv", 'Move Line Up', 'v')
 
--- vim.keymap.set("n", "J", "mzJ`z")
-
--- vim.keymap.set("n", "<C-d>", "<C-d>zz")
--- vim.keymap.set("n", "<C-u>", "<C-u>zz")
--- vim.keymap.set("n", "n", "nzzzv")
--- vim.keymap.set("n", "N", "Nzzzv")
--- vim.keymap.set("n", "=ap", "ma=ap'a")
--- vim.keymap.set("x", "<leader>p", [["_dP]])
-
--- look at syl
-
--- vim-abolish
--- vim-swap
--- {'folke/which-key.nvim' }
--- {vim-fugitive}
--- 'chentoast/marks.nvim',
--- -- targets.vim
--- -- vim-sneak
--- -- leap.nvim
--- (maybe flash.nvim)
--- 'matze/vim-move',
--- 'gbprod/substitute.nvim',
--- 'AndrewRadev/splitjoin.vim',
--- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
--- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
--- other tpope plugins
-
--- :so to source this file
--- :map jk
+map('<C-p>', ":m '<-2<CR>gv=gv", 'Move Line Up', 'v')
+map('<C-n>', ":m '>+1<CR>gv=gv", 'Move Line Down', 'v')
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -125,48 +99,3 @@ vim.o.statusline = table.concat({
 }, ' ')
 
 vim.cmd.colorscheme 'gruvbox'
-
--- require("luasnip").setup({ enable_autosnippets = true })
--- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
--- map({ "n", "x" }, "<leader>d", '"+d')
--- map({ "i", "s" }, "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
--- map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
--- map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
--- vim.cmd([[
--- 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
--- 	nnoremap gK @='ddkPJ'<cr>| " join lines but reversed. `@=` so [count] works
--- 	xnoremap gK <esc><cmd>keeppatterns '<,'>-global/$/normal! ddpkJ<cr>
--- 	noremap! <c-r><c-d> <c-r>=strftime('%F')<cr>
--- 	noremap! <c-r><c-t> <c-r>=strftime('%T')<cr>
--- 	noremap! <c-r><c-f> <c-r>=expand('%:t')<cr>
--- 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
--- 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
--- ]])
-
--- map({ "n", "v", "x" }, "<C-s>", [[:s/\V]], { desc = "Enter substitue mode in selection" })
-
--- Map({ "n" }, "<leader>c", "1z=")
-
--- vim.keymap.set("n", "<C-d>", "<C-d>zz")
--- vim.keymap.set("n", "<C-u>", "<C-u>zz")
--- vim.keymap.set("n", "n", "nzzzv")
--- vim.keymap.set("n", "N", "Nzzzv")
-
--- KICKSTART!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
-
--- ]b to move to next buffer
--- tabs, windows, splits, tmux, i3
---
--- gc ap (around paragragh)
--- <https://nvim-mini.org/MiniMax>
--- highlight same vars? (look at kickstart)
--- norm command?
