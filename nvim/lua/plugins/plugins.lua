@@ -31,7 +31,6 @@ return {
         desc = 'Toggle Diff Overlay',
       })
 
-
       require('mini.statusline').setup {
         content = {
           active = function()
