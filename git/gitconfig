@@ -1,3 +1,5 @@
 [user]
     email = matchewf11@gmail.com
     name = Matthew Franchini
+[init]
+	defaultBranch = main

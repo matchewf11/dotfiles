@@ -20,7 +20,6 @@ return {
       --  goto_prev = '[h',
       --  goto_next = ']h',
       --  goto_last = ']H',
-
       local mini_diff = require 'mini.diff'
       mini_diff.setup()
       vim.keymap.set('n', '<leader>h', mini_diff.toggle_overlay, {
@@ -333,8 +332,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.visits 	Track and reuse file system visits
 --
 -- mini.hipatterns 	Highlight patterns in text
--- mini.indentscope 	Visualize and work with indent scope
--- mini.map 	Window with buffer text overview
 -- mini.tabline 	Tabline
 --
 -- fugitive
