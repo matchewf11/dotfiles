@@ -368,19 +368,21 @@ complete_bline 	complete line (current buffer only)
 -- mini.keymap 	Special key mappings
 -- mini.move 	Move any selection in any direction
 -- mini.operators 	Text edit operators
+-- mini.pairs 	Autopairs
 -- mini.snippets 	Manage and expand snippets
 -- mini.splitjoin 	Split and join arguments
+-- mini.surround 	Surround actions
 --
 -- mini.basics 	Common configuration presets
 -- mini.bracketed 	Go forward/backward with square brackets
 -- mini.bufremove 	Remove buffers
--- mini.clue 	Show next key clues -- {'folke/which-key.nvim' }
+-- mini.clue 	Show next key clues
 -- mini.cmdline 	Command line tweaks
 -- mini.deps 	Plugin manager
 -- mini.diff 	Work with diff hunks
 -- mini.extra 	Extra 'mini.nvim' functionality
 -- mini.files 	Navigate and manipulate file system
--- mini.git 	Git integration -- {vim-fugitive}
+-- mini.git 	Git integration
 -- mini.jump 	Jump to next/previous single character
 -- mini.jump2d 	Jump within visible lines
 -- mini.misc 	Miscellaneous functions
@@ -390,15 +392,18 @@ complete_bline 	complete line (current buffer only)
 --
 -- mini.cursorword 	Autohighlight word under cursor
 -- mini.hipatterns 	Highlight patterns in text
--- mini.hues 	Generate configurable color scheme
 -- mini.indentscope 	Visualize and work with indent scope
 -- mini.map 	Window with buffer text overview
 -- mini.notify 	Show notifications
 -- mini.tabline 	Tabline
+-- mini.trailspace 	Trailspace (highlight and remove)
 --
 -- mini.doc 	Generate Neovim help files
 -- mini.fuzzy 	Fuzzy matching
 -- mini.test 	Test Neovim plugins
+--
+-- fugitive
+-- which-key
 --
 -- 'chentoast/marks.nvim',
 -- `:help nvim-treesitter-incremental-selection-mod`
