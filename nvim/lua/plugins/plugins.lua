@@ -20,20 +20,22 @@ return {
       --  goto_prev = '[h',
       --  goto_next = ']h',
       --  goto_last = ']H',
-      require('mini.diff').setup {}
 
-      vim.keymap.set('n', '<leader>h', MiniDiff.toggle_overlay, {
+      local mini_diff = require 'mini.diff'
+      mini_diff.setup()
+      vim.keymap.set('n', '<leader>h', mini_diff.toggle_overlay, {
         desc = 'Toggle Diff Overlay',
       })
 
-      require('mini.statusline').setup {
+      local statusline = require 'mini.statusline'
+      statusline.setup {
         content = {
           active = function()
-            local filename = MiniStatusline.section_filename { trunc_width = 140 }
-            local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
-            local git = MiniStatusline.section_git { trunc_width = 40 }
-            local diff = MiniStatusline.section_diff { trunc_width = 75 }
-            local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+            local filename = statusline.section_filename { trunc_width = 140 }
+            local diagnostics = statusline.section_diagnostics { trunc_width = 75 }
+            local git = statusline.section_git { trunc_width = 40 }
+            local diff = statusline.section_diff { trunc_width = 75 }
+            local fileinfo = statusline.section_fileinfo { trunc_width = 120 }
             local location = '%l/%L:%v'
             local lsp = table.concat(
               vim.tbl_map(function(client)
@@ -41,7 +43,7 @@ return {
               end, vim.lsp.get_clients { bufnr = 0 }),
               ' '
             )
-            return MiniStatusline.combine_groups {
+            return statusline.combine_groups {
               { hl = 'MiniStatuslineFilename', strings = { filename } },
               { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
               { hl = 'MiniStatuslineDevinfo', strings = { git, diff } },
