@@ -327,7 +327,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.keymap 	Special key mappings
 -- mini.move 	Move any selection in any direction
 -- mini.operators 	Text edit operators
--- mini.pairs 	Autopairs
 -- mini.snippets 	Manage and expand snippets
 -- mini.splitjoin 	Split and join arguments
 --
@@ -351,9 +350,7 @@ complete_bline 	complete line (current buffer only)
 -- mini.hipatterns 	Highlight patterns in text
 -- mini.indentscope 	Visualize and work with indent scope
 -- mini.map 	Window with buffer text overview
--- mini.notify 	Show notifications
 -- mini.tabline 	Tabline
--- mini.trailspace 	Trailspace (highlight and remove)
 --
 -- mini.doc 	Generate Neovim help files
 -- mini.fuzzy 	Fuzzy matching
