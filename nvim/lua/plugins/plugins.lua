@@ -1,8 +1,3 @@
--- bash lsp, linter, fmt
--- lua lsp, fmt
--- c lsp, linter, fmt
--- sql lsp, linter, fmt
-
 return {
   {
     'nvim-mini/mini.nvim',
@@ -16,6 +11,97 @@ return {
       -- sa <motion> <surround>
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
+
+      require('mini.icons').setup()
+
+      -- function Diagnostics()
+      --   local counts = vim.diagnostic.count(0)
+      --   local letters = {
+      --     [vim.diagnostic.severity.ERROR] = 'E',
+      --     [vim.diagnostic.severity.WARN] = 'W',
+      --     [vim.diagnostic.severity.INFO] = 'I',
+      --     [vim.diagnostic.severity.HINT] = 'H',
+      --   }
+      --
+      --   local parts = {}
+      --   for severity, letter in pairs(letters) do
+      --     local n = counts[severity]
+      --     if n and n > 0 then
+      --       table.insert(parts, string.format('%s:%d', letter, n))
+      --     end
+      --   end
+      --   return table.concat(parts, ' ')
+      -- end
+      --
+      -- function Clients()
+      --   return table.concat(
+      --     vim.tbl_map(function(client)
+      --       return client.name
+      --     end, vim.lsp.get_clients { bufnr = 0 }),
+      --     ' '
+      --   )
+      -- end
+      --
+
+      require('mini.statusline').setup {
+        active = nil,
+        inactive = nil,
+      }
+
+      -- vim.o.statusline = table.concat({
+      --   '%f',
+      --   '%m%r%h%w%y%q',
+      --   "%{get(b:,'gitsigns_head','')}",
+      --   "%{get(b:,'gitsigns_status','')}",
+      --   '%=',
+      --   '%{v:lua.Diagnostics()}',
+      --   '%{v:lua.Clients()}',
+      --   '%l/%L:%v',
+      -- }, ' ')
+
+
+      -- mini.ai 	Extend and create a/i textobjects
+      -- mini.align 	Align text interactively
+      -- mini.comment 	Comment lines
+      -- mini.completion 	Completion and signature help
+      -- mini.keymap 	Special key mappings
+      -- mini.move 	Move any selection in any direction
+      -- mini.operators 	Text edit operators
+      -- mini.snippets 	Manage and expand snippets
+      -- mini.splitjoin 	Split and join arguments
+      --
+      -- mini.basics 	Common configuration presets
+      -- mini.bracketed 	Go forward/backward with square brackets
+      -- mini.bufremove 	Remove buffers
+      -- mini.clue 	Show next key clues -- {'folke/which-key.nvim' }
+      -- mini.cmdline 	Command line tweaks
+      -- mini.deps 	Plugin manager
+      -- mini.diff 	Work with diff hunks
+      -- mini.extra 	Extra 'mini.nvim' functionality
+      -- mini.files 	Navigate and manipulate file system
+      -- mini.git 	Git integration -- {vim-fugitive}
+      -- mini.jump 	Jump to next/previous single character
+      -- mini.jump2d 	Jump within visible lines
+      -- mini.misc 	Miscellaneous functions
+      -- mini.pick 	Pick anything
+      -- mini.sessions 	Session management
+      -- mini.visits 	Track and reuse file system visits
+      --
+      -- mini.cursorword 	Autohighlight word under cursor
+      -- mini.hipatterns 	Highlight patterns in text
+      -- mini.hues 	Generate configurable color scheme
+      -- mini.indentscope 	Visualize and work with indent scope
+      -- mini.map 	Window with buffer text overview
+      -- mini.notify 	Show notifications
+      -- mini.tabline 	Tabline
+      --
+      -- mini.doc 	Generate Neovim help files
+      -- mini.fuzzy 	Fuzzy matching
+      -- mini.test 	Test Neovim plugins
+      --
+      -- 'chentoast/marks.nvim',
+      -- `:help nvim-treesitter-incremental-selection-mod`
+      -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
   {
@@ -25,18 +111,23 @@ return {
   },
   {
     'mfussenegger/nvim-lint',
-    event = 'BufReadPost',
+    event = { 'BufReadPost', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
-        lua = { 'luacheck' },
-        c = { 'clangtidy' },
+        lua = { 'luacheck' }, -- luarocks
+        c = { 'clangtidy' }, -- pacman
+        sh = { 'shellcheck' }, -- pacman
+        sql = { 'sqlfluff' }, -- pipx
+        go = { 'golangcilint' }, -- pacman
+        make = { 'checkmake' }, -- go
+        rust = { 'clippy' }, -- cargo
+        markdown = { 'markdownlint' }, -- npm
       }
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
-          -- seperate from ft
-          -- tries lint (can add another w/ lint name) (cspell?)
           lint.try_lint()
+          -- lint.try_lint 'cspell' -- npm
         end,
       })
     end,
@@ -114,11 +205,14 @@ return {
     },
     opts = {
       formatters_by_ft = {
-        -- configure this
         lua = { 'stylua' }, -- cargo
+        go = { 'gofumpt', 'goimports' }, -- go
         javascript = { 'prettier' }, -- npm
-        -- ["*"] = { "codespell" },
-        -- ["_"] = { "trim_whitespace" },
+        c = { 'clang-format' }, -- pacman
+        rust = { 'rustfmt' }, -- cargo
+        toml = { 'taplo' }, -- cargo
+        sh = { 'shfmt' }, -- pacman
+        sql = { 'sqlfluff' }, -- pipx
       },
       default_format_opts = { lsp_format = 'fallback' },
     },
@@ -170,6 +264,12 @@ return {
         'gopls', -- go
         'clangd', -- pacman
         'ts_ls', -- npm
+        'rust_analyzer', -- rustup
+        'taplo', -- cargo
+        'hls', -- ghcup
+        'pyright', -- npm
+        'sqls', -- go
+        'bashls', -- pacman
       } do
         vim.lsp.enable(server)
       end
@@ -177,7 +277,7 @@ return {
   },
   {
     'ibhagwan/fzf-lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-mini/mini.nvim' },
     keys = {
       { '<leader>sb', '<CMD>FzfLua buffers<CR>', desc = 'Search Buffers' },
       { '<leader>sf', '<CMD>FzfLua files<CR>', desc = 'Search Files' },
@@ -187,84 +287,6 @@ return {
     cmd = { 'FzfLua' },
   },
 }
-
---
--- 'rust_analyzer', -- rustup
--- 'lua_ls', -- pacman
--- 'gopls', -- go
--- 'clangd', -- pacman
--- 'taplo', -- cargo
--- 'hls', -- ghcup
--- 'pyright', -- npm
---
--- lua = { 'stylua' }, -- installed thru cargo
--- go = { 'gofumpt', 'goimports' }, -- thru go (both)
--- c = { 'clang-format' }, -- sudo pacman
---         rust = { 'rustfmt' },
---         toml = { 'taplo' },
---         --["*"] = { "codespell" },
---         --["*"] = { "trimwhitespace" },
---         --   "shfmt",         -- Shell
---         --   "sql-formatter", -- SQL
---         --   prettier?
---
---         lua = { 'luacheck' }, -- luarocks
---         go = { 'golangcilint' }, -- pacman
---         c = { 'clangtidy' },
---         make = { 'checkmake' }, -- go
---         rust = { 'clippy' },
---
--- {'folke/which-key.nvim' }
--- {vim-fugitive}
--- 'chentoast/marks.nvim',
--- 'matze/vim-move',
--- 'gbprod/substitute.nvim',
--- `:help nvim-treesitter-incremental-selection-mod`
--- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
--- other tpope plugins
---
--- mini.ai 	Extend and create a/i textobjects
--- mini.align 	Align text interactively
--- mini.comment 	Comment lines
--- mini.completion 	Completion and signature help
--- mini.keymap 	Special key mappings
--- mini.move 	Move any selection in any direction
--- mini.operators 	Text edit operators
--- mini.snippets 	Manage and expand snippets
--- mini.splitjoin 	Split and join arguments
--- mini.basics 	Common configuration presets
--- mini.bracketed 	Go forward/backward with square brackets
--- mini.bufremove 	Remove buffers
--- mini.clue 	Show next key clues
--- mini.cmdline 	Command line tweaks
--- mini.deps 	Plugin manager
--- mini.diff 	Work with diff hunks
--- mini.extra 	Extra 'mini.nvim' functionality
--- mini.files 	Navigate and manipulate file system
--- mini.git 	Git integration
--- mini.jump 	Jump to next/previous single character
--- mini.jump2d 	Jump within visible lines
--- mini.misc 	Miscellaneous functions
--- mini.pick 	Pick anything
--- mini.sessions 	Session management
--- mini.visits 	Track and reuse file system visits
--- mini.animate 	Animate common Neovim actions
--- mini.base16 	Base16 colorscheme creation
--- mini.colors 	Tweak and save any color scheme
--- mini.cursorword 	Autohighlight word under cursor
--- mini.hipatterns 	Highlight patterns in text
--- mini.hues 	Generate configurable color scheme
--- mini.icons 	Icon provider
--- mini.indentscope 	Visualize and work with indent scope
--- mini.map 	Window with buffer text overview
--- mini.notify 	Show notifications
--- mini.starter 	Start screen
--- mini.statusline 	Statusline
--- mini.tabline 	Tabline
--- mini.trailspace 	Trailspace (highlight and remove)
--- mini.doc 	Generate Neovim help files
--- mini.fuzzy 	Fuzzy matching
--- mini.test 	Test Neovim plugins
 
 -- ]b to move to next buffer
 -- tabs, windows, splits, tmux, i3

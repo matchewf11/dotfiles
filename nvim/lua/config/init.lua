@@ -59,43 +59,4 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 require 'config.lazy'
 
-function Diagnostics()
-  local counts = vim.diagnostic.count(0)
-  local letters = {
-    [vim.diagnostic.severity.ERROR] = 'E',
-    [vim.diagnostic.severity.WARN] = 'W',
-    [vim.diagnostic.severity.INFO] = 'I',
-    [vim.diagnostic.severity.HINT] = 'H',
-  }
-
-  local parts = {}
-  for severity, letter in pairs(letters) do
-    local n = counts[severity]
-    if n and n > 0 then
-      table.insert(parts, string.format('%s:%d', letter, n))
-    end
-  end
-  return table.concat(parts, ' ')
-end
-
-function Clients()
-  return table.concat(
-    vim.tbl_map(function(client)
-      return client.name
-    end, vim.lsp.get_clients { bufnr = 0 }),
-    ' '
-  )
-end
-
-vim.o.statusline = table.concat({
-  '%f',
-  '%m%r%h%w%y%q',
-  "%{get(b:,'gitsigns_head','')}",
-  "%{get(b:,'gitsigns_status','')}",
-  '%=',
-  '%{v:lua.Diagnostics()}',
-  '%{v:lua.Clients()}',
-  '%l/%L:%v',
-}, ' ')
-
 vim.cmd.colorscheme 'gruvbox'

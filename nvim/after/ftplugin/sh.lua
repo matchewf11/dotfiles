@@ -1,2 +1,3 @@
-
 -- vim.keymap.set("n", "<localleader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+--
+print 'foo'

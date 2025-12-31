@@ -6,6 +6,7 @@ export PATH=$PATH:$HOME/go/bin # add go to path
 export PATH="$HOME/.luarocks/bin:$PATH" # add luarocks to path
 export PATH="$HOME/.npm-global/bin:$PATH" # add npm to path
 export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
 
