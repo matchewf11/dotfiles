@@ -1,7 +1,6 @@
 return {
   {
     'nvim-mini/mini.nvim',
-    event = { 'BufReadPost', 'BufNewFile' },
     config = function()
       -- sa (add surround)
       -- sd (delete surround)
