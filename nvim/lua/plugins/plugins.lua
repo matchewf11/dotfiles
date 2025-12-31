@@ -13,14 +13,9 @@ return {
 
       require('mini.icons').setup()
 
-      -- -- Apply hunks inside a visual/operator region
       --  apply = 'gh', (ghip)
-      --  -- Reset hunks inside a visual/operator region
       --  reset = 'gH',
-      --  -- Hunk range textobject to be used inside operator
-      --  -- Works also in Visual mode if mapping differs from apply and reset
-      --  textobject = 'gh', (dgh)
-      --  -- Go to hunk range in corresponding direction
+      --  textobject = 'gh', (dgh) (also in visual mode)
       --  goto_first = '[H',
       --  goto_prev = '[h',
       --  goto_next = ']h',
@@ -309,17 +304,6 @@ complete_bline 	complete line (current buffer only)
 -- ['<C-u>'] = { 'scroll_signature_up', 'fallback' },
 -- ['<C-d>'] = { 'scroll_signature_down', 'fallback' },
 --
--- Gitsigns
--- :Gitsigns blame/blame_line
--- :Gitsigns change_base <REVISION>
--- :Gitsign setqflist/setloclist (target=all/attached/[int])
--- vim.keymap.set({'o', 'x'}, 'ih', '<CMD>Gitsigns select_hunk<CR>) -- text object
--- :Gitsigns show <REVISION> to :edit current buffer at <REVISION>
--- :Gitsigns toggle_numhl
--- :Gitsigns toggle_linehl
--- :Gitsigns toggle_word_diff
--- :Gitsigns toggle_current_line_blame
---
 -- mini.ai 	Extend and create a/i textobjects
 -- mini.align 	Align text interactively
 -- mini.comment 	Comment lines
@@ -346,14 +330,12 @@ complete_bline 	complete line (current buffer only)
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
 --
--- mini.cursorword 	Autohighlight word under cursor
 -- mini.hipatterns 	Highlight patterns in text
 -- mini.indentscope 	Visualize and work with indent scope
 -- mini.map 	Window with buffer text overview
 -- mini.tabline 	Tabline
 --
 -- mini.doc 	Generate Neovim help files
--- mini.fuzzy 	Fuzzy matching
 -- mini.test 	Test Neovim plugins
 --
 -- fugitive
