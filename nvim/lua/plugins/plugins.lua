@@ -331,9 +331,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
 --
--- mini.hipatterns 	Highlight patterns in text
--- mini.tabline 	Tabline
---
 -- fugitive
 -- which-key
 -- 'chentoast/marks.nvim',
