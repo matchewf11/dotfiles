@@ -14,94 +14,32 @@ return {
 
       require('mini.icons').setup()
 
-      -- function Diagnostics()
-      --   local counts = vim.diagnostic.count(0)
-      --   local letters = {
-      --     [vim.diagnostic.severity.ERROR] = 'E',
-      --     [vim.diagnostic.severity.WARN] = 'W',
-      --     [vim.diagnostic.severity.INFO] = 'I',
-      --     [vim.diagnostic.severity.HINT] = 'H',
-      --   }
-      --
-      --   local parts = {}
-      --   for severity, letter in pairs(letters) do
-      --     local n = counts[severity]
-      --     if n and n > 0 then
-      --       table.insert(parts, string.format('%s:%d', letter, n))
-      --     end
-      --   end
-      --   return table.concat(parts, ' ')
-      -- end
-      --
-      -- function Clients()
-      --   return table.concat(
-      --     vim.tbl_map(function(client)
-      --       return client.name
-      --     end, vim.lsp.get_clients { bufnr = 0 }),
-      --     ' '
-      --   )
-      -- end
-      --
-
       require('mini.statusline').setup {
-        active = nil,
-        inactive = nil,
+        content = {
+          active = function()
+            local filename = MiniStatusline.section_filename { trunc_width = 140 }
+            local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
+            local git = MiniStatusline.section_git { trunc_width = 40 }
+            local diff = MiniStatusline.section_diff { trunc_width = 75 }
+            local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+            local location = '%l/%L:%v'
+            local lsp = table.concat(
+              vim.tbl_map(function(client)
+                return client.name
+              end, vim.lsp.get_clients { bufnr = 0 }),
+              ' '
+            )
+            return MiniStatusline.combine_groups {
+              { hl = 'MiniStatuslineFilename', strings = { filename } },
+              { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+              { hl = 'MiniStatuslineDevinfo', strings = { git, diff } },
+              '%=',
+              { hl = 'MiniStatuslineDevinfo', strings = { diagnostics, lsp } },
+              { hl = 'MiniStatuslineFilename', strings = { location } },
+            }
+          end,
+        },
       }
-
-      -- vim.o.statusline = table.concat({
-      --   '%f',
-      --   '%m%r%h%w%y%q',
-      --   "%{get(b:,'gitsigns_head','')}",
-      --   "%{get(b:,'gitsigns_status','')}",
-      --   '%=',
-      --   '%{v:lua.Diagnostics()}',
-      --   '%{v:lua.Clients()}',
-      --   '%l/%L:%v',
-      -- }, ' ')
-
-
-      -- mini.ai 	Extend and create a/i textobjects
-      -- mini.align 	Align text interactively
-      -- mini.comment 	Comment lines
-      -- mini.completion 	Completion and signature help
-      -- mini.keymap 	Special key mappings
-      -- mini.move 	Move any selection in any direction
-      -- mini.operators 	Text edit operators
-      -- mini.snippets 	Manage and expand snippets
-      -- mini.splitjoin 	Split and join arguments
-      --
-      -- mini.basics 	Common configuration presets
-      -- mini.bracketed 	Go forward/backward with square brackets
-      -- mini.bufremove 	Remove buffers
-      -- mini.clue 	Show next key clues -- {'folke/which-key.nvim' }
-      -- mini.cmdline 	Command line tweaks
-      -- mini.deps 	Plugin manager
-      -- mini.diff 	Work with diff hunks
-      -- mini.extra 	Extra 'mini.nvim' functionality
-      -- mini.files 	Navigate and manipulate file system
-      -- mini.git 	Git integration -- {vim-fugitive}
-      -- mini.jump 	Jump to next/previous single character
-      -- mini.jump2d 	Jump within visible lines
-      -- mini.misc 	Miscellaneous functions
-      -- mini.pick 	Pick anything
-      -- mini.sessions 	Session management
-      -- mini.visits 	Track and reuse file system visits
-      --
-      -- mini.cursorword 	Autohighlight word under cursor
-      -- mini.hipatterns 	Highlight patterns in text
-      -- mini.hues 	Generate configurable color scheme
-      -- mini.indentscope 	Visualize and work with indent scope
-      -- mini.map 	Window with buffer text overview
-      -- mini.notify 	Show notifications
-      -- mini.tabline 	Tabline
-      --
-      -- mini.doc 	Generate Neovim help files
-      -- mini.fuzzy 	Fuzzy matching
-      -- mini.test 	Test Neovim plugins
-      --
-      -- 'chentoast/marks.nvim',
-      -- `:help nvim-treesitter-incremental-selection-mod`
-      -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
   {
@@ -423,3 +361,46 @@ complete_bline 	complete line (current buffer only)
 -- :Gitsigns toggle_linehl
 -- :Gitsigns toggle_word_diff
 -- :Gitsigns toggle_current_line_blame
+--
+-- mini.ai 	Extend and create a/i textobjects
+-- mini.align 	Align text interactively
+-- mini.comment 	Comment lines
+-- mini.completion 	Completion and signature help
+-- mini.keymap 	Special key mappings
+-- mini.move 	Move any selection in any direction
+-- mini.operators 	Text edit operators
+-- mini.snippets 	Manage and expand snippets
+-- mini.splitjoin 	Split and join arguments
+--
+-- mini.basics 	Common configuration presets
+-- mini.bracketed 	Go forward/backward with square brackets
+-- mini.bufremove 	Remove buffers
+-- mini.clue 	Show next key clues -- {'folke/which-key.nvim' }
+-- mini.cmdline 	Command line tweaks
+-- mini.deps 	Plugin manager
+-- mini.diff 	Work with diff hunks
+-- mini.extra 	Extra 'mini.nvim' functionality
+-- mini.files 	Navigate and manipulate file system
+-- mini.git 	Git integration -- {vim-fugitive}
+-- mini.jump 	Jump to next/previous single character
+-- mini.jump2d 	Jump within visible lines
+-- mini.misc 	Miscellaneous functions
+-- mini.pick 	Pick anything
+-- mini.sessions 	Session management
+-- mini.visits 	Track and reuse file system visits
+--
+-- mini.cursorword 	Autohighlight word under cursor
+-- mini.hipatterns 	Highlight patterns in text
+-- mini.hues 	Generate configurable color scheme
+-- mini.indentscope 	Visualize and work with indent scope
+-- mini.map 	Window with buffer text overview
+-- mini.notify 	Show notifications
+-- mini.tabline 	Tabline
+--
+-- mini.doc 	Generate Neovim help files
+-- mini.fuzzy 	Fuzzy matching
+-- mini.test 	Test Neovim plugins
+--
+-- 'chentoast/marks.nvim',
+-- `:help nvim-treesitter-incremental-selection-mod`
+-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
