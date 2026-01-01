@@ -41,7 +41,6 @@ return {
       -- -- At level 3 there is no folds.
       -- For automated setup, set the following for "git" and "diff" filetypes (either
       -- inside |FileType| autocommand or |ftplugin|): >vim
-      --   setlocal foldmethod=expr foldexpr=v:lua.MiniGit.diff_foldexpr()
       -- <
       -- look at the demo
 
@@ -49,7 +48,7 @@ return {
       mini_git.setup()
       map('<leader>gi', ':Git ', ':Git Init')
 
-      map('<leader>gf', mini_git.diff_foldexpr, 'Git Fold')
+      vim.cmd [[au FileType git,diff setlocal foldmethod=expr foldexpr=v:lua.MiniGit.diff_foldexpr() foldlevel=0]]
 
       -- How a lange range has evolved thru git history
       -- Use with MiniGit.diff_foldexpr()
