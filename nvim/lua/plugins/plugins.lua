@@ -11,6 +11,19 @@ return {
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
 
+      require('mini.move').setup {
+        mappings = {
+          left = '<C-h>',
+          right = '<C-l>',
+          down = '<C-j>',
+          up = '<C-k>',
+          line_left = '<C-h>',
+          line_right = '<C-l>',
+          line_down = '<C-j>',
+          line_up = '<C-k>',
+        },
+      }
+
       require('mini.icons').setup()
 
       --  apply = 'gh', (ghip)
@@ -310,7 +323,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.comment 	Comment lines
 -- mini.completion 	Completion and signature help
 -- mini.keymap 	Special key mappings
--- mini.move 	Move any selection in any direction
 -- mini.operators 	Text edit operators
 -- mini.snippets 	Manage and expand snippets
 -- mini.splitjoin 	Split and join arguments
