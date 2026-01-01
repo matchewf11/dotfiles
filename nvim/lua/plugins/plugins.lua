@@ -49,8 +49,14 @@ return {
       mini_git.setup()
       map('<leader>gi', ':Git ', ':Git Init')
 
+      -- How a lange range has evolved thru git history
+      -- Use with MiniGit.diff_foldexpr()
       map('<leader>gh', mini_git.show_range_history, 'Show Range History')
+
+      -- Shows state of file at the particular state in diff buffer
       map('<leader>gs', mini_git.show_diff_source, 'Show Diff Source')
+
+      -- Show related data at cursor
       map('<leader>gc', mini_git.show_at_cursor, 'Show At Cursor')
 
       --  apply = 'gh', (ghip)
