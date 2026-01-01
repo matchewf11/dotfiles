@@ -29,6 +29,20 @@ return {
 
       require('mini.icons').setup()
 
+      -- mini.git 	Git integration
+      -- :Git cmds (ex. Git add %)
+      -- MiniGit.show_range_history()
+      -- MiniGit.show_diff_source()
+      -- MiniGit.show_at_cursor()
+      --
+      -- :h :Git
+      -- :h MiniGit-examples
+      -- :h MiniGit.enable()
+      -- :h MiniGit.get_buf_data()
+      --
+      -- look at the demo
+      require('mini.git').setup {}
+
       --  apply = 'gh', (ghip)
       --  reset = 'gH',
       --  textobject = 'gh', (dgh) (also in visual mode)
@@ -148,19 +162,6 @@ return {
     opts = {
       auto_install = true,
       highlight = { enable = true },
-    },
-  },
-  {
-    'nvim-treesitter/nvim-treesitter-context',
-    event = { 'BufReadPost', 'BufNewFile' },
-    keys = {
-      {
-        '[c',
-        function()
-          require('treesitter-context').go_to_context(vim.v.count1)
-        end,
-        desc = 'Jump Context',
-      },
     },
   },
   {
@@ -333,7 +334,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.deps 	Plugin manager
 -- mini.extra 	Extra 'mini.nvim' functionality
 -- mini.files 	Navigate and manipulate file system
--- mini.git 	Git integration
 -- mini.jump 	Jump to next/previous single character
 -- mini.jump2d 	Jump within visible lines
 -- mini.misc 	Miscellaneous functions
