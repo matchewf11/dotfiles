@@ -11,7 +11,8 @@ return {
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
 
-      -- mini.splitjoin 	Split and join arguments
+      -- gS (visual and normal)
+      require('mini.splitjoin').setup()
 
       require('mini.move').setup {
         mappings = {
