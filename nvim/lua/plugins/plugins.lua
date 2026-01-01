@@ -1,3 +1,8 @@
+local function map(left, right, description, modes)
+  modes = modes or 'n'
+  vim.keymap.set(modes, left, right, { desc = description })
+end
+
 return {
   {
     'nvim-mini/mini.nvim',
@@ -29,19 +34,24 @@ return {
 
       require('mini.icons').setup()
 
-      -- mini.git 	Git integration
-      -- :Git cmds (ex. Git add %)
-      -- MiniGit.show_range_history()
-      -- MiniGit.show_diff_source()
-      -- MiniGit.show_at_cursor()
-      --
-      -- :h :Git
-      -- :h MiniGit-examples
-      -- :h MiniGit.enable()
-      -- :h MiniGit.get_buf_data()
-      --
+      --   MiniGit.diff_foldexpr() -- useful for diff (zr/zm)
+      -- -- At level 0 there is one line per whole patch or log entry.
+      -- -- At level 1 there is one line per patched file.
+      -- -- At level 2 there is one line per hunk.
+      -- -- At level 3 there is no folds.
+      -- For automated setup, set the following for "git" and "diff" filetypes (either
+      -- inside |FileType| autocommand or |ftplugin|): >vim
+      --   setlocal foldmethod=expr foldexpr=v:lua.MiniGit.diff_foldexpr()
+      -- <
       -- look at the demo
-      require('mini.git').setup {}
+
+      local mini_git = require 'mini.git'
+      mini_git.setup()
+      map('<leader>gi', ':Git ', ':Git Init')
+
+      map('<leader>gh', mini_git.show_range_history, 'Show Range History')
+      map('<leader>gs', mini_git.show_diff_source, 'Show Diff Source')
+      map('<leader>gc', mini_git.show_at_cursor, 'Show At Cursor')
 
       --  apply = 'gh', (ghip)
       --  reset = 'gH',
@@ -52,9 +62,7 @@ return {
       --  goto_last = ']H',
       local mini_diff = require 'mini.diff'
       mini_diff.setup()
-      vim.keymap.set('n', '<leader>h', mini_diff.toggle_overlay, {
-        desc = 'Toggle Diff Overlay',
-      })
+      map('<leader>h', mini_diff.toggle_overlay, 'Toggle Diff Overlay')
 
       local statusline = require 'mini.statusline'
       statusline.setup {
