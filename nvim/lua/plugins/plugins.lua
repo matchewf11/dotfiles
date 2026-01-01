@@ -201,12 +201,11 @@ return {
 -- gc ap (around paragragh)
 -- <https://nvim-mini.org/MiniMax>
 -- highlight same vars? (look at kickstart)
---
--- :so to source this file
+-- try using :vimgrep and :grep
 -- :map jk
+-- :so to source this file
 --
 --[[
--- try using :vimgrep and :grep
 quickfix 	quickfix list
 quickfix_stack 	quickfix stack
 loclist 	location list
@@ -292,8 +291,6 @@ nvim_options 	neovim options
 keymaps 	key mappings
 filetypes 	filetypes
 menus 	menus
-spellcheck 	misspelled words in buffer
-spell_suggest 	spelling suggestions
 undotree 	history undo tree
 
 have a serach .config/nvim
