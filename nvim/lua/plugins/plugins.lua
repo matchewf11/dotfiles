@@ -11,6 +11,8 @@ return {
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
 
+      -- mini.splitjoin 	Split and join arguments
+
       require('mini.move').setup {
         mappings = {
           left = '<C-h>',
@@ -317,16 +319,14 @@ complete_bline 	complete line (current buffer only)
 -- ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },-
 -- ['<C-u>'] = { 'scroll_signature_up', 'fallback' },
 -- ['<C-d>'] = { 'scroll_signature_down', 'fallback' },
---
+
 -- mini.ai 	Extend and create a/i textobjects
 -- mini.align 	Align text interactively
--- mini.comment 	Comment lines
 -- mini.completion 	Completion and signature help
 -- mini.keymap 	Special key mappings
 -- mini.operators 	Text edit operators
 -- mini.snippets 	Manage and expand snippets
--- mini.splitjoin 	Split and join arguments
---
+
 -- mini.basics 	Common configuration presets
 -- mini.bracketed 	Go forward/backward with square brackets
 -- mini.bufremove 	Remove buffers
