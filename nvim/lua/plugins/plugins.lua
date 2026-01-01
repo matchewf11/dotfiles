@@ -49,6 +49,8 @@ return {
       mini_git.setup()
       map('<leader>gi', ':Git ', ':Git Init')
 
+      map('<leader>gf', mini_git.diff_foldexpr, 'Git Fold')
+
       -- How a lange range has evolved thru git history
       -- Use with MiniGit.diff_foldexpr()
       map('<leader>gh', mini_git.show_range_history, 'Show Range History')
