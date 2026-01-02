@@ -34,31 +34,19 @@ return {
 
       require('mini.icons').setup()
 
-      --   MiniGit.diff_foldexpr() -- useful for diff (zr/zm)
-      -- -- At level 0 there is one line per whole patch or log entry.
-      -- -- At level 1 there is one line per patched file.
-      -- -- At level 2 there is one line per hunk.
-      -- -- At level 3 there is no folds.
-      -- For automated setup, set the following for "git" and "diff" filetypes (either
-      -- inside |FileType| autocommand or |ftplugin|): >vim
-      -- <
-      -- look at the demo
-
-      local mini_git = require 'mini.git'
-      mini_git.setup()
+      require('mini.git').setup()
       map('<leader>gi', ':Git ', ':Git Init')
 
+      -- If a line will show the history
+      -- If in a diff buffer, will show in split
+      map('<leader>gs', 'lua MiniGit.show_at_cursor()', 'Git Status', { 'n', 'v' })
+
+      -- zr/zm for folding and unfolding
+      -- At level 0 there is one line per whole patch or log entry.
+      -- At level 1 there is one line per patched file.
+      -- At level 2 there is one line per hunk.
+      -- At level 3 there is no folds.
       vim.cmd [[au FileType git,diff setlocal foldmethod=expr foldexpr=v:lua.MiniGit.diff_foldexpr() foldlevel=0]]
-
-      -- How a lange range has evolved thru git history
-      -- Use with MiniGit.diff_foldexpr()
-      map('<leader>gh', mini_git.show_range_history, 'Show Range History')
-
-      -- Shows state of file at the particular state in diff buffer
-      map('<leader>gs', mini_git.show_diff_source, 'Show Diff Source')
-
-      -- Show related data at cursor
-      map('<leader>gc', mini_git.show_at_cursor, 'Show At Cursor')
 
       --  apply = 'gh', (ghip)
       --  reset = 'gH',
