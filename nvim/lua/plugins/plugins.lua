@@ -16,11 +16,10 @@ return {
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
 
-      -- mini.bufremove 	Remove buffers
       require('mini.bufremove').setup()
       map('<leader>bd', '<CMD>lua MiniBufremove.delete()<CR>', 'Delete Buffer After Unshowing')
-      map('<leader>bu', '<CMD>lua MiniBufremove.unshow()<CR>', 'Unshow Buffer')
-      map('<leader>bd', '<CMD>lua MiniBufremove.unshow_in_window()<CR>', 'Unshow Only In This Window')
+      map('<leader>bu', '<CMD>lua MiniBufremove.unshow()<CR>', 'Unshow Buffer In All Windows')
+      map('<leader>bw', '<CMD>lua MiniBufremove.unshow_in_window()<CR>', 'Unshow Only In This Window')
 
       -- gS (visual and normal)
       require('mini.splitjoin').setup()
