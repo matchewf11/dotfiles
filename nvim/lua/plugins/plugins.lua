@@ -39,7 +39,7 @@ return {
 
       -- If a line will show the history
       -- If in a diff buffer, will show in split
-      map('<leader>gs', 'lua MiniGit.show_at_cursor()', 'Git Status', { 'n', 'v' })
+      map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
 
       -- zr/zm for folding and unfolding
       -- At level 0 there is one line per whole patch or log entry.
