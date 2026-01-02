@@ -55,9 +55,9 @@ return {
       --  goto_prev = '[h',
       --  goto_next = ']h',
       --  goto_last = ']H',
-      local mini_diff = require 'mini.diff'
-      mini_diff.setup()
-      map('<leader>h', mini_diff.toggle_overlay, 'Toggle Diff Overlay')
+
+      require('mini.diff').setup()
+      map('<leader>h', '<CMD>lua MiniDiff.toggle_overlay()<CR>', 'Toggle Diff Overlay')
 
       local statusline = require 'mini.statusline'
       statusline.setup {
