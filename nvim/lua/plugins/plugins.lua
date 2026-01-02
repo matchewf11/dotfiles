@@ -19,8 +19,13 @@ return {
       -- gS (visual and normal)
       require('mini.splitjoin').setup()
 
-      -- mini.jump 	Jump to next/previous single character
-      require('mini.jump').setup {}
+      -- extends f/F/t/T to work on multiple lines
+      -- repreat jump with ';'
+      require('mini.jump').setup()
+
+      -- mini.jump2d 	Jump within visible lines
+      -- Enter to jump somewhere
+      require('mini.jump2d').setup()
 
       require('mini.move').setup {
         mappings = {
@@ -342,7 +347,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.deps 	Plugin manager
 -- mini.extra 	Extra 'mini.nvim' functionality
 -- mini.files 	Navigate and manipulate file system
--- mini.jump2d 	Jump within visible lines
 -- mini.misc 	Miscellaneous functions
 -- mini.pick 	Pick anything
 -- mini.sessions 	Session management
