@@ -16,6 +16,12 @@ return {
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
 
+      -- mini.bufremove 	Remove buffers
+      require('mini.bufremove').setup()
+      map('<leader>bd', '<CMD>lua MiniBufremove.delete()<CR>', 'Delete Buffer After Unshowing')
+      map('<leader>bu', '<CMD>lua MiniBufremove.unshow()<CR>', 'Unshow Buffer')
+      map('<leader>bd', '<CMD>lua MiniBufremove.unshow_in_window()<CR>', 'Unshow Only In This Window')
+
       -- gS (visual and normal)
       require('mini.splitjoin').setup()
 
@@ -341,7 +347,6 @@ complete_bline 	complete line (current buffer only)
 
 -- mini.basics 	Common configuration presets
 -- mini.bracketed 	Go forward/backward with square brackets
--- mini.bufremove 	Remove buffers
 -- mini.clue 	Show next key clues
 -- mini.cmdline 	Command line tweaks
 -- mini.deps 	Plugin manager
