@@ -46,8 +46,14 @@ return {
       -- At level 1 there is one line per patched file.
       -- At level 2 there is one line per hunk.
       -- At level 3 there is no folds.
-      local diff_folds = 'foldmethod=expr foldexpr=v:lua.MiniGit.diff_foldexpr() foldlevel=0'
-      vim.cmd('au FileType git,diff setlocal ' .. diff_folds)
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'git', 'diff' },
+        callback = function()
+          vim.opt_local.foldmethod = 'expr'
+          vim.opt_local.foldexpr = 'v:lua.MiniGit.diff_foldexpr()'
+          vim.opt_local.foldlevel = 3
+        end,
+      })
 
       --  apply = 'gh', (ghip)
       --  reset = 'gH',
