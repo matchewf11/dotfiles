@@ -19,6 +19,9 @@ return {
       -- gS (visual and normal)
       require('mini.splitjoin').setup()
 
+      -- mini.jump 	Jump to next/previous single character
+      require('mini.jump').setup {}
+
       require('mini.move').setup {
         mappings = {
           left = '<C-h>',
@@ -42,10 +45,6 @@ return {
       map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
 
       -- zr/zm for folding and unfolding
-      -- At level 0 there is one line per whole patch or log entry.
-      -- At level 1 there is one line per patched file.
-      -- At level 2 there is one line per hunk.
-      -- At level 3 there is no folds.
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'git', 'diff' },
         callback = function()
@@ -343,14 +342,12 @@ complete_bline 	complete line (current buffer only)
 -- mini.deps 	Plugin manager
 -- mini.extra 	Extra 'mini.nvim' functionality
 -- mini.files 	Navigate and manipulate file system
--- mini.jump 	Jump to next/previous single character
 -- mini.jump2d 	Jump within visible lines
 -- mini.misc 	Miscellaneous functions
 -- mini.pick 	Pick anything
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
---
--- fugitive
+
 -- which-key
 -- 'chentoast/marks.nvim',
 -- `:help nvim-treesitter-incremental-selection-mod`
