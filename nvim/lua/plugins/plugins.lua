@@ -106,14 +106,13 @@ return {
       -- If query starts with ^, the match is exact at start.
       -- If query ends with $, the match is exact at end.
       -- If query starts with *, the match is forced to be fuzzy.
-
       -- caret_left = '<Left>',
       -- caret_right = '<Right>',
       -- choose = '<CR>',
       -- choose_in_split = '<C-s>',
       -- choose_in_tabpage = '<C-t>',
       -- choose_in_vsplit = '<C-v>',
-      -- choose_marked = '<M-CR>',
+      -- choose_marked = '<C-CR>',
       -- delete_char = '<BS>',
       -- delete_char_right = '<Del>',
       -- delete_left = '<C-u>',
@@ -125,7 +124,7 @@ return {
       -- move_up = '<C-p>',
       -- paste = '<C-r>',
       -- refine = '<C-Space>',
-      -- refine_marked = '<M-Space>',
+      -- refine_marked = '<C-e>',
       -- scroll_down = '<C-f>',
       -- scroll_left = '<C-h>',
       -- scroll_right = '<C-l>',
@@ -136,15 +135,16 @@ return {
       require('mini.pick').setup {
         options = { use_cache = true },
         window = { prompt_caret = '█' },
+        mappings = {
+          choose_marked = '<C-CR>',
+          refine_marked = '<C-e>',
+        },
       }
 
       map('<leader>sf', '<CMD>Pick files tool="rg"<CR>', 'Search Files')
-      map('<leader>sF', '<CMD>Pick files tool="fallback"<CR>', 'Search Files Falback')
-
+      map('<leader>sF', '<CMD>Pick files tool="fallback"<CR>', 'Search Falback Files')
       map('<leader>sg', '<CMD>Pick grep_live<CR>', 'Search Grep')
-      map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Grep Cword')
-      map('<leader>sn', '<CMD>Pick grep_live globs="~/.config/nvim/"<CR>', 'Search Config')
-
+      map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Cword')
       map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
       map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
       map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')

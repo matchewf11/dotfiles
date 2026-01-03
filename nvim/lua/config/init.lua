@@ -29,8 +29,8 @@ end
 
 map('<leader>e', vim.cmd.Ex, 'Open Netrw')
 
-map('<leader>n', vim.cmd.tabnew, 'Open Tab')
-map('<leader>c', vim.cmd.tabclose, 'Close Tab')
+map('<leader>t', vim.cmd.tabnew, 'Open Tab')
+map('<leader>x', vim.cmd.tabclose, 'Close Tab')
 
 map('gl', vim.diagnostic.open_float, 'Line diagnostics')
 map('<leader>l', vim.diagnostic.setloclist, 'Diagnostics in LocList')
