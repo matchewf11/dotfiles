@@ -296,4 +296,3 @@ return {
 -- 'chentoast/marks.nvim',
 -- `:help nvim-treesitter-incremental-selection-mod`
 -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
---
