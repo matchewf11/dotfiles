@@ -148,6 +148,40 @@ return {
       map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
       map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
       map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')
+
+      -- <BS> removes previous entry
+      -- <Esc> / <C-c> early stop
+      -- scroll_down = '<C-d>',
+      -- scroll_up = '<C-u>',
+      -- One target left or <CR> it execs
+      local miniclue = require 'mini.clue'
+      miniclue.setup {
+        triggers = {
+          { mode = 'n', keys = '<C-w>' }, -- Window commands
+          { mode = { 'n', 'x' }, keys = 'z' }, -- `z` key
+          { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
+          { mode = 'i', keys = '<C-x>' }, -- Built-in completion
+          { mode = { 'n', 'x' }, keys = 'g' }, -- `g` key
+          { mode = 'n', keys = '[' }, -- `[` and `]` keys
+          { mode = 'n', keys = ']' },
+          { mode = { 'n', 'x' }, keys = "'" }, -- Marks
+          { mode = { 'n', 'x' }, keys = '`' },
+          { mode = { 'n', 'x' }, keys = '"' }, -- Registers
+          { mode = { 'i', 'c' }, keys = '<C-r>' },
+        },
+        clues = {
+          { mode = 'n', keys = '<Leader>s', desc = 'Search' },
+          { mode = 'n', keys = '<Leader>g', desc = 'Git' },
+          { mode = 'n', keys = '<Leader>b', desc = 'Buffer' },
+          miniclue.gen_clues.square_brackets(),
+          miniclue.gen_clues.builtin_completion(),
+          miniclue.gen_clues.g(),
+          miniclue.gen_clues.marks(),
+          miniclue.gen_clues.registers(),
+          miniclue.gen_clues.windows(),
+          miniclue.gen_clues.z(),
+        },
+      }
     end,
   },
   {
@@ -283,7 +317,6 @@ return {
 
 -- mini.basics 	Common configuration presets
 -- mini.bracketed 	Go forward/backward with square brackets
--- mini.clue 	Show next key clues
 -- mini.cmdline 	Command line tweaks
 -- mini.deps 	Plugin manager
 -- mini.extra 	Extra 'mini.nvim' functionality
@@ -292,7 +325,6 @@ return {
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
 
--- which-key
 -- 'chentoast/marks.nvim',
 -- `:help nvim-treesitter-incremental-selection-mod`
 -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
