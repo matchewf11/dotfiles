@@ -101,6 +101,53 @@ return {
           end,
         },
       }
+
+      -- If query starts with ', the match is exact.
+      -- If query starts with ^, the match is exact at start.
+      -- If query ends with $, the match is exact at end.
+      -- If query starts with *, the match is forced to be fuzzy.
+
+      -- caret_left = '<Left>',
+      -- caret_right = '<Right>',
+      -- choose = '<CR>',
+      -- choose_in_split = '<C-s>',
+      -- choose_in_tabpage = '<C-t>',
+      -- choose_in_vsplit = '<C-v>',
+      -- choose_marked = '<M-CR>',
+      -- delete_char = '<BS>',
+      -- delete_char_right = '<Del>',
+      -- delete_left = '<C-u>',
+      -- delete_word = '<C-w>',
+      -- mark = '<C-x>',
+      -- mark_all = '<C-a>',
+      -- move_down = '<C-n>',
+      -- move_start = '<C-g>',
+      -- move_up = '<C-p>',
+      -- paste = '<C-r>',
+      -- refine = '<C-Space>',
+      -- refine_marked = '<M-Space>',
+      -- scroll_down = '<C-f>',
+      -- scroll_left = '<C-h>',
+      -- scroll_right = '<C-l>',
+      -- scroll_up = '<C-b>',
+      -- stop = '<Esc>',
+      -- toggle_info = '<S-Tab>',
+      -- toggle_preview = '<Tab>',
+      require('mini.pick').setup {
+        options = { use_cache = true },
+        window = { prompt_caret = '█' },
+      }
+
+      map('<leader>sf', '<CMD>Pick files tool="rg"<CR>', 'Search Files')
+      map('<leader>sF', '<CMD>Pick files tool="fallback"<CR>', 'Search Files Falback')
+
+      map('<leader>sg', '<CMD>Pick grep_live<CR>', 'Search Grep')
+      map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Grep Cword')
+      map('<leader>sn', '<CMD>Pick grep_live globs="~/.config/nvim/"<CR>', 'Search Config')
+
+      map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
+      map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
+      map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')
     end,
   },
   {
@@ -202,17 +249,6 @@ return {
       end
     end,
   },
-  {
-    'ibhagwan/fzf-lua',
-    dependencies = { 'nvim-mini/mini.nvim' },
-    keys = {
-      { '<leader>sb', '<CMD>FzfLua buffers<CR>', desc = 'Search Buffers' },
-      { '<leader>sf', '<CMD>FzfLua files<CR>', desc = 'Search Files' },
-      { '<leader>so', '<CMD>FzfLua oldfiles<CR>', desc = 'Search Oldfiles' },
-      { '<leader>sl', '<CMD>FzfLua blines<CR>', desc = 'Search BLines' },
-    },
-    cmd = { 'FzfLua' },
-  },
 }
 
 -- ]b to move to next buffer
@@ -223,105 +259,6 @@ return {
 -- try using :vimgrep and :grep
 -- :map jk
 -- :so to source this file
---
---[[
-quickfix 	quickfix list
-quickfix_stack 	quickfix stack
-loclist 	location list
-loclist_stack 	location stack
-lines 	open buffers lines
-treesitter 	current buffer treesitter symbols
-tabs 	open tabs
-args 	argument list
-
-grep 	search for a pattern with grep or rg
-grep_last 	run search again with the last pattern
-grep_cword 	search word under cursor
-grep_cWORD 	search WORD under cursor
-grep_visual 	search visual selection
-grep_project 	search all project lines (fzf.vim's :Rg)
-grep_curbuf 	search current buffer lines
-grep_quickfix 	search the quickfix list
-grep_loclist 	search the location list
-lgrep_curbuf 	live grep current buffer
-lgrep_quickfix 	live grep the quickfix list
-lgrep_loclist 	live grep the location list
-live_grep 	live grep current project
-live_grep_resume 	live grep continue last search
-live_grep_glob 	live_grep with rg --glob support
-live_grep_native 	performant version of live_grep
-
-tags 	search project tags
-btags 	search buffer tags
-tags_grep 	grep project tags
-tags_grep_cword 	tags_grep word under cursor
-tags_grep_cWORD 	tags_grep WORD under cursor
-tags_grep_visual 	tags_grep visual selection
-tags_live_grep 	live grep project tags
-
-git_files 	git ls-files
-git_status 	git status
-git_diff 	git diff {ref}
-git_hunks 	git hunks {ref}
-git_commits 	git commit log (project)
-git_bcommits 	git commit log (buffer)
-git_blame 	git blame (buffer)
-git_branches 	git branches
-git_worktrees 	git worktrees
-git_tags 	git tags
-git_stash 	git stash
-
-lsp_references 	References
-lsp_definitions 	Definitions
-lsp_declarations 	Declarations
-lsp_typedefs 	Type Definitions
-lsp_implementations 	Implementations
-lsp_document_symbols 	Document Symbols
-lsp_workspace_symbols 	Workspace Symbols
-lsp_live_workspace_symbols 	Workspace Symbols (live query)
-lsp_incoming_calls 	Incoming Calls
-lsp_outgoing_calls 	Outgoing Calls
-lsp_type_sub 	Sub Types
-lsp_type_super 	Super Types
-lsp_code_actions 	Code Actions
-lsp_finder 	All LSP locations, combined view
-diagnostics_document 	Document Diagnostics
-diagnostics_workspace 	Workspace Diagnostics
-lsp_document_diagnostics 	alias to diagnostics_document
-lsp_workspace_diagnostics 	alias to diagnostics_workspace
-
-resume 	resume last command/query
-builtin 	fzf-lua builtin commands
-combine 	combine different fzf-lua pickers
-global 	global picker for files,buffers and symbols
-profiles 	fzf-lua configuration profiles
-helptags 	help tags
-manpages 	man pages
-commands 	neovim commands
-command_history 	command history
-search_history 	search history
-marks 	:marks
-jumps 	:jumps
-changes 	:changes
-registers 	:registers
-tagstack 	:tags
-autocmds 	:autocmd
-nvim_options 	neovim options
-keymaps 	key mappings
-filetypes 	filetypes
-menus 	menus
-undotree 	history undo tree
-
-have a serach .config/nvim
-
-register_ui_select 	register fzf-lua as the UI interface for vim.ui.select
-deregister_ui_select 	de-register fzf-lua with vim.ui.select
-
-complete_path 	complete path under cursor (incl dirs)
-complete_file 	complete file under cursor (excl dirs)
-complete_line 	complete line (all open buffers)
-complete_bline 	complete line (current buffer only)
-]]
 
 -- blink stuff
 --['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -352,7 +289,6 @@ complete_bline 	complete line (current buffer only)
 -- mini.extra 	Extra 'mini.nvim' functionality
 -- mini.files 	Navigate and manipulate file system
 -- mini.misc 	Miscellaneous functions
--- mini.pick 	Pick anything
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
 
@@ -360,3 +296,4 @@ complete_bline 	complete line (current buffer only)
 -- 'chentoast/marks.nvim',
 -- `:help nvim-treesitter-incremental-selection-mod`
 -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+--
