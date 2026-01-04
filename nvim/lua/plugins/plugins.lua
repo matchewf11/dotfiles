@@ -320,11 +320,9 @@ return {
 -- mini.cmdline 	Command line tweaks
 -- mini.deps 	Plugin manager
 -- mini.extra 	Extra 'mini.nvim' functionality
--- mini.files 	Navigate and manipulate file system
 -- mini.misc 	Miscellaneous functions
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
 
 -- 'chentoast/marks.nvim',
--- `:help nvim-treesitter-incremental-selection-mod`
 -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
