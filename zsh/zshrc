@@ -155,7 +155,6 @@ type starship_zle-keymap-select >/dev/null || \
 # setopt AUTO_CD
 #
 # # --- Useful keybinds ---
-# bindkey -e  # Emacs-style
 # bindkey '^P' up-line-or-search
 # bindkey '^N' down-line-or-search
 

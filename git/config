@@ -3,3 +3,9 @@
     name = Matthew Franchini
 [init]
 	defaultBranch = main
+[rerere]
+	enabled = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate

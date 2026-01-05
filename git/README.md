@@ -20,7 +20,7 @@ git config --global alias.lg "log --oneline --graph --decorate --all"
 
 Push only to your current branch (not all matching)
 
-git config --global push.default current 
+git config --global push.default current
 
 ## Color Output
 
