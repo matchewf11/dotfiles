@@ -9,3 +9,7 @@
 	ui = auto
 [branch]
 	sort = -committerdate
+[url "git@github.com:"]
+	insteadOf = gh:
+[url "git@github.com:matchewf11/"]
+	insteadOf = me:
