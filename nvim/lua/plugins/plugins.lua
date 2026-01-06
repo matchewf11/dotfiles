@@ -7,6 +7,8 @@ return {
   {
     'nvim-mini/mini.nvim',
     config = function()
+      require('mini.extra').setup()
+
       -- sa (add surround)
       -- sd (delete surround)
       -- sr (replace surround)
@@ -44,6 +46,16 @@ return {
       --     },
       --   }
       -- )
+      -- local gen_ai_spec = require('mini.extra').gen_ai_spec
+      -- require('mini.ai').setup({
+      --   custom_textobjects = {
+      --     B = gen_ai_spec.buffer(),
+      --     D = gen_ai_spec.diagnostic(),
+      --     I = gen_ai_spec.indent(),
+      --     L = gen_ai_spec.line(),
+      --     N = gen_ai_spec.number(),
+      --   },
+      -- })
 
       require('mini.bufremove').setup()
       map('<leader>bd', '<CMD>lua MiniBufremove.delete()<CR>', 'Delete Buffer After Unshowing')
@@ -177,6 +189,31 @@ return {
       map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
       map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
       map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')
+      map('<leader>so', '<CMD>Pick oldfiles<CR>', 'Search Oldfiles')
+      map('<leader>sl', '<CMD>Pick buf_lines scope="current"<CR>', 'Search Lines Local')
+      map('<leader>sL', '<CMD>Pick buf_lines scope="all"<CR>', 'Search Lines Buffers')
+
+      -- MiniExtra.pickers
+      -- commands
+      -- diagnostics
+      -- explorer
+      -- git-branches
+      -- git-commits
+      -- git_files
+      -- git-hunks
+      -- hippatterns
+      -- hisotry
+      -- hl_groups
+      -- keymaps
+      -- list
+      -- lsp
+      -- marks
+      -- options
+      -- registers
+      -- spellsuggest
+      -- treesitter
+      -- visit_paths
+      -- visit_labels
 
       -- <BS> removes previous entry
       -- <Esc> / <C-c> early stop
@@ -347,7 +384,6 @@ return {
 -- mini.bracketed 	Go forward/backward with square brackets
 -- mini.cmdline 	Command line tweaks
 -- mini.deps 	Plugin manager
--- mini.extra 	Extra 'mini.nvim' functionality
 -- mini.misc 	Miscellaneous functions
 -- mini.sessions 	Session management
 -- mini.visits 	Track and reuse file system visits
