@@ -165,3 +165,5 @@ type starship_zle-keymap-select >/dev/null || \
 # This section can be safely removed at any time if needed.
 [[ ! -r '/home/matchew/.opam/opam-init/init.zsh' ]] || source '/home/matchew/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
+
+# git stauts -> gs and etc

@@ -16,6 +16,35 @@ return {
       -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
       require('mini.surround').setup()
 
+      -- mini.ai 	Extend and create a/i textobjects
+      --
+      -- a(, a), a', a*, a<Space>, af, a?
+      --
+      -- read readme
+      -- read docs
+      -- require('mini.ai').setup(
+      --   {
+      --     -- Module mappings. Use `''` (empty string) to disable one.
+      --     mappings = {
+      --       -- Main textobject prefixes
+      --       around = 'a',
+      --       inside = 'i',
+      --
+      --       -- Next/last variants
+      --       -- NOTE: These override built-in LSP selection mappings on Neovim>=0.12
+      --       -- Map LSP selection manually to use it (see `:h MiniAi.config`)
+      --       around_next = 'an',
+      --       inside_next = 'in',
+      --       around_last = 'al',
+      --       inside_last = 'il',
+      --
+      --       -- Move cursor to corresponding edge of `a` textobject
+      --       goto_left = 'g[',
+      --       goto_right = 'g]',
+      --     },
+      --   }
+      -- )
+
       require('mini.bufremove').setup()
       map('<leader>bd', '<CMD>lua MiniBufremove.delete()<CR>', 'Delete Buffer After Unshowing')
       map('<leader>bu', '<CMD>lua MiniBufremove.unshow()<CR>', 'Unshow Buffer In All Windows')
@@ -308,7 +337,6 @@ return {
 -- ['<C-u>'] = { 'scroll_signature_up', 'fallback' },
 -- ['<C-d>'] = { 'scroll_signature_down', 'fallback' },
 
--- mini.ai 	Extend and create a/i textobjects
 -- mini.align 	Align text interactively
 -- mini.completion 	Completion and signature help
 -- mini.keymap 	Special key mappings
