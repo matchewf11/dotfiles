@@ -69,10 +69,6 @@ return {
       -- repreat jump with ';'
       require('mini.jump').setup()
 
-      -- mini.jump2d 	Jump within visible lines
-      -- Enter to jump somewhere
-      require('mini.jump2d').setup()
-
       require('mini.move').setup {
         mappings = {
           left = '<C-h>',
@@ -184,27 +180,30 @@ return {
 
       map('<leader>sf', '<CMD>Pick files tool="rg"<CR>', 'Search Files')
       map('<leader>sF', '<CMD>Pick files tool="fallback"<CR>', 'Search Falback Files')
+
+      map('<leader>sl', '<CMD>Pick buf_lines scope="current"<CR>', 'Search Lines Local')
+      map('<leader>sL', '<CMD>Pick buf_lines scope="all"<CR>', 'Search Lines Buffers')
+
       map('<leader>sg', '<CMD>Pick grep_live<CR>', 'Search Grep')
       map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Cword')
       map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
       map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
       map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')
       map('<leader>so', '<CMD>Pick oldfiles<CR>', 'Search Oldfiles')
-      map('<leader>sl', '<CMD>Pick buf_lines scope="current"<CR>', 'Search Lines Local')
-      map('<leader>sL', '<CMD>Pick buf_lines scope="all"<CR>', 'Search Lines Buffers')
+      map('<leader>sC', '<CMD>Pick commands<CR>', 'Search Commands')
+
+      map('<leader>sDc', '<CMD>Pick diagnostics scope="current"<CR>', 'Search Diagnostics Current')
+      map('<leader>sDa', '<CMD>Pick diagnostics scope="all"<CR>', 'Search Diagnostics All')
+
+      map('<leader>sk', '<CMD>Pick keymaps<CR>', 'Search Keymaps')
 
       -- MiniExtra.pickers
-      -- commands
-      -- diagnostics
       -- explorer
       -- git-branches
       -- git-commits
       -- git_files
       -- git-hunks
-      -- hippatterns
       -- hisotry
-      -- hl_groups
-      -- keymaps
       -- list
       -- lsp
       -- marks
@@ -264,7 +263,7 @@ return {
         lua = { 'luacheck' }, -- luarocks
         c = { 'clangtidy' }, -- pacman
         sh = { 'shellcheck' }, -- pacman
-        sql = { 'sqlfluff' }, -- pipx
+        -- sql = { 'sqlfluff' }, -- pipx
         go = { 'golangcilint' }, -- pacman
         make = { 'checkmake' }, -- go
         rust = { 'clippy' }, -- cargo
@@ -342,7 +341,7 @@ return {
         'taplo', -- cargo
         'hls', -- ghcup
         'pyright', -- npm
-        'sqls', -- go
+        -- 'sqls', -- go
         'bashls', -- pacman
       } do
         vim.lsp.enable(server)

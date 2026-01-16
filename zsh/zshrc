@@ -17,6 +17,7 @@ setopt hist_ignore_dups # ignore saving dup cmds
 setopt hist_ignore_space # dont save cmd is starts w/ space
 setopt append_history
 setopt share_history
+setopt auto_cd
 
 source <(fzf --zsh)
 bindkey -v
@@ -27,11 +28,16 @@ ff() {
 	firefox --new-tab "$@" > /dev/null 2>&1 & disown
 }
 
+# config this
 alias email="ff https://mail.google.com/mail/u/0/#inbox"
+
 alias canvas="ff https://canvas.uw.edu/"
+
+# config this?
 alias github="ff https://github.com/"
 
 alias vi='nvim'
+alias g='git'
 
 # (learn how to use this)
 alias ls='eza'
@@ -65,7 +71,6 @@ up() {
 }
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
-
 ZSH_PLUGIN_PATH=/usr/share/zsh/plugins
 source $ZSH_PLUGIN_PATH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZSH_PLUGIN_PATH/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -75,26 +80,8 @@ bindkey '^[[B' history-substring-search-down
 bindkey '^P'   history-substring-search-up
 bindkey '^N'   history-substring-search-down
 
-# i am using jq
-# zoxide – smarter cd, jump to frequently used directories.
-# gitfast – Git aliases and completion (fast version with fewer zsh-specific features).
-# gh – GitHub CLI completion.
-# fzf – fuzzy finder with key bindings for autocompletion and searching.
-# fzf-tab – fancy tab completions using fzf.
-# history-substring-search – search command history by typing substring
-# vi-mode – vi-like keybindings in the shell.
-# command-not-found – suggests packages if a command isn’t found.
-# colorize – syntax-highlight file contents (300+ languages).
-# rust – completion for Rust (rustc, cargo, rustup).
-# ssh-agent – automatically start ssh-agent and load credentials.
-# starship – modern, fast, customizable prompt.
-# tmux – aliases and helpers for tmux.
-# web-search – quick search aliases for Google, Wiki, Bing, YouTube, etc
-# autocomplete, zsh completions
-# jq – command-line JSON processor
-# need fd, rg, delta
-# do i need chafa, viu, or ueberzzupp
-#
+# jq, zioxide, gh, fzf
+
 # can do this with git config?
 # alias rm='trash'
 # (zioxide tool)
@@ -117,23 +104,12 @@ type starship_zle-keymap-select >/dev/null || \
   eval "$(starship init zsh)"
 }
 
-# export EDITOR="nvim"
 # export VISUAL="nvim"
 # export PAGER="less"
 #
-# # History
-# HISTFILE=~/.zsh_history
-# HISTSIZE=10000
-# SAVEHIST=10000
-# setopt HIST_IGNORE_DUPS       # no duplicate entries
-# setopt HIST_IGNORE_SPACE      # ignore commands starting with space
-# setopt SHARE_HISTORY          # share history across sessions
-#
-# # --- Prompt ---
 # autoload -Uz colors && colors
 # PROMPT='%F{green}%n@%m%f:%F{blue}%~%f %# '
 #
-# # --- Aliases ---
 # alias ls='ls --color=auto'
 # alias ll='ls -lh'
 # alias la='ls -A'
@@ -144,26 +120,6 @@ type starship_zle-keymap-select >/dev/null || \
 # alias grep='grep --color=auto'
 # alias vim='nvim'
 #
-# # --- Path ---
-# export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-#
-# # --- Completion system ---
-# autoload -Uz compinit
-# compinit
-#
-# # --- Enable auto cd (so you can type folder name to cd there) ---
-# setopt AUTO_CD
-#
-# # --- Useful keybinds ---
-# bindkey '^P' up-line-or-search
-# bindkey '^N' down-line-or-search
-
-# BEGIN opam configuration
-# This is useful if you're using opam as it adds:
-#   - the correct directories to the PATH
-#   - auto-completion for the opam binary
-# This section can be safely removed at any time if needed.
-[[ ! -r '/home/matchew/.opam/opam-init/init.zsh' ]] || source '/home/matchew/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
-# END opam configuration
-
 # git stauts -> gs and etc
+
+[[ ! -r '/home/matchew/.opam/opam-init/init.zsh' ]] || source '/home/matchew/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null

@@ -13,3 +13,5 @@
 	insteadOf = gh:
 [url "git@github.com:matchewf11/"]
 	insteadOf = me:
+[alias]
+	ac = !git add . && git commit
