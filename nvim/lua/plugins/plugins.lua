@@ -184,12 +184,13 @@ return {
       map('<leader>sl', '<CMD>Pick buf_lines scope="current"<CR>', 'Search Lines Local')
       map('<leader>sL', '<CMD>Pick buf_lines scope="all"<CR>', 'Search Lines Buffers')
 
-      map('<leader>sg', '<CMD>Pick grep_live<CR>', 'Search Grep')
-      map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Cword')
-      map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
-      map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
       map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')
       map('<leader>so', '<CMD>Pick oldfiles<CR>', 'Search Oldfiles')
+      map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
+
+      map('<leader>sg', '<CMD>Pick grep_live<CR>', 'Search Grep')
+      map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Cword')
+      map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
       map('<leader>sC', '<CMD>Pick commands<CR>', 'Search Commands')
 
       map('<leader>sDc', '<CMD>Pick diagnostics scope="current"<CR>', 'Search Diagnostics Current')
