@@ -8,6 +8,7 @@ return {
     'nvim-mini/mini.nvim',
     config = function()
       require('mini.extra').setup()
+      require('mini.icons').setup()
 
       -- sa (add surround)
       -- sd (delete surround)
@@ -82,14 +83,13 @@ return {
         },
       }
 
-      require('mini.icons').setup()
 
       require('mini.git').setup()
-      map('<leader>gi', ':Git ', ':Git Init')
 
       -- If a line will show the history
       -- If in a diff buffer, will show in split
       map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
+      map('<leader>gi', ':Git ', ':Git Init')
 
       -- zr/zm for folding and unfolding
       vim.api.nvim_create_autocmd('FileType', {
