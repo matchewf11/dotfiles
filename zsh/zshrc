@@ -40,6 +40,8 @@ alias vi='nvim'
 alias g='git'
 
 # (learn how to use this)
+# fd, fzf, rg
+
 alias ls='eza'
 alias grep='rg'
 alias top='htop'

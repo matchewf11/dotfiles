@@ -9,6 +9,7 @@ call plug#end()
 " line numbers
 set number
 set relativenumber
+set cursorline
 
 " color scheme
 set background=dark

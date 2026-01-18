@@ -10,6 +10,23 @@ return {
       require('mini.extra').setup()
       require('mini.icons').setup()
 
+      -- readme
+      -- docs
+      -- mini.visits 	Track and reuse file system visits
+
+      -- MiniVisits.normalize()
+      -- MiniVisits.add_label()
+      -- MiniVisits.remove_label()
+      -- MiniVisits.list_paths()
+      -- MiniVisits.list_labels()
+      -- MiniVisits.gen_filter()
+      -- MiniVisits.gen_sort()
+      -- MiniVisits.select_path()
+      -- MiniVisits.select_label()
+      -- MiniVisits.iterate_paths()
+      -- MiniVisits.rename_in_index()
+      -- require('mini.visits').setup()
+
       -- sa (add surround)
       -- sd (delete surround)
       -- sr (replace surround)
@@ -82,7 +99,6 @@ return {
           line_up = '<C-k>',
         },
       }
-
 
       require('mini.git').setup()
 
@@ -180,23 +196,18 @@ return {
 
       map('<leader>sf', '<CMD>Pick files tool="rg"<CR>', 'Search Files')
       map('<leader>sF', '<CMD>Pick files tool="fallback"<CR>', 'Search Falback Files')
-
       map('<leader>sl', '<CMD>Pick buf_lines scope="current"<CR>', 'Search Lines Local')
       map('<leader>sL', '<CMD>Pick buf_lines scope="all"<CR>', 'Search Lines Buffers')
-
       map('<leader>sr', '<CMD>Pick resume<CR>', 'Search Resume')
       map('<leader>so', '<CMD>Pick oldfiles<CR>', 'Search Oldfiles')
       map('<leader>sh', '<CMD>Pick help<CR>', 'Search Help')
-
       map('<leader>sg', '<CMD>Pick grep_live<CR>', 'Search Grep')
-      map('<leader>sc', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Cword')
+      map('<leader>sw', '<CMD>Pick grep pattern="<cword>"<CR>', 'Search Cword')
       map('<leader>sb', '<CMD>Pick buffers<CR>', 'Search Buffers')
-      map('<leader>sC', '<CMD>Pick commands<CR>', 'Search Commands')
-
-      map('<leader>sDc', '<CMD>Pick diagnostics scope="current"<CR>', 'Search Diagnostics Current')
-      map('<leader>sDa', '<CMD>Pick diagnostics scope="all"<CR>', 'Search Diagnostics All')
-
+      map('<leader>sd', '<CMD>Pick diagnostics scope="current"<CR>', 'Search Diagnostics Current')
+      map('<leader>sD', '<CMD>Pick diagnostics scope="all"<CR>', 'Search Diagnostics All')
       map('<leader>sk', '<CMD>Pick keymaps<CR>', 'Search Keymaps')
+      map('<leader>sc', '<CMD>Pick commands<CR>', 'Search Commands')
 
       -- MiniExtra.pickers
       -- explorer
@@ -206,6 +217,7 @@ return {
       -- git-hunks
       -- hisotry
       -- list
+      -- manpages
       -- lsp
       -- marks
       -- options
@@ -359,6 +371,8 @@ return {
 -- try using :vimgrep and :grep
 -- :map jk
 -- :so to source this file
+-- 'chentoast/marks.nvim',
+-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 
 -- blink stuff
 --['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -386,7 +400,3 @@ return {
 -- mini.deps 	Plugin manager
 -- mini.misc 	Miscellaneous functions
 -- mini.sessions 	Session management
--- mini.visits 	Track and reuse file system visits
-
--- 'chentoast/marks.nvim',
--- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
