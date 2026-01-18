@@ -1,5 +1,5 @@
 vim.g.mapleader = ' '
--- vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = ','
 
 vim.g.c_syntax_for_h = true
 vim.g.netrw_banner = false
@@ -11,7 +11,6 @@ vim.o.scrolloff = 10
 vim.o.signcolumn = 'yes'
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.o.cursorline = true
 vim.o.swapfile = false
 vim.o.undofile = true
 vim.o.hlsearch = false
@@ -19,6 +18,8 @@ vim.o.laststatus = 3
 vim.o.showtabline = 2
 vim.o.smartindent = true
 vim.o.updatetime = 100
+
+vim.opt.completeopt = { 'menuone', 'noselect', 'fuzzy' }
 
 vim.diagnostic.config { severity_sort = true }
 
@@ -56,4 +57,4 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 require 'config.lazy'
 
-vim.cmd.colorscheme 'gruvbox'
+vim.cmd.colorscheme 'miniautumn'

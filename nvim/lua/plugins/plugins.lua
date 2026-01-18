@@ -10,76 +10,28 @@ return {
       require('mini.extra').setup()
       require('mini.icons').setup()
 
-      -- readme
-      -- docs
-
-      -- MiniSnippets.
-      -- default_prepare()
-      -- default_match()
-      -- default_select()
-      -- start_lsp_server()
-      -- default_insert()
-      -- parse()
-      -- gen_loader.from_lang()
-      -- <C-j>
-
+      -- <C-l/h> to jump between snippets
+      -- <C-j> to expand
+      -- <C-n/p> to choose btwn them
+      -- <C-c> to stop
       local mini_snippets = require 'mini.snippets'
+      local loader = mini_snippets.gen_loader
       mini_snippets.setup {
         snippets = {
-          mini_snippets.gen_loader.from_lang(),
-        },
-        mappings = {
-          --   expand = '<C-j>',
-          --   jump_next = '<C-l>',
-          --   jump_prev = '<C-h>',
-          --   stop = '<C-c>',
+          loader.from_file '~/.config/nvim/snippets/global.lua',
+          loader.from_lang(),
         },
       }
 
-      require('mini.snippets').setup()
-
-      -- readme
-      -- docs
-
-      -- defulat config
+      -- <C-n> in insert to fallback
+      -- <C-l> to trigger completion
+      -- <C-]> to fallback to vim completion
+      -- <C-f> to scroll_down
+      -- <C-b> to scroll_up
       require('mini.completion').setup {
-        -- Delay (debounce type, in ms) between certain Neovim event and action.
-        -- This can be used to (virtually) disable certain automatic actions by
-        -- setting very high delay time (like 10^7).
-        delay = { completion = 100, info = 100, signature = 50 },
-        -- Fallback action as function/string. Executed in Insert mode.
-        -- To use built-in completion (`:h ins-completion`), set its mapping as
-        -- string. Example: set '<C-x><C-l>' for 'whole lines' completion.
-        -- fallback_action = '<C-n>',
-        -- Module mappings. Use `''` (empty string) to disable one. Some of them
-        -- might conflict with system mappings.
-        mappings = {
-          -- Force two-step/fallback completions
-          -- force_twostep = '<C-Space>',
-          -- force_fallback = '<A-Space>',
-          -- Scroll info/signature window down/up. When overriding, check for
-          -- conflicts with built-in keys for popup menu (like `<C-u>`/`<C-o>`
-          -- for 'completefunc'/'omnifunc' source function; or `<C-n>`/`<C-p>`).
-          -- scroll_down = '<C-f>',
-          -- scroll_up = '<C-b>',
-        },
+        delay = { completion = math.huge, info = 25, signature = 500 },
+        mappings = { force_twostep = '<C-l>', force_fallback = '<C-]>' },
       }
-
-      -- readme
-      -- docs
-      -- mini.visits 	Track and reuse file system visits
-      -- MiniVisits.normalize()
-      -- MiniVisits.add_label()
-      -- MiniVisits.remove_label()
-      -- MiniVisits.list_paths()
-      -- MiniVisits.list_labels()
-      -- MiniVisits.gen_filter()
-      -- MiniVisits.gen_sort()
-      -- MiniVisits.select_path()
-      -- MiniVisits.select_label()
-      -- MiniVisits.iterate_paths()
-      -- MiniVisits.rename_in_index()
-      -- require('mini.visits').setup()
 
       -- sa (add surround)
       -- sd (delete surround)
@@ -370,31 +322,6 @@ return {
       default_format_opts = { lsp_format = 'fallback' },
     },
   },
-  { 'ellisonleao/gruvbox.nvim', priority = 1000 },
-  -- {
-  --   'saghen/blink.cmp',
-  --   version = '1.*',
-  --   event = 'InsertEnter',
-  --   dependencies = {
-  --     'rafamadriz/friendly-snippets',
-  --     { 'L3MON4D3/LuaSnip', version = 'v2.*' },
-  --   },
-  --   opts = {
-  --     snippets = { preset = 'luasnip' },
-  --     signature = { enabled = true },
-  --   },
-  -- },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
-    lazy = false,
-    build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
-    opts = {
-      auto_install = true,
-      highlight = { enable = true },
-    },
-  },
   {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -420,33 +347,14 @@ return {
 -- ]b to move to next buffer
 -- tabs, windows, splits, tmux, i3
 -- gc ap (around paragragh)
--- <https://nvim-mini.org/MiniMax>
 -- highlight same vars? (look at kickstart)
 -- try using :vimgrep and :grep
 -- :map jk
 -- :so to source this file
--- 'chentoast/marks.nvim',
--- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-
--- blink stuff
---['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
--- ['<C-e>'] = { 'hide', 'fallback' },
--- ['<C-y>'] = { 'select_and_accept', 'fallback' },
--- ['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
--- ['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
--- ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
--- ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
--- ['<Tab>'] = { 'snippet_forward', 'fallback' },
--- ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
--- ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },-
--- ['<C-u>'] = { 'scroll_signature_up', 'fallback' },
--- ['<C-d>'] = { 'scroll_signature_down', 'fallback' },
 
 -- mini.align 	Align text interactively
--- mini.completion 	Completion and signature help
 -- mini.keymap 	Special key mappings
 -- mini.operators 	Text edit operators
--- mini.snippets 	Manage and expand snippets
 
 -- mini.basics 	Common configuration presets
 -- mini.bracketed 	Go forward/backward with square brackets
@@ -454,3 +362,19 @@ return {
 -- mini.deps 	Plugin manager
 -- mini.misc 	Miscellaneous functions
 -- mini.sessions 	Session management
+--
+-- readme
+-- docs
+-- mini.visits 	Track and reuse file system visits
+-- MiniVisits.normalize()
+-- MiniVisits.add_label()
+-- MiniVisits.remove_label()
+-- MiniVisits.list_paths()
+-- MiniVisits.list_labels()
+-- MiniVisits.gen_filter()
+-- MiniVisits.gen_sort()
+-- MiniVisits.select_path()
+-- MiniVisits.select_label()
+-- MiniVisits.iterate_paths()
+-- MiniVisits.rename_in_index()
+-- require('mini.visits').setup()
