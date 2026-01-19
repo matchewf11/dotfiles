@@ -205,12 +205,6 @@ MiniDeps.later(function()
 end)
 
 MiniDeps.later(function()
-  require('mini.git').setup()
-  map('<leader>gi', ':Git ', ':Git Init')
-  map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
-end)
-
-MiniDeps.later(function()
   --  apply = 'gh', (ghip)
   --  reset = 'gH',
   --  textobject = 'gh', (dgh) (also in visual mode)
@@ -324,12 +318,14 @@ MiniDeps.later(function()
   })
 end)
 
--- to add:
--- source
--- name (end of source by default)
--- checkout -- branch, commit
--- monitor -- track ths branch
--- depends -- array of plugin specs
---
+--[[
+-- MiniDeps.app {
+  -- source = '',
+  -- name = '',
+  -- checkout = '',
+  -- monitor = '',
+  -- depends = '',
 -- hooks - { pre_install, post_install, pre_checkout, post_checkout }
 -- -- each one {path, source, name} as an arg
+  -- }
+--]]
