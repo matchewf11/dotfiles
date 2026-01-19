@@ -1,5 +1,4 @@
 {
-  "conform.nvim": { "branch": "master", "commit": "5ac2bb57a9096f00ca50e1a3c46020d5930319b8" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "nvim-lint": { "branch": "master", "commit": "ca6ea12daf0a4d92dc24c5c9ae22a1f0418ade37" },
   "nvim-lspconfig": { "branch": "master", "commit": "92ee7d42320edfbb81f3cad851314ab197fa324a" }

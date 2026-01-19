@@ -275,11 +275,34 @@ end)
 --   },
 -- })
 
+-- lazy load on ':DB'?
 MiniDeps.later(function()
   MiniDeps.add {
     source = 'tpope/vim-dadbod',
     depends = { 'tpope/vim-dotenv' },
   }
+end)
+
+MiniDeps.later(function()
+  MiniDeps.add { source = 'stevearc/conform.nvim' }
+  local conform = require 'conform'
+  conform.setup {
+    formatters_by_ft = {
+      lua = { 'stylua' }, -- cargo
+      go = { 'gofumpt', 'goimports' }, -- go
+      javascript = { 'prettier' }, -- npm
+      c = { 'clang-format' }, -- pacman
+      rust = { 'rustfmt' }, -- cargo
+      toml = { 'taplo' }, -- cargo
+      sh = { 'shfmt' }, -- pacman
+      sql = { 'sqlfluff' }, -- pipx
+    },
+    default_format_opts = { lsp_format = 'fallback' },
+  }
+  -- lazy load on this
+  map('<leader>f', function()
+    conform.format { async = true }
+  end, 'Format Buffer')
 end)
 
 -- MiniDeps.add {

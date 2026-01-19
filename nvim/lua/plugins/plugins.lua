@@ -23,32 +23,6 @@ return {
     end,
   },
   {
-    'stevearc/conform.nvim',
-    cmd = { 'ConformInfo' },
-    keys = {
-      {
-        '<leader>f',
-        function()
-          require('conform').format { async = true }
-        end,
-        desc = 'Format Buffer',
-      },
-    },
-    opts = {
-      formatters_by_ft = {
-        lua = { 'stylua' }, -- cargo
-        go = { 'gofumpt', 'goimports' }, -- go
-        javascript = { 'prettier' }, -- npm
-        c = { 'clang-format' }, -- pacman
-        rust = { 'rustfmt' }, -- cargo
-        toml = { 'taplo' }, -- cargo
-        sh = { 'shfmt' }, -- pacman
-        sql = { 'sqlfluff' }, -- pipx
-      },
-      default_format_opts = { lsp_format = 'fallback' },
-    },
-  },
-  {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
