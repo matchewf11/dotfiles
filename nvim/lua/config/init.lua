@@ -33,7 +33,7 @@ map('<leader>e', vim.cmd.Ex, 'Open Netrw')
 map('<leader>t', vim.cmd.tabnew, 'Open Tab')
 map('<leader>x', vim.cmd.tabclose, 'Close Tab')
 
-map('gl', vim.diagnostic.open_float, 'Line diagnostics')
+map('gd', vim.diagnostic.open_float, 'Line diagnostics')
 map('<leader>l', vim.diagnostic.setloclist, 'Diagnostics in LocList')
 
 map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
@@ -237,43 +237,6 @@ MiniDeps.later(function()
     },
   }
 end)
-
--- mini.ai 	Extend and create a/i textobjects
--- a(, a), a', a*, a<Space>, af, a?
--- read readme
--- read docs
--- require('mini.ai').setup(
---   {
---     -- Module mappings. Use `''` (empty string) to disable one.
---     mappings = {
---       -- Main textobject prefixes
---       around = 'a',
---       inside = 'i',
---
---       -- Next/last variants
---       -- NOTE: These override built-in LSP selection mappings on Neovim>=0.12
---       -- Map LSP selection manually to use it (see `:h MiniAi.config`)
---       around_next = 'an',
---       inside_next = 'in',
---       around_last = 'al',
---       inside_last = 'il',
---
---       -- Move cursor to corresponding edge of `a` textobject
---       goto_left = 'g[',
---       goto_right = 'g]',
---     },
---   }
--- )
--- local gen_ai_spec = require('mini.extra').gen_ai_spec
--- require('mini.ai').setup({
---   custom_textobjects = {
---     B = gen_ai_spec.buffer(),
---     D = gen_ai_spec.diagnostic(),
---     I = gen_ai_spec.indent(),
---     L = gen_ai_spec.line(),
---     N = gen_ai_spec.number(),
---   },
--- })
 
 -- lazy load on ':DB'?
 MiniDeps.later(function()
