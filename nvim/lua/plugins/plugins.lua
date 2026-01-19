@@ -185,7 +185,6 @@ return {
       map('<leader>sk', '<CMD>Pick keymaps<CR>', 'Search Keymaps')
       map('<leader>sc', '<CMD>Pick commands<CR>', 'Search Commands')
 
-      -- MiniExtra.pickers
       -- explorer
       -- git-branches
       -- git-commits
