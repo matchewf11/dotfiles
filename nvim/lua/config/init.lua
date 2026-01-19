@@ -1,6 +1,5 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
-
 vim.g.c_syntax_for_h = true
 vim.g.netrw_banner = false
 
@@ -18,9 +17,7 @@ vim.o.laststatus = 3
 vim.o.showtabline = 2
 vim.o.smartindent = true
 vim.o.updatetime = 100
-
 vim.opt.completeopt = { 'menuone', 'noselect', 'fuzzy' }
-
 vim.diagnostic.config { severity_sort = true }
 
 local function map(left, right, description, modes)
@@ -29,17 +26,13 @@ local function map(left, right, description, modes)
 end
 
 map('<leader>e', vim.cmd.Ex, 'Open Netrw')
-
 map('<leader>t', vim.cmd.tabnew, 'Open Tab')
 map('<leader>x', vim.cmd.tabclose, 'Close Tab')
-
 map('gd', vim.diagnostic.open_float, 'Line diagnostics')
 map('<leader>l', vim.diagnostic.setloclist, 'Diagnostics in LocList')
-
 map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
-
 map('J', ":m '>+1<CR>gv=gv", 'Move Down', 'v')
 map('K', ":m '<-2<CR>gv=gv", 'Move Up', 'v')
 
@@ -67,31 +60,19 @@ map('<leader>ml', '<CMD>DepsSnapLoad<CR>', 'Load Deps')
 map('<leader>mh', '<CMD>DepsShowLog<CR>', 'Log Deps')
 
 MiniDeps.now(function()
+  vim.cmd.colorscheme 'retrobox'
+end)
+
+MiniDeps.now(function()
   require('mini.icons').setup()
 end)
 
-MiniDeps.later(function()
-  -- a, i
-  -- an, in, al, il
-  -- g[, g]
-  -- (), ', *, <Space>, f, ?, {}, [], <>, b/q, t, a
-  local gen_ai_spec = require('mini.extra').gen_ai_spec
-  require('mini.ai').setup {
-    custom_textobjects = {
-      B = gen_ai_spec.buffer(),
-      D = gen_ai_spec.diagnostic(),
-      I = gen_ai_spec.indent(),
-      L = gen_ai_spec.line(),
-      N = gen_ai_spec.number(),
-    },
-  }
+MiniDeps.now(function()
+  require('mini.extra').setup()
 end)
 
 MiniDeps.now(function()
-  vim.cmd.colorscheme 'miniautumn'
-end)
-
-MiniDeps.now(function()
+  require('mini.git').setup()
   local statusline = require 'mini.statusline'
   statusline.setup {
     content = {
@@ -120,38 +101,73 @@ MiniDeps.now(function()
   }
 end)
 
+--   event = { 'BufReadPre', 'BufNewFile' },
+MiniDeps.now(function()
+  MiniDeps.add { source = 'neovim/nvim-lspconfig' }
+  for _, server in ipairs {
+    'lua_ls', -- pacman
+    'gopls', -- go
+    'clangd', -- pacman
+    'ts_ls', -- npm
+    'rust_analyzer', -- rustup
+    'taplo', -- cargo
+    'hls', -- ghcup
+    'pyright', -- npm
+    -- 'sqls', -- go
+    'bashls', -- pacman
+  } do
+    vim.lsp.enable(server)
+  end
+end)
+
+-- a, i
+-- an, in, al, il
+-- g[, g]
+-- (), ', *, <Space>, f, ?, {}, [], <>, b/q, t, a
 MiniDeps.later(function()
-  -- If query starts with ', the match is exact.
-  -- If query starts with ^, the match is exact at start.
-  -- If query ends with $, the match is exact at end.
-  -- If query starts with *, the match is forced to be fuzzy.
-  -- caret_left = '<Left>',
-  -- caret_right = '<Right>',
-  -- choose = '<CR>',
-  -- choose_in_split = '<C-s>',
-  -- choose_in_tabpage = '<C-t>',
-  -- choose_in_vsplit = '<C-v>',
-  -- choose_marked = '<C-CR>',
-  -- delete_char = '<BS>',
-  -- delete_char_right = '<Del>',
-  -- delete_left = '<C-u>',
-  -- delete_word = '<C-w>',
-  -- mark = '<C-x>',
-  -- mark_all = '<C-a>',
-  -- move_down = '<C-n>',
-  -- move_start = '<C-g>',
-  -- move_up = '<C-p>',
-  -- paste = '<C-r>',
-  -- refine = '<C-Space>',
-  -- refine_marked = '<C-e>',
-  -- scroll_down = '<C-f>',
-  -- scroll_left = '<C-h>',
-  -- scroll_right = '<C-l>',
-  -- scroll_up = '<C-b>',
-  -- stop = '<Esc>',
-  -- toggle_info = '<S-Tab>',
-  -- toggle_preview = '<Tab>',
-  require('mini.extra').setup()
+  local gen_ai_spec = require('mini.extra').gen_ai_spec
+  require('mini.ai').setup {
+    custom_textobjects = {
+      B = gen_ai_spec.buffer(),
+      D = gen_ai_spec.diagnostic(),
+      I = gen_ai_spec.indent(),
+      L = gen_ai_spec.line(),
+      N = gen_ai_spec.number(),
+    },
+  }
+end)
+
+-- If query starts with ', the match is exact.
+-- If query starts with ^, the match is exact at start.
+-- If query ends with $, the match is exact at end.
+-- If query starts with *, the match is forced to be fuzzy.
+-- caret_left = '<Left>',
+-- caret_right = '<Right>',
+-- choose = '<CR>',
+-- choose_in_split = '<C-s>',
+-- choose_in_tabpage = '<C-t>',
+-- choose_in_vsplit = '<C-v>',
+-- choose_marked = '<C-CR>',
+-- delete_char = '<BS>',
+-- delete_char_right = '<Del>',
+-- delete_left = '<C-u>',
+-- delete_word = '<C-w>',
+-- mark = '<C-x>',
+-- mark_all = '<C-a>',
+-- move_down = '<C-n>',
+-- move_start = '<C-g>',
+-- move_up = '<C-p>',
+-- paste = '<C-r>',
+-- refine = '<C-Space>',
+-- refine_marked = '<C-e>',
+-- scroll_down = '<C-f>',
+-- scroll_left = '<C-h>',
+-- scroll_right = '<C-l>',
+-- scroll_up = '<C-b>',
+-- stop = '<Esc>',
+-- toggle_info = '<S-Tab>',
+-- toggle_preview = '<Tab>',
+MiniDeps.later(function()
   require('mini.pick').setup {
     options = { use_cache = true },
     window = { prompt_caret = '█' },
@@ -193,46 +209,34 @@ MiniDeps.later(function()
   -- visit_labels
 end)
 
+-- sa (add surround)
+-- sd (delete surround)
+-- sr (replace surround)
+-- sf/F (find surround)
+-- sh (highlight surround)
+-- sa <motion> <surround>
+-- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
 MiniDeps.later(function()
-  -- sa (add surround)
-  -- sd (delete surround)
-  -- sr (replace surround)
-  -- sf/F (find surround)
-  -- sh (highlight surround)
-  -- sa <motion> <surround>
-  -- 'f' / 't' / ()/[]/{}/<> / ? / all other chars
   require('mini.surround').setup()
 end)
 
+--  apply = 'gh', (ghip)
+--  reset = 'gH',
+--  textobject = 'gh', (dgh) (also in visual mode)
+--  goto_first = '[H',
+--  goto_prev = '[h',
+--  goto_next = ']h',
+--  goto_last = ']H',
 MiniDeps.later(function()
-  --  apply = 'gh', (ghip)
-  --  reset = 'gH',
-  --  textobject = 'gh', (dgh) (also in visual mode)
-  --  goto_first = '[H',
-  --  goto_prev = '[h',
-  --  goto_next = ']h',
-  --  goto_last = ']H',
   require('mini.diff').setup()
   map('<leader>h', '<CMD>lua MiniDiff.toggle_overlay()<CR>', 'Toggle Diff Overlay')
 end)
 
+-- <C-l/h> to jump between snippets
+-- <C-j> to expand
+-- <C-n/p> to choose btwn them
+-- <C-c> to stop
 MiniDeps.later(function()
-  -- <C-n> in insert to fallback
-  -- <C-l> to trigger completion
-  -- <C-]> to fallback to vim completion
-  -- <C-f> to scroll_down
-  -- <C-b> to scroll_up
-  require('mini.completion').setup {
-    delay = { completion = math.huge, info = 25, signature = 500 },
-    mappings = { force_twostep = '<C-l>', force_fallback = '<C-]>' },
-  }
-end)
-
-MiniDeps.later(function()
-  -- <C-l/h> to jump between snippets
-  -- <C-j> to expand
-  -- <C-n/p> to choose btwn them
-  -- <C-c> to stop
   local mini_snippets = require 'mini.snippets'
   local loader = mini_snippets.gen_loader
   mini_snippets.setup {
@@ -240,6 +244,18 @@ MiniDeps.later(function()
       loader.from_file '~/.config/nvim/snippets/global.lua',
       loader.from_lang(),
     },
+  }
+end)
+
+-- <C-n> in insert to fallback
+-- <C-l> to trigger completion
+-- <C-]> to fallback to vim completion
+-- <C-f> to scroll_down
+-- <C-b> to scroll_up
+MiniDeps.later(function()
+  require('mini.completion').setup {
+    delay = { completion = math.huge, info = 25, signature = 500 },
+    mappings = { force_twostep = '<C-l>', force_fallback = '<C-]>' },
   }
 end)
 
@@ -273,27 +289,6 @@ MiniDeps.later(function()
   end, 'Format Buffer')
 end)
 
---   event = { 'BufReadPre', 'BufNewFile' },
-MiniDeps.now(function()
-  MiniDeps.add {
-    source = 'neovim/nvim-lspconfig',
-  }
-  for _, server in ipairs {
-    'lua_ls', -- pacman
-    'gopls', -- go
-    'clangd', -- pacman
-    'ts_ls', -- npm
-    'rust_analyzer', -- rustup
-    'taplo', -- cargo
-    'hls', -- ghcup
-    'pyright', -- npm
-    -- 'sqls', -- go
-    'bashls', -- pacman
-  } do
-    vim.lsp.enable(server)
-  end
-end)
-
 MiniDeps.later(function()
   --   event = { 'BufReadPost', 'BufNewFile' },
   MiniDeps.add {
@@ -317,15 +312,3 @@ MiniDeps.later(function()
     end,
   })
 end)
-
---[[
--- MiniDeps.app {
-  -- source = '',
-  -- name = '',
-  -- checkout = '',
-  -- monitor = '',
-  -- depends = '',
--- hooks - { pre_install, post_install, pre_checkout, post_checkout }
--- -- each one {path, source, name} as an arg
-  -- }
---]]
