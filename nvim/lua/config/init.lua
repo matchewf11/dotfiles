@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   command = [[%s/\s\+$//e]],
 })
 
-require 'config.plugins'
+require 'config.bootstrap'
 
 MiniDeps.now(function()
   require('mini.icons').setup()
@@ -326,9 +326,9 @@ MiniDeps.now(function()
   end
 end)
 
---   event = { 'BufReadPost', 'BufNewFile' },
 MiniDeps.later(function()
-  MiniPick.add {
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  MiniDeps.add {
     source = 'mfussenegger/nvim-lint',
   }
   local lint = require 'lint'
@@ -349,11 +349,3 @@ MiniDeps.later(function()
     end,
   })
 end)
-
--- MiniDeps.add {
---   source = '',
---   checkout = '',
---   monitor = '',
---   depends = { '' },
---   hooks = {},
--- }
