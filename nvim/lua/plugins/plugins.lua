@@ -10,6 +10,15 @@ return {
       require('mini.extra').setup()
       require('mini.icons').setup()
 
+      -- mini.align 	Align text interactively
+      -- mini.keymap 	Special key mappings
+      -- mini.operators 	Text edit operators
+      -- mini.bracketed 	Go forward/backward with square brackets
+      -- mini.deps 	Plugin manager
+      -- mini.misc 	Miscellaneous functions
+      -- mini.sessions 	Session management
+      -- mini.visits
+
       -- <C-l/h> to jump between snippets
       -- <C-j> to expand
       -- <C-n/p> to choose btwn them
@@ -92,19 +101,6 @@ return {
       -- extends f/F/t/T to work on multiple lines
       -- repreat jump with ';'
       require('mini.jump').setup()
-
-      require('mini.move').setup {
-        mappings = {
-          left = '<C-h>',
-          right = '<C-l>',
-          down = '<C-j>',
-          up = '<C-k>',
-          line_left = '<C-h>',
-          line_right = '<C-l>',
-          line_down = '<C-j>',
-          line_up = '<C-k>',
-        },
-      }
 
       require('mini.git').setup()
 
@@ -343,38 +339,3 @@ return {
     end,
   },
 }
-
--- ]b to move to next buffer
--- tabs, windows, splits, tmux, i3
--- gc ap (around paragragh)
--- highlight same vars? (look at kickstart)
--- try using :vimgrep and :grep
--- :map jk
--- :so to source this file
-
--- mini.align 	Align text interactively
--- mini.keymap 	Special key mappings
--- mini.operators 	Text edit operators
-
--- mini.basics 	Common configuration presets
--- mini.bracketed 	Go forward/backward with square brackets
--- mini.cmdline 	Command line tweaks
--- mini.deps 	Plugin manager
--- mini.misc 	Miscellaneous functions
--- mini.sessions 	Session management
---
--- readme
--- docs
--- mini.visits 	Track and reuse file system visits
--- MiniVisits.normalize()
--- MiniVisits.add_label()
--- MiniVisits.remove_label()
--- MiniVisits.list_paths()
--- MiniVisits.list_labels()
--- MiniVisits.gen_filter()
--- MiniVisits.gen_sort()
--- MiniVisits.select_path()
--- MiniVisits.select_label()
--- MiniVisits.iterate_paths()
--- MiniVisits.rename_in_index()
--- require('mini.visits').setup()

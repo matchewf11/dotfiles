@@ -40,6 +40,9 @@ map('<leader>y', '"+y', 'Yank Clipboard', { 'n', 'x', 'v' })
 map('<leader>p', '"+p', 'Paste Clipboard', { 'n', 'x', 'v' })
 map('<leader>d', '"_d', 'Delete without Cut', { 'n', 'v' })
 
+map('J', ":m '>+1<CR>gv=gv", 'Move Down', 'v')
+map('K', ":m '<-2<CR>gv=gv", 'Move Up', 'v')
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
