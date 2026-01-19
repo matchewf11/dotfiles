@@ -60,8 +60,31 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 require 'config.bootstrap'
 
+map('<leader>mu', '<CMD>DepsUpdate<CR>', 'Update Deps')
+map('<leader>mc', '<CMD>DepsClean<CR>', 'Clean Deps')
+map('<leader>ms', '<CMD>DepsSnapSave<CR>', 'Save Deps')
+map('<leader>ml', '<CMD>DepsSnapLoad<CR>', 'Load Deps')
+map('<leader>mh', '<CMD>DepsShowLog<CR>', 'Log Deps')
+
 MiniDeps.now(function()
   require('mini.icons').setup()
+end)
+
+MiniDeps.later(function()
+  -- a, i
+  -- an, in, al, il
+  -- g[, g]
+  -- (), ', *, <Space>, f, ?, {}, [], <>, b/q, t, a
+  local gen_ai_spec = require('mini.extra').gen_ai_spec
+  require('mini.ai').setup {
+    custom_textobjects = {
+      B = gen_ai_spec.buffer(),
+      D = gen_ai_spec.diagnostic(),
+      I = gen_ai_spec.indent(),
+      L = gen_ai_spec.line(),
+      N = gen_ai_spec.number(),
+    },
+  }
 end)
 
 MiniDeps.now(function()
@@ -98,10 +121,6 @@ MiniDeps.now(function()
 end)
 
 MiniDeps.later(function()
-  require('mini.extra').setup()
-end)
-
-MiniDeps.later(function()
   -- If query starts with ', the match is exact.
   -- If query starts with ^, the match is exact at start.
   -- If query ends with $, the match is exact at end.
@@ -132,6 +151,7 @@ MiniDeps.later(function()
   -- stop = '<Esc>',
   -- toggle_info = '<S-Tab>',
   -- toggle_preview = '<Tab>',
+  require('mini.extra').setup()
   require('mini.pick').setup {
     options = { use_cache = true },
     window = { prompt_caret = '█' },
@@ -188,15 +208,6 @@ MiniDeps.later(function()
   require('mini.git').setup()
   map('<leader>gi', ':Git ', ':Git Init')
   map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
-  vim.api.nvim_create_autocmd('FileType', {
-    -- zr/zm for folding and unfolding
-    pattern = { 'git', 'diff' },
-    callback = function()
-      vim.opt_local.foldmethod = 'expr'
-      vim.opt_local.foldexpr = 'v:lua.MiniGit.diff_foldexpr()'
-      vim.opt_local.foldlevel = 3
-    end,
-  })
 end)
 
 MiniDeps.later(function()
@@ -313,16 +324,6 @@ MiniDeps.later(function()
   })
 end)
 
--- MiniDeps.update()
--- MiniDeps.clean()
--- MiniDeps.snap_get/set/save/load()
--- MiniDeps.now/later()
--- :DepsUpdate
--- :DepsSnapSave (save state in config.path.snapshot)
--- :DepsSnapLoad (load snapshot)
--- :DepsClean
--- :DepsShowLog
---
 -- to add:
 -- source
 -- name (end of source by default)
@@ -332,7 +333,3 @@ end)
 --
 -- hooks - { pre_install, post_install, pre_checkout, post_checkout }
 -- -- each one {path, source, name} as an arg
--- DepsUpdate <name>
--- DepsUpdateOffline
--- DepsShowLog
--- DepsClean
