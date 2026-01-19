@@ -349,3 +349,26 @@ MiniDeps.later(function()
     end,
   })
 end)
+
+-- MiniDeps.update()
+-- MiniDeps.clean()
+-- MiniDeps.snap_get/set/save/load()
+-- MiniDeps.now/later()
+-- :DepsUpdate
+-- :DepsSnapSave (save state in config.path.snapshot)
+-- :DepsSnapLoad (load snapshot)
+-- :DepsClean
+-- :DepsShowLog
+-- to add
+-- source
+-- name (end of source by default)
+-- checkout -- branch, commit
+-- monitor -- track ths branch
+-- depends -- array of plugin specs
+-- hooks - { pre_install, post_install, pre_checkout, post_checkout }
+-- -- each one {path, source, name} as an arg
+-- DepsUpdate <name>
+-- DepsUpdateOffline
+-- DepsShowLog
+-- DepsClean
+-- can add ! to end of command to no-confirm

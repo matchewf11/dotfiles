@@ -1,0 +1,8 @@
+return {
+  ["conform.nvim"] = "c2526f1cde528a66e086ab1668e996d162c75f4f",
+  ["mini.nvim"] = "4f53281c51ad9384ef790178b9643740fa763979",
+  ["nvim-lint"] = "ca6ea12daf0a4d92dc24c5c9ae22a1f0418ade37",
+  ["nvim-lspconfig"] = "92ee7d42320edfbb81f3cad851314ab197fa324a",
+  ["vim-dadbod"] = "6d1d41da4873a445c5605f2005ad2c68c99d8770",
+  ["vim-dotenv"] = "5c51cfcf8d87280d6414e03cd6b253eb70ecb800"
+}
