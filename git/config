@@ -15,3 +15,4 @@
 	insteadOf = me:
 [alias]
 	ac = !git add . && git commit
+	acp = !git add . && git commit && git push
