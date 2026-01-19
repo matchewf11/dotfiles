@@ -10,15 +10,6 @@ return {
       require('mini.extra').setup()
       require('mini.icons').setup()
 
-      -- mini.align 	Align text interactively
-      -- mini.keymap 	Special key mappings
-      -- mini.operators 	Text edit operators
-      -- mini.bracketed 	Go forward/backward with square brackets
-      -- mini.deps 	Plugin manager
-      -- mini.misc 	Miscellaneous functions
-      -- mini.sessions 	Session management
-      -- mini.visits
-
       -- <C-l/h> to jump between snippets
       -- <C-j> to expand
       -- <C-n/p> to choose btwn them
@@ -93,16 +84,15 @@ return {
       require('mini.git').setup()
       map('<leader>gi', ':Git ', ':Git Init')
       map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
-
-      -- zr/zm for folding and unfolding
-      -- vim.api.nvim_create_autocmd('FileType', {
-      --   pattern = { 'git', 'diff' },
-      --   callback = function()
-      --     vim.opt_local.foldmethod = 'expr'
-      --     vim.opt_local.foldexpr = 'v:lua.MiniGit.diff_foldexpr()'
-      --     vim.opt_local.foldlevel = 3
-      --   end,
-      -- })
+      vim.api.nvim_create_autocmd('FileType', {
+        -- zr/zm for folding and unfolding
+        pattern = { 'git', 'diff' },
+        callback = function()
+          vim.opt_local.foldmethod = 'expr'
+          vim.opt_local.foldexpr = 'v:lua.MiniGit.diff_foldexpr()'
+          vim.opt_local.foldlevel = 3
+        end,
+      })
 
       --  apply = 'gh', (ghip)
       --  reset = 'gH',
@@ -123,7 +113,6 @@ return {
             local git = statusline.section_git { trunc_width = 40 }
             local diff = statusline.section_diff { trunc_width = 75 }
             local fileinfo = statusline.section_fileinfo { trunc_width = 120 }
-            local location = '%l/%L:%v'
             local lsp = table.concat(
               vim.tbl_map(function(client)
                 return client.name
@@ -136,7 +125,7 @@ return {
               { hl = 'MiniStatuslineDevinfo', strings = { git, diff } },
               '%=',
               { hl = 'MiniStatuslineDevinfo', strings = { diagnostics, lsp } },
-              { hl = 'MiniStatuslineFilename', strings = { location } },
+              { hl = 'MiniStatuslineFilename', strings = { '%l/%L:%v' } },
             }
           end,
         },
@@ -213,40 +202,6 @@ return {
       -- treesitter
       -- visit_paths
       -- visit_labels
-
-      -- <BS> removes previous entry
-      -- <Esc> / <C-c> early stop
-      -- scroll_down = '<C-d>',
-      -- scroll_up = '<C-u>',
-      -- One target left or <CR> it execs
-      local miniclue = require 'mini.clue'
-      miniclue.setup {
-        triggers = {
-          { mode = 'n', keys = '<C-w>' }, -- Window commands
-          { mode = { 'n', 'x' }, keys = 'z' }, -- `z` key
-          { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
-          { mode = 'i', keys = '<C-x>' }, -- Built-in completion
-          { mode = { 'n', 'x' }, keys = 'g' }, -- `g` key
-          { mode = 'n', keys = '[' }, -- `[` and `]` keys
-          { mode = 'n', keys = ']' },
-          { mode = { 'n', 'x' }, keys = "'" }, -- Marks
-          { mode = { 'n', 'x' }, keys = '`' },
-          { mode = { 'n', 'x' }, keys = '"' }, -- Registers
-          { mode = { 'i', 'c' }, keys = '<C-r>' },
-        },
-        clues = {
-          { mode = 'n', keys = '<Leader>s', desc = 'Search' },
-          { mode = 'n', keys = '<Leader>g', desc = 'Git' },
-          { mode = 'n', keys = '<Leader>b', desc = 'Buffer' },
-          miniclue.gen_clues.square_brackets(),
-          miniclue.gen_clues.builtin_completion(),
-          miniclue.gen_clues.g(),
-          miniclue.gen_clues.marks(),
-          miniclue.gen_clues.registers(),
-          miniclue.gen_clues.windows(),
-          miniclue.gen_clues.z(),
-        },
-      }
     end,
   },
   {
