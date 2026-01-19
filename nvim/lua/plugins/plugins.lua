@@ -90,34 +90,19 @@ return {
       --   },
       -- })
 
-      require('mini.bufremove').setup()
-      map('<leader>bd', '<CMD>lua MiniBufremove.delete()<CR>', 'Delete Buffer After Unshowing')
-      map('<leader>bu', '<CMD>lua MiniBufremove.unshow()<CR>', 'Unshow Buffer In All Windows')
-      map('<leader>bw', '<CMD>lua MiniBufremove.unshow_in_window()<CR>', 'Unshow Only In This Window')
-
-      -- gS (visual and normal)
-      require('mini.splitjoin').setup()
-
-      -- extends f/F/t/T to work on multiple lines
-      -- repreat jump with ';'
-      require('mini.jump').setup()
-
       require('mini.git').setup()
-
-      -- If a line will show the history
-      -- If in a diff buffer, will show in split
-      map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
       map('<leader>gi', ':Git ', ':Git Init')
+      map('<leader>gs', '<CMD>lua MiniGit.show_at_cursor()<CR>', 'Git Status', { 'n', 'x' })
 
       -- zr/zm for folding and unfolding
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = { 'git', 'diff' },
-        callback = function()
-          vim.opt_local.foldmethod = 'expr'
-          vim.opt_local.foldexpr = 'v:lua.MiniGit.diff_foldexpr()'
-          vim.opt_local.foldlevel = 3
-        end,
-      })
+      -- vim.api.nvim_create_autocmd('FileType', {
+      --   pattern = { 'git', 'diff' },
+      --   callback = function()
+      --     vim.opt_local.foldmethod = 'expr'
+      --     vim.opt_local.foldexpr = 'v:lua.MiniGit.diff_foldexpr()'
+      --     vim.opt_local.foldlevel = 3
+      --   end,
+      -- })
 
       --  apply = 'gh', (ghip)
       --  reset = 'gH',
