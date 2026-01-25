@@ -59,9 +59,7 @@ map('<leader>ms', '<CMD>DepsSnapSave<CR>', 'Save Deps')
 map('<leader>ml', '<CMD>DepsSnapLoad<CR>', 'Load Deps')
 map('<leader>mh', '<CMD>DepsShowLog<CR>', 'Log Deps')
 
-MiniDeps.now(function()
-  vim.cmd.colorscheme 'retrobox'
-end)
+vim.cmd.colorscheme 'retrobox'
 
 MiniDeps.now(function()
   require('mini.icons').setup()
