@@ -51,6 +51,7 @@ vnoremap <leader>d "_d
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
+nnoremap gd :ALEDetail<CR>
 nnoremap grd :ALEGoToDefinition<CR>
 nnoremap grr :ALEFindReferences<CR>
 nnoremap grn :ALERename<CR>
