@@ -21,7 +21,7 @@ set splitbelow
 
 set noswapfile
 set undofile
-set undodir=.vim/undo
+set undodir=~/.vim/undo
 set updatetime=100
 
 colorscheme slate
