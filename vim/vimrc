@@ -1,17 +1,27 @@
+" install vim-plug
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" be sure to install rust-analyzer!
+
 let g:netrw_banner = 0
 
 let mapleader = " "
 
 set number
 set relativenumber
+set signcolumn=yes
 
 set scrolloff=10
+
+set mouse=a
+
+set timeoutlen=300
 
 set splitright
 set splitbelow
 
 set noswapfile
 set undofile
+set undodir=.vim/undo
 set updatetime=100
 
 colorscheme slate
@@ -27,15 +37,13 @@ set softtabstop=4
 
 set smartindent
 set autoindent
-filetype plugin indent on
-syntax on
-
-set mouse=a
 
 nnoremap <leader>e :Ex<CR>
 
 nnoremap <leader>t :tabnew<CR>
 nnoremap <leader>x :tabclose<CR>
+nnoremap <leader>n :bn<CR>
+nnoremap <leader>p :bp<CR>
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
@@ -43,16 +51,129 @@ vnoremap <leader>d "_d
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-augroup delete_trailing_whitespace
-  autocmd!
-  autocmd BufWritePre * %s/\s\+$//e
-augroup END
+nnoremap grd :ALEGoToDefinition<CR>
+nnoremap grr :ALEFindReferences<CR>
+nnoremap grn :ALERename<CR>
+nnoremap gra :ALECodeAction<CR>
+nnoremap K :ALEHover<CR>
+nnoremap <leader>f :ALEFix<CR>
 
-augroup rust_setup
-    autocmd!
-    autocmd FileType rust setlocal expandtab shiftwidth=4 softtabstop=4
-    autocmd FileType rust nnoremap <leader>rb :!cargo build<CR>
-    autocmd FileType rust nnoremap <leader>rr :!cargo run<CR>
-    autocmd FileType rust nnoremap <leader>rt :!cargo test<CR>
-    autocmd FileType rust nnoremap <leader>rc :!cargo check<CR>
-augroup END
+
+let g:ale_linters = {'rust': ['rust_analyzer']}
+let g:ale_fixers = {'rust': ['rustfmt']}
+let g:ale_virtualtext_cursor = 'disabled'
+" let g:ale_sign_colomn_always = v:true
+
+" use this with <C-x><C-o> in Insert mode
+set omnifunc=ale#completion#OmniFunc
+
+call plug#begin()
+
+" gcc to comment line
+" gc <ap> or something similar
+" gc in visual mode to toggle comment
+" gc is a text item
+" gcgc toggle comments
+Plug 'tpope/vim-commentary'
+
+" cs"'
+" cs'<q>
+" cst"
+" ds"
+" ysiw] ([ to give space)
+" yssb / yss) to surround line
+" VS<p>
+" (repeatable with repeat.vim)
+Plug 'tpope/vim-surround'
+
+" navigat hunks
+" operator for acting on hunks
+" preview changes in another buffer
+" show chnates in diff mode
+" statusline stuff
+Plug 'mhinz/vim-signify'
+
+Plug 'dense-analysis/ale'
+
+" function! LinterStatus() abort
+"     (also ale#statusline#FirstProblem)
+"     let l:counts = ale#statusline#Count(bufnr(''))
+
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
+
+"     return l:counts.total == 0 ? 'OK' : printf(
+"     \   '%dW %dE',
+"     \   all_non_errors,
+"     \   all_errors
+"     \)
+" endfunction
+
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" set statusline=%{LinterStatus()}
+
+" :ALEInfo
+" :ALESymbolSearch
+" :ALEFileRename
+
+call plug#end()
+
+"SignifyDiff
+"SignifyHunkDiff
+"SignifyHunkUndo
+"SignifyToggleHighlight
+
+" [c, ]c, [C, ]C
+
+" hunk text object
+omap ic <plug>(signify-motion-inner-pending)
+xmap ic <plug>(signify-motion-inner-visual)
+omap ac <plug>(signify-motion-outer-pending)
+xmap ac <plug>(signify-motion-outer-visual)
+
+" silent! colorscheme seoul256
+" also lazy for files or cmds
+"
+" ALE
+" CodeAction
+" Complete
+" Detail
+" Disable
+" DisableBuffer
+" Documnetation
+" Enable
+" EnableBuffer
+" FileRename
+" FindRefrences
+" First
+" Fix
+" FixSuggest
+" GoToDefinition
+" GoToImplentation
+" GoToTypeDefinition
+" Hover
+" Import
+" Info
+" InfoToClipboard
+" ALEInfoToFile
+" Last
+" Elint
+" ELintStop
+" Next
+" NextWrap
+" OrganizeImports
+" PopulateLocList
+" PopulateQuickfix
+" Previous
+" PreviousWrap
+" Rename
+" RepeatSelection
+" Reset
+" ResetBuffer
+" StopAllLSPs
+" StopLSP
+" SymbolSearchToggle
+" Toggle
+" ToggleBuffer
