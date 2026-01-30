@@ -1,5 +1,4 @@
-" install vim-plug
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" install vim-plug curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " be sure to install rust-analyzer!
 
 let g:netrw_banner = 0
@@ -9,6 +8,8 @@ let mapleader = " "
 set number
 set relativenumber
 set signcolumn=yes
+
+set completeopt=noinsert,menuone,noselect
 
 set scrolloff=10
 
@@ -37,6 +38,8 @@ set softtabstop=4
 
 set smartindent
 set autoindent
+
+set path+=**
 
 nnoremap <leader>e :Ex<CR>
 
@@ -87,13 +90,6 @@ Plug 'tpope/vim-commentary'
 " (repeatable with repeat.vim)
 Plug 'tpope/vim-surround'
 
-" navigat hunks
-" operator for acting on hunks
-" preview changes in another buffer
-" show chnates in diff mode
-" statusline stuff
-Plug 'mhinz/vim-signify'
-
 Plug 'dense-analysis/ale'
 
 " function! LinterStatus() abort
@@ -115,28 +111,6 @@ Plug 'dense-analysis/ale'
 
 " set statusline=%{LinterStatus()}
 
-" :ALEInfo
-" :ALESymbolSearch
-" :ALEFileRename
-
-call plug#end()
-
-"SignifyDiff
-"SignifyHunkDiff
-"SignifyHunkUndo
-"SignifyToggleHighlight
-
-" [c, ]c, [C, ]C
-
-" hunk text object
-omap ic <plug>(signify-motion-inner-pending)
-xmap ic <plug>(signify-motion-inner-visual)
-omap ac <plug>(signify-motion-outer-pending)
-xmap ac <plug>(signify-motion-outer-visual)
-
-" silent! colorscheme seoul256
-" also lazy for files or cmds
-"
 " ALE
 " CodeAction
 " Complete
@@ -178,3 +152,10 @@ xmap ac <plug>(signify-motion-outer-visual)
 " SymbolSearchToggle
 " Toggle
 " ToggleBuffer
+" :ALEInfo
+" :ALESymbolSearch
+" :ALEFileRename
+
+call plug#end()
+
+" silent! colorscheme seoul256
