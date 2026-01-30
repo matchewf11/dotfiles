@@ -32,3 +32,7 @@ git config --global push.autoSetupRemote true
 git config --global alias.fp "push --force-with-lease"
 
 ## Look For others
+
+(mkae a repabse -i on)
+make a commit+squash one
+make a add/commit/push one

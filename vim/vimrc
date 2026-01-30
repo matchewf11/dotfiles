@@ -1,67 +1,22 @@
 " install vim-plug curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " be sure to install rust-analyzer!
 
-let mapleader = " "
+" let g:ale_sign_colomn_always = v:true
 
 set number relativenumber
 set splitright splitbelow
 set smartindent autoindent
 set signcolumn=yes scrolloff=10 laststatus=2 showtabline=2
 set undofile undodir=~/.vim/undo noswapfile updatetime=100
-set completeopt=noinsert,menuone,noselect
+set completeopt=noinsert,menuone,noselect omnifunc=ale#completion#OmniFunc
 set timeoutlen=300 mouse=a
-set termguicolors
+set termguicolors background=dark
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set path+=**
 
-colorscheme slate
+set statusline=%f\ %m%r%h%w%y%q%=%l/%L:%c%V
 
-nnoremap <leader>e :Ex<CR>
-nnoremap <leader>t :tabnew<CR>
-nnoremap <leader>x :tabclose<CR>
-nnoremap <leader>n :bn<CR>
-nnoremap <leader>p :bp<CR>
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-nnoremap gd :ALEDetail<CR>
-nnoremap grd :ALEGoToDefinition<CR>
-nnoremap grr :ALEFindReferences<CR>
-nnoremap grn :ALERename<CR>
-nnoremap gra :ALECodeAction<CR>
-nnoremap K :ALEHover<CR>
-nnoremap <leader>f :ALEFix<CR>
-
-let g:netrw_banner = 0
-let g:ale_linters = {'rust': ['rust_analyzer']}
-let g:ale_fixers = {'rust': ['rustfmt']}
-let g:ale_virtualtext_cursor = 'disabled'
-" let g:ale_sign_colomn_always = v:true
-
-" use this with <C-x><C-o> in Insert mode
-set omnifunc=ale#completion#OmniFunc
-
-call plug#begin()
-
-" gcc to comment line
-" gc <ap> or something similar
-" gc in visual mode to toggle comment
-" gc is a text item
-" gcgc toggle comments
-Plug 'tpope/vim-commentary'
-
-" cs"'
-" cs'<q>
-" cst"
-" ds"
-" ysiw] ([ to give space)
-" yssb / yss) to surround line
-" VS<p>
-" (repeatable with repeat.vim)
-Plug 'tpope/vim-surround'
-
-Plug 'dense-analysis/ale'
+" set statusline=%{LinterStatus()}
 
 " function! LinterStatus() abort
 "     (also ale#statusline#FirstProblem)
@@ -77,53 +32,95 @@ Plug 'dense-analysis/ale'
 "     \)
 " endfunction
 
+augroup delete_trailing_whitespace
+  autocmd!
+  autocmd BufWritePre * %s/\s\+$//e
+augroup END
+
+let mapleader = " "
+nnoremap <leader>e :Ex<CR>
+nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>x :tabclose<CR>
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+nnoremap [b :bn<CR>
+nnoremap ]b :bp<CR>
+nnoremap [B :bfirst<CR>
+nnoremap ]B :blast<CR>
+
+nnoremap [t :tabnext<CR>
+nnoremap ]t :tabprev<CR>
+nnoremap [T :tabfirst<CR>
+nnoremap ]T :tablast<CR>
+
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+nnoremap gd :ALEDetail<CR>
+nnoremap grt :ALEGoToTypeDefinition<CR>
+nnoremap grd :ALEGoToDefinition<CR>
+nnoremap grr :ALEFindReferences<CR>
+nnoremap grn :ALERename<CR>
+nnoremap gra :ALECodeAction<CR>
+nnoremap gri :ALECodeImplementation<CR>
+nnoremap K :ALEHover<CR>
+nnoremap <leader>f :ALEFix<CR>
+
 " nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 " nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
-" set statusline=%{LinterStatus()}
+" NextWrap
+" PreviousWrap
 
-" ALE
-" CodeAction
+" Next
+" Previous
+
+" First
+" Last
+
+" Info
+" SymbolSearch
+" FileRename
 " Complete
-" Detail
-" Disable
-" DisableBuffer
 " Documnetation
 " Enable
 " EnableBuffer
 " FileRename
 " FindRefrences
-" First
 " Fix
 " FixSuggest
-" GoToDefinition
-" GoToImplentation
-" GoToTypeDefinition
-" Hover
 " Import
-" Last
-" Elint
-" ELintStop
-" Next
-" NextWrap
 " OrganizeImports
 " PopulateLocList
 " PopulateQuickfix
-" Previous
-" PreviousWrap
-" Rename
 " RepeatSelection
-" Reset
-" ResetBuffer
-" StopAllLSPs
-" StopLSP
 " SymbolSearchToggle
-" Toggle
-" ToggleBuffer
-" :ALEInfo
-" :ALESymbolSearch
-" :ALEFileRename
 
+let g:netrw_banner = 0
+let g:ale_linters = {'rust': ['rust_analyzer']}
+let g:ale_fixers = {'rust': ['rustfmt']}
+let g:ale_virtualtext_cursor = 'disabled'
+call plug#begin()
+Plug 'zenbones-theme/zenbones.nvim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'dense-analysis/ale'
 call plug#end()
 
-" silent! colorscheme seoul256
+silent! colorscheme rosebones
+
+" gcc to comment line
+" gc <ap> or something similar
+" gc in visual mode to toggle comment
+" gc is a text item
+" gcgc toggle comments
+
+" cs"'
+" cs'<q>
+" cst"
+" ds"
+" ysiw] ([ to give space)
+" yssb / yss) to surround line
+" VS<p>
+" (repeatable with repeat.vim)
