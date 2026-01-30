@@ -88,13 +88,13 @@ Plug 'dense-analysis/ale'
 " VS<p>
 " . to repeat
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
 
 " gcc to comment line
 " gc<text-object> or something similar
 " gc in visual mode to toggle comment
 " gc is a text object
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-repeat'
 call plug#end()
 
 silent! colorscheme rosebones
