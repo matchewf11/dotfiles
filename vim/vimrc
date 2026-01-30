@@ -1,7 +1,6 @@
-" install vim-plug curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" install vim-plug | curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " be sure to install rust-analyzer!
-
-" let g:ale_sign_colomn_always = v:true
+" be sure to install pylsp!
 
 set number relativenumber
 set splitright splitbelow
@@ -14,23 +13,18 @@ set termguicolors background=dark
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set path+=**
 
-set statusline=%f\ %m%r%h%w%y%q%=%l/%L:%c%V
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
 
-" set statusline=%{LinterStatus()}
-
-" function! LinterStatus() abort
-"     (also ale#statusline#FirstProblem)
-"     let l:counts = ale#statusline#Count(bufnr(''))
-
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-
-"     return l:counts.total == 0 ? 'OK' : printf(
-"     \   '%dW %dE',
-"     \   all_non_errors,
-"     \   all_errors
-"     \)
-" endfunction
+set statusline=%f\ %m%r%h%w%y%q%=ALE:\ %{LinterStatus()}\ \|\ %l/%L:%c%V
 
 augroup delete_trailing_whitespace
   autocmd!
@@ -43,19 +37,24 @@ nnoremap <leader>t :tabnew<CR>
 nnoremap <leader>x :tabclose<CR>
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
-nnoremap [b :bn<CR>
-nnoremap ]b :bp<CR>
+nnoremap [b :bp<CR>
+nnoremap ]b :bn<CR>
 nnoremap [B :bfirst<CR>
 nnoremap ]B :blast<CR>
 
-nnoremap [t :tabnext<CR>
-nnoremap ]t :tabprev<CR>
+nnoremap [t :tabprev<CR>
+nnoremap ]t :tabnext<CR>
 nnoremap [T :tabfirst<CR>
 nnoremap ]T :tablast<CR>
 
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+nnoremap [d :ALEPreviousWrap<CR>
+nnoremap ]d :ALENextWrap<CR>
+nnoremap [D :ALEFirst<CR>
+nnoremap ]D :ALELast<CR>
+
 nnoremap gd :ALEDetail<CR>
 nnoremap grt :ALEGoToTypeDefinition<CR>
 nnoremap grd :ALEGoToDefinition<CR>
@@ -63,58 +62,22 @@ nnoremap grr :ALEFindReferences<CR>
 nnoremap grn :ALERename<CR>
 nnoremap gra :ALECodeAction<CR>
 nnoremap gri :ALECodeImplementation<CR>
+nnoremap grc :ALERepeatSelection<CR>
+nnoremap gru :ALEImport<CR>
+nnoremap grs :ALESymbolSearch<Space>
 nnoremap K :ALEHover<CR>
 nnoremap <leader>f :ALEFix<CR>
-
-" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-" NextWrap
-" PreviousWrap
-
-" Next
-" Previous
-
-" First
-" Last
-
-" Info
-" SymbolSearch
-" FileRename
-" Complete
-" Documnetation
-" Enable
-" EnableBuffer
-" FileRename
-" FindRefrences
-" Fix
-" FixSuggest
-" Import
-" OrganizeImports
-" PopulateLocList
-" PopulateQuickfix
-" RepeatSelection
-" SymbolSearchToggle
+nnoremap <leader>q :ALEPopulateQuickfix<CR>
+nnoremap <leader>l :ALEPopulateLocList<CR>
+nnoremap <leader>i :ALEInfo<CR>
 
 let g:netrw_banner = 0
-let g:ale_linters = {'rust': ['rust_analyzer']}
+let g:ale_linters = {'rust': ['rust_analyzer'], 'python': ['pylsp']}
 let g:ale_fixers = {'rust': ['rustfmt']}
 let g:ale_virtualtext_cursor = 'disabled'
 call plug#begin()
 Plug 'zenbones-theme/zenbones.nvim'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
 Plug 'dense-analysis/ale'
-call plug#end()
-
-silent! colorscheme rosebones
-
-" gcc to comment line
-" gc <ap> or something similar
-" gc in visual mode to toggle comment
-" gc is a text item
-" gcgc toggle comments
 
 " cs"'
 " cs'<q>
@@ -123,4 +86,15 @@ silent! colorscheme rosebones
 " ysiw] ([ to give space)
 " yssb / yss) to surround line
 " VS<p>
-" (repeatable with repeat.vim)
+" . to repeat
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+
+" gcc to comment line
+" gc<text-object> or something similar
+" gc in visual mode to toggle comment
+" gc is a text object
+Plug 'tpope/vim-surround'
+call plug#end()
+
+silent! colorscheme rosebones
