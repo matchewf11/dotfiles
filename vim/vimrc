@@ -8,7 +8,7 @@ set smartindent autoindent
 set signcolumn=yes scrolloff=10 laststatus=2 showtabline=2
 set undofile undodir=~/.vim/undo noswapfile updatetime=100
 set completeopt=noinsert,menuone,noselect omnifunc=ale#completion#OmniFunc
-set timeoutlen=300 mouse=a
+set timeoutlen=300
 set termguicolors background=dark
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set path+=**
