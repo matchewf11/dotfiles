@@ -1,5 +1,93 @@
 set number relativenumber
+set splitright splitbelow
+set smartindent autoindent
+set signcolumn=yes scrolloff=10 laststatus=2 showtabline=2
+set undofile undodir=~/.vim/undo noswapfile updatetime=100
+set completeopt=noinsert,menuone,noselect omnifunc=ale#completion#OmniFunc
+set timeoutlen=300 mouse=a
+set termguicolors background=dark
+set expandtab tabstop=4 shiftwidth=4 softtabstop=4
+set path+=**
 
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
 
+set statusline=%f\ %m%r%h%w%y%q%=ALE:\ %{LinterStatus()}\ \|\ %l/%L:%c%V
 
+augroup delete_trailing_whitespace
+  autocmd!
+  autocmd BufWritePre * %s/\s\+$//e
+augroup END
+
+let mapleader = " "
+nnoremap <leader>e :Ex<CR>
+nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>x :tabclose<CR>
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+nnoremap [b :bp<CR>
+nnoremap ]b :bn<CR>
+nnoremap [B :bfirst<CR>
+nnoremap ]B :blast<CR>
+
+nnoremap [t :tabprev<CR>
+nnoremap ]t :tabnext<CR>
+nnoremap [T :tabfirst<CR>
+nnoremap ]T :tablast<CR>
+
+nnoremap [d :ALEPreviousWrap<CR>
+nnoremap ]d :ALENextWrap<CR>
+nnoremap [D :ALEFirst<CR>
+nnoremap ]D :ALELast<CR>
+
+nnoremap gd :ALEDetail<CR>
+nnoremap grt :ALEGoToTypeDefinition<CR>
+nnoremap grd :ALEGoToDefinition<CR>
+nnoremap grr :ALEFindReferences<CR>
+nnoremap grn :ALERename<CR>
+nnoremap gra :ALECodeAction<CR>
+nnoremap gri :ALECodeImplementation<CR>
+nnoremap grc :ALERepeatSelection<CR>
+nnoremap gru :ALEImport<CR>
+nnoremap grs :ALESymbolSearch<Space>
+nnoremap K :ALEHover<CR>
+nnoremap <leader>f :ALEFix<CR>
+nnoremap <leader>q :ALEPopulateQuickfix<CR>
+nnoremap <leader>l :ALEPopulateLocList<CR>
+nnoremap <leader>i :ALEInfo<CR>
+
+let g:netrw_banner = 0
+let g:ale_virtualtext_cursor = 'disabled'
+let g:ale_linters = {'rust': ['rust_analyzer'], 'python': ['pylsp']}
+let g:ale_fixers = {'rust': ['rustfmt'], 'python': ['black']}
+
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin()
+Plug 'zenbones-theme/zenbones.nvim'
+Plug 'dense-analysis/ale'
+Plug 'tpope/vim-commentary'
+call plug#end()
+
+silent! colorscheme rosebones
 

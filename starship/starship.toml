@@ -1,0 +1,8 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+[line_break]
+disabled = true
+
+# change where to look with export STARSHIP_CONFIG=~/foo/starship.toml
