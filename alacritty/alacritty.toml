@@ -1,9 +1,6 @@
-[window]
-opacity = 0.5 # do i need this
-
 [font]
 normal = { family = "JetBrains Mono NL"  }
-size = 11.55
+size = 11.75
 
 [colors.bright]
 black = "#3A3651"

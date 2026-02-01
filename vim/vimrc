@@ -90,4 +90,3 @@ Plug 'tpope/vim-commentary'
 call plug#end()
 
 silent! colorscheme rosebones
-

@@ -9,5 +9,12 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-set -o vi
+export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 eval "$(starship init bash)"
+set -o vi
+
+# ripgrep
+# fzf
+# tmux (get this)
+
+. "$HOME/.cargo/env"
