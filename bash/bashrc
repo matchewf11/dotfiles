@@ -19,6 +19,5 @@ set -o vi
 
 # ripgrep
 # fzf
-# tmux (get this)
 
 . "$HOME/.cargo/env"
