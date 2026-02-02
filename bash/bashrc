@@ -10,7 +10,11 @@ alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
 export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
+export EDITOR=vim
+
 eval "$(starship init bash)"
+eval "$(fzf --bash)"
+
 set -o vi
 
 # ripgrep

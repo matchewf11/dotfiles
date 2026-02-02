@@ -3,3 +3,17 @@
 [user]
 	email = matchewf11@gmail.com
 	name = Matthew Franchini
+[rerere]
+	enabled = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[url "git@github.com:"]
+	insteadOf = gh:
+[url "git@github.com:matchewf11/"]
+	insteadOf = me:
+[alias]
+	acp = !git add . && git commit && git push
+    asp = !git add . && git commit --amend --no-edit && git push --force-with-lease
+    ip = !f() { git rebase -i HEAD~$1 && git push --force-with-lease; }; f

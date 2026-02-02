@@ -14,7 +14,6 @@
 exec i3-sensible-terminal
 exec --no-startup-id setxkbmap -option caps:swapescape
 bindsym $mod+Tab exec firefox
-
 # look into i3 bar or alternatives on arch wiki
 
 
