@@ -21,3 +21,5 @@ set -o vi
 # fzf
 
 . "$HOME/.cargo/env"
+
+[ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env" # ghcup-env

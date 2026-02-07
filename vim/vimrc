@@ -20,7 +20,8 @@ function! LinterStatus() abort
     \)
 endfunction
 
-set statusline=%f\ %m%r%h%w%y%q%=ALE:\ %{LinterStatus()}\ \|\ %l/%L:%c%V
+" set statusline=%f\ %m%r%h%w%y%q%=ALE:\ %{LinterStatus()}\ \|\ %l/%L:%c%V
+set statusline=%f\ %m%r%h%w%y%q%=%l/%L:%c%V
 
 augroup delete_trailing_whitespace
   autocmd!
@@ -68,8 +69,12 @@ nnoremap <leader>i :ALEInfo<CR>
 
 let g:netrw_banner = 0
 let g:ale_virtualtext_cursor = 'disabled'
-let g:ale_linters = {'rust': ['rust_analyzer'], 'python': ['pylsp']}
-let g:ale_fixers = {'rust': ['rustfmt'], 'python': ['black']}
+
+" let g:ale_linters = {'rust': ['rust_analyzer']}
+
+" this is not working rn for rust fmt,
+" <https://github.com/dense-analysis/ale/issues/4897#event-17414483161>
+" let g:ale_fixers = {'rust': ['rustfmt']}
 
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -84,7 +89,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 call plug#begin()
 Plug 'zenbones-theme/zenbones.nvim'
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 Plug 'tpope/vim-commentary'
 call plug#end()
 
