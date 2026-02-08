@@ -2,7 +2,7 @@ set number relativenumber
 set splitright splitbelow
 set smartindent autoindent
 set scrolloff=10 laststatus=2 showtabline=2
-set undofile undodir=~/.vim/undo noswapfile updatetime=100
+set undofile undodir=~/.vim/undo noswapfile updatetime=100 hidden
 set completeopt=noinsert,menuone,noselect,fuzzy
 set timeoutlen=300 mouse=a
 set termguicolors background=dark
