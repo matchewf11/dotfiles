@@ -46,18 +46,4 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 call plug#end()
-
 silent! colorscheme torte
-
-" ctags -R --languages=Rust --exclude=target .
-" Ctrl-] to the def
-" Ctrl-T jump back
-" :ts <symbols>
-" :tags
-
-" builtin autocomplete
-" <C-n><C-p> word compeltiong (from curr buffer)
-" <C-x><C-n/p> search othesr buffers for matching words
-" <C-x><C-o> omni completion
-" <C-x><C-f> complete file paths
-" tab in : mode

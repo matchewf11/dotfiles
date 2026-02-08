@@ -8,6 +8,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
+alias tagr='ctags -R --languages=Rust --exclude=target .'
 
 export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 export EDITOR=vim
