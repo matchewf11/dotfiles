@@ -18,23 +18,17 @@ augroup END
 
 let mapleader = " "
 nnoremap <leader>e :Ex<CR>
-nnoremap <leader>t :tabnew<CR>
-nnoremap <leader>x :tabclose<CR>
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
+nnoremap <leader>t :tabnew<CR> | nnoremap <leader>x :tabclose<CR>
+nnoremap <leader>d "_d | vnoremap <leader>d "_d
+nnoremap <leader>y "+y | vnoremap <leader>y "+y
 nnoremap <leader>p "+p
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-nnoremap [b :bp<CR>
-nnoremap ]b :bn<CR>
-nnoremap [B :bfirst<CR>
-nnoremap ]B :blast<CR>
-nnoremap [t :tabprev<CR>
-nnoremap ]t :tabnext<CR>
-nnoremap [T :tabfirst<CR>
-nnoremap ]T :tablast<CR>
+vnoremap J :m '>+1<CR>gv=gv | vnoremap K :m '<-2<CR>gv=gv
+nnoremap [b :bp<CR> | nnoremap ]b :bn<CR>
+nnoremap ]B :blast<CR> | nnoremap [B :bfirst<CR>
+nnoremap [t :tabprev<CR> | nnoremap ]t :tabnext<CR>
+nnoremap [T :tabfirst<CR> | nnoremap ]T :tablast<CR>
+nnoremap [c :cprev<CR> | nnoremap ]c :cnext<CR>
+nnoremap [C :cfirst<CR> | nnoremap ]C :clast<CR>
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -53,3 +47,18 @@ Plug 'tpope/vim-repeat'
 call plug#end()
 
 silent! colorscheme torte
+
+" ctags -R --languages=Rust --exclude=target .
+" set tags=./tags,tags;/
+" Ctrl-] to the def
+" Ctrl-T jump back
+" :ts <symbols>
+" :tnext / :tprev
+" :tags
+"
+" builtin autocomplete
+" <C-n><C-p> word compeltiong (from curr buffer)
+" <C-x><C-n/p> search othesr buffers for matching words
+" <C-x><C-o> omni completion
+" <C-x><C-f> complete file paths
+" tab in : mode
