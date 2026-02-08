@@ -7,8 +7,7 @@ set completeopt=noinsert,menuone,noselect,fuzzy
 set timeoutlen=300 mouse=a
 set termguicolors background=dark
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
-set path+=**
-
+set path+=** tags=./tags;,./TAGS;,tags,TAGS
 set statusline=%f\ %m%r%h%w%y%q%=%l/%L:%c%V
 
 augroup delete_trailing_whitespace
@@ -29,6 +28,8 @@ nnoremap [t :tabprev<CR> | nnoremap ]t :tabnext<CR>
 nnoremap [T :tabfirst<CR> | nnoremap ]T :tablast<CR>
 nnoremap [c :cprev<CR> | nnoremap ]c :cnext<CR>
 nnoremap [C :cfirst<CR> | nnoremap ]C :clast<CR>
+nnoremap [d :tprev<CR> | nnoremap ]d :tnext<CR>
+nnoremap [D :tfirst<CR> | nnoremap ]D :tlast<CR>
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -49,13 +50,11 @@ call plug#end()
 silent! colorscheme torte
 
 " ctags -R --languages=Rust --exclude=target .
-" set tags=./tags,tags;/
 " Ctrl-] to the def
 " Ctrl-T jump back
 " :ts <symbols>
-" :tnext / :tprev
 " :tags
-"
+
 " builtin autocomplete
 " <C-n><C-p> word compeltiong (from curr buffer)
 " <C-x><C-n/p> search othesr buffers for matching words
