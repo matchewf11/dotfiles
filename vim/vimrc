@@ -24,12 +24,10 @@ nnoremap <leader>p "+p
 vnoremap J :m '>+1<CR>gv=gv | vnoremap K :m '<-2<CR>gv=gv
 nnoremap [b :bp<CR> | nnoremap ]b :bn<CR>
 nnoremap ]B :blast<CR> | nnoremap [B :bfirst<CR>
-nnoremap [t :tabprev<CR> | nnoremap ]t :tabnext<CR>
-nnoremap [T :tabfirst<CR> | nnoremap ]T :tablast<CR>
 nnoremap [c :cprev<CR> | nnoremap ]c :cnext<CR>
 nnoremap [C :cfirst<CR> | nnoremap ]C :clast<CR>
-nnoremap [d :tprev<CR> | nnoremap ]d :tnext<CR>
-nnoremap [D :tfirst<CR> | nnoremap ]D :tlast<CR>
+nnoremap [t :tprev<CR> | nnoremap ]t :tnext<CR>
+nnoremap [T :tfirst<CR> | nnoremap ]T :tlast<CR>
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
