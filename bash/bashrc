@@ -8,7 +8,9 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
+
 alias tagr='ctags -R --languages=Rust --exclude=target .'
+alias tags='ctags -R --languages=Sh .'
 
 export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 export EDITOR=vim
@@ -24,3 +26,12 @@ set -o vi
 . "$HOME/.cargo/env"
 
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
+
+alias fe='vim -p $(fzf -m)'
+
+vgrep() {
+    local pattern="$1" selected file line
+    selected=$(rg --line-number --no-heading "$pattern" | fzf) || return
+    IFS=: read -r file line _ <<< "$selected"
+    vim +$line "$file"
+}
