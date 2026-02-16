@@ -11,31 +11,15 @@ set path+=** tags=./tags;,tags
 set statusline=%f\ %m%r%h%w%y%q%=%l/%L:%c%V
 
 let mapleader = " "
-nnoremap <leader>e :Ex<CR>
-nnoremap <leader>t :tabnew<CR> | nnoremap <leader>x :tabclose<CR>
+nnoremap <leader>e :Ex<CR> | nnoremap <leader>p "+p
 nnoremap <leader>d "_d | vnoremap <leader>d "_d
 nnoremap <leader>y "+y | vnoremap <leader>y "+y
-nnoremap <leader>p "+p
-
-nnoremap [a :next<CR> | nnoremap ]a :prev<CR>
-
-nnoremap [b :bp<CR> | nnoremap ]b :bn<CR>
-nnoremap ]B :blast<CR> | nnoremap [B :bfirst<CR>
-
-nnoremap [c :cprev<CR> | nnoremap ]c :cnext<CR>
-nnoremap [C :cfirst<CR> | nnoremap ]C :clast<CR>
-
-nnoremap [t :tprev<CR> | nnoremap ]t :tnext<CR>
-nnoremap [T :tfirst<CR> | nnoremap ]T :tlast<CR>
+nnoremap <leader>t :tabnew<CR> | nnoremap <leader>x :tabclose<CR>
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
-
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
 
 let g:netrw_banner = 0
 call plug#begin()
