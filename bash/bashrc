@@ -5,13 +5,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
-
-
-alias tagr='ctags -R --languages=Rust --exclude=target .'
-alias tags='ctags -R --languages=Sh .'
 
 export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 export EDITOR=vim
@@ -20,14 +14,10 @@ export PATH="$PATH:$HOME/scripts"
 eval "$(starship init bash)"
 eval "$(fzf --bash)"
 
-# ripgrep
-# fzf
-
-. "$HOME/.cargo/env"
-
-[ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
-
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 alias fe='vim -p $(fzf -m)'
+alias tagr='ctags -R --languages=Rust --exclude=target .'
 
 vgrep() {
     local pattern="$1" selected file line
@@ -36,6 +26,10 @@ vgrep() {
     vim +$line "$file"
 }
 
-# <!--<!-1-     - Curl -1-> -->
-# <!--<!-1-     - fzf -1-> -->
-# <!--<!-1-     - jq -1-> -->
+. "$HOME/.cargo/env"
+[ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
+
+# ripgrep
+# fzf
+# Curl 
+# jq
