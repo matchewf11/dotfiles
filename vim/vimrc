@@ -11,9 +11,12 @@ set path+=** tags=./tags;,tags
 set statusline=%f\ %m%r%h%w%y%q%=%l/%L:%c%V
 
 let mapleader = " "
-nnoremap <leader>e :Ex<CR> | nnoremap <leader>p "+p
-nnoremap <leader>d "_d | vnoremap <leader>d "_d
-nnoremap <leader>y "+y | vnoremap <leader>y "+y
+nnoremap <leader>e :Ex<CR>
+nnoremap <leader>p "+p
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs

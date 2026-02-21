@@ -19,13 +19,6 @@ alias grep='grep --color=auto'
 alias fe='vim -p $(fzf -m)'
 alias tagr='ctags -R --languages=Rust --exclude=target .'
 
-vgrep() {
-    local pattern="$1" selected file line
-    selected=$(rg --line-number --no-heading "$pattern" | fzf) || return
-    IFS=: read -r file line _ <<< "$selected"
-    vim +$line "$file"
-}
-
 . "$HOME/.cargo/env"
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
 
