@@ -16,7 +16,7 @@ eval "$(fzf --bash)"
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias fe='vim -p $(fzf -m)'
+alias fe='vim $(fzf -m)'
 alias tagr='ctags -R --languages=Rust --exclude=target .'
 
 . "$HOME/.cargo/env"
