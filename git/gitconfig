@@ -16,4 +16,7 @@
 [alias]
     acp = !git add -A && git commit && git push
     asp = !git add -A && git commit --amend --no-edit && git push --force-with-lease
-    ir = "!f() { git rebase -i HEAD~$1 && git push --force-with-lease; }; f"
+    irp = "!f() { git rebase -i HEAD~$1 && git push --force-with-lease; }; f"
+    ac = !git add -A && git commit
+    as = !git add -A && git commit --amend --no-edit
+    ir = "!f() { git rebase -i HEAD~$1; }; f"
