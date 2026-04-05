@@ -20,3 +20,7 @@
     ac = !git add -A && git commit
     as = !git add -A && git commit --amend --no-edit
     ir = "!f() { git rebase -i HEAD~$1; }; f"
+[merge]
+	tool = vimdiff
+[mergetool]
+	keepBackup = false

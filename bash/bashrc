@@ -5,14 +5,20 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-PS1='[\u@\h \W]\$ '
+source /usr/share/git/completion/git-prompt.sh
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWSTASHSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM="auto"
+GIT_PS1_SHOWCONFLICTSTATE="yes"
+PS1='\W$(__git_ps1 " (%s)") > '
 
 export EDITOR=vim
 export PATH="$PATH:$HOME/scripts"
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias fe='vim $(fzf -m)'
 
 alias tagr='ctags -R --languages=Rust --exclude=target .'
 alias tagc='ctags -R --languages=C .'
