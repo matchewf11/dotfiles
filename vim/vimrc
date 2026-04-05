@@ -1,5 +1,4 @@
 set number relativenumber
-set splitright splitbelow
 set smartindent autoindent
 set scrolloff=10 laststatus=2 showtabline=2
 set undofile undodir=~/.vim/undo noswapfile updatetime=100 hidden
@@ -28,10 +27,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-let g:netrw_banner = 0
 call plug#begin()
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'bluz71/vim-moonfly-colors'
 call plug#end()
-colorscheme torte
+
+silent! colorscheme moonfly
