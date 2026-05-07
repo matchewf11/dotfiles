@@ -11,10 +11,10 @@ GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM="auto"
 GIT_PS1_SHOWCONFLICTSTATE="yes"
-PS1='\W$(__git_ps1 " (%s)") > '
+PS1='\W$(__git_ps1 " (%s)") \$ '
 
 export EDITOR=vim
-export PATH="$PATH:$HOME/scripts"
+export PATH=$HOME/bin:$PATH
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
