@@ -18,11 +18,7 @@ export PATH=$HOME/bin:$PATH
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-
-alias tagr='ctags -R --languages=Rust --exclude=target .'
-alias tagc='ctags -R --languages=C .'
-alias tagh='ctags -R --languages=Haskell .'
-alias tags='ctags -R --languages=sh .'
+alias vi='vim'
 
 . "$HOME/.cargo/env"
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"
