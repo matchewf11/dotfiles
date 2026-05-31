@@ -1,0 +1,39 @@
+set number relativenumber
+set smartindent autoindent
+set scrolloff=10 laststatus=2 showtabline=2
+set undofile undodir=~/.vim/undo noswapfile updatetime=100 hidden
+set completeopt=noinsert,menuone,noselect,fuzzy
+set timeoutlen=300 mouse=a incsearch
+set expandtab tabstop=4 shiftwidth=4 softtabstop=4
+set path+=** tags=./tags;,tags
+set wop=fuzzy wim=longest:full,full wig=*/target/*
+
+augroup delete_trailing_whitespace
+  autocmd!
+  autocmd BufWritePre * %s/\s\+$//e
+augroup END
+
+let mapleader = " "
+nnoremap <leader>e :Ex<CR>
+nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>x :tabclose<CR>
+nnoremap <leader>c :!ctags -R .<CR>
+nnoremap <leader>p "+p
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+let g:netrw_banner = 0
+let g:netrw_list_hide = '^\./$,^\.\./$'
+call plug#begin()
+Plug 'tpope/vim-commentary'
+Plug 'bluz71/vim-moonfly-colors'
+call plug#end()
+
+silent! colorscheme moonfly

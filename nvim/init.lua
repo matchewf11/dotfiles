@@ -3,7 +3,7 @@ local g, o, opt = vim.g, vim.o, vim.opt
 g.mapleader = ' '
 g.c_syntax_for_h = true
 g.netrw_banner = false
-g.netrw_list_hide = [[./,../]]
+g.netrw_list_hide = [[^\./$,^\.\./$]]
 
 o.number = true
 o.relativenumber = true
@@ -24,16 +24,19 @@ o.shiftwidth = 4
 o.softtabstop = 4
 opt.path:append('**')
 opt.completeopt = { 'noinsert','menuone','noselect','fuzzy' }
+opt.wildoptions = { 'fuzzy' }
+opt.wildmode= { 'longest:full', 'full' }
+opt.wildignore = { '*/target/*' }
 
 vim.lsp.enable { 'lua_ls', 'rust_analyzer' }
 
-faskldj
-
 local autocmd = vim.api.nvim_create_autocmd
+
 autocmd('FileType', {
   pattern = '*',
   callback = function() pcall(vim.treesitter.start) end,
 })
+
 autocmd("BufWritePre", {
     pattern = '*',
     command = [[%s/\s\+$//e]],
@@ -47,8 +50,6 @@ vim.pack.add {
   gh 'bluz71/vim-moonfly-colors',
   gh 'neovim/nvim-lspconfig',
   gh 'nvim-treesitter/nvim-treesitter',
-  gh 'ibhagwan/fzf-lua',
-  gh 'tpope/vim-fugitive',
 }
 
 vim.cmd.colorscheme 'moonfly'
@@ -64,7 +65,3 @@ map('<leader>y', '"+y', {'n', 'v'})
 map('<leader>d', '"_d', {'n', 'v'})
 map('<leader>p', '"+p')
 map('<leader>c', ':!ctags -R .<cr>')
-map('<leader>sf', ':FzfLua files<CR>')
-map('<leader>sl', ':FzfLua blines<CR>')
-map('<leader>sg', ':FzfLua live_grep<CR>')
-map('<leader>sb', ':ls<cr>:b<space>')
