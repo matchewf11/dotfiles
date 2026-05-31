@@ -41,6 +41,8 @@ local function gh(name)
   return 'https://github.com/' .. name
 end
 
+fdkf
+
 vim.pack.add {
   gh 'bluz71/vim-moonfly-colors',
   gh 'neovim/nvim-lspconfig',
