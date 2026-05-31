@@ -13,7 +13,7 @@ GIT_PS1_SHOWUPSTREAM="auto"
 GIT_PS1_SHOWCONFLICTSTATE="yes"
 PS1='\W$(__git_ps1 " (%s)") \$ '
 
-export EDITOR=vim
+export EDITOR=nvim
 export PATH=$HOME/bin:$PATH
 
 alias ls='ls --color=auto'
