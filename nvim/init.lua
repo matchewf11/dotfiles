@@ -27,6 +27,8 @@ opt.completeopt = { 'noinsert','menuone','noselect','fuzzy' }
 
 vim.lsp.enable { 'lua_ls', 'rust_analyzer' }
 
+faskldj
+
 local autocmd = vim.api.nvim_create_autocmd
 autocmd('FileType', {
   pattern = '*',
