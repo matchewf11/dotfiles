@@ -22,7 +22,7 @@ o.expandtab = true
 o.tabstop = 4
 o.shiftwidth = 4
 o.softtabstop = 4
-opt.path:append('**')
+opt.path:append '**'
 opt.completeopt = { 'noinsert','menuone','noselect','fuzzy' }
 opt.wildoptions = { 'fuzzy' }
 opt.wildmode= { 'longest:full', 'full' }
@@ -37,7 +37,7 @@ autocmd('FileType', {
   callback = function() pcall(vim.treesitter.start) end,
 })
 
-autocmd("BufWritePre", {
+autocmd('BufWritePre', {
     pattern = '*',
     command = [[%s/\s\+$//e]],
 })
@@ -59,7 +59,7 @@ local function map(lhs, rhs, modes)
 end
 
 map('<leader>e', ':Ex<CR>')
-map('<leader>t', ':tabnew<CR>')
+map('<leader>t', ':tabedit %<CR>')
 map('<leader>x', ':tabclose<CR>')
 map('<leader>y', '"+y', {'n', 'v'})
 map('<leader>d', '"_d', {'n', 'v'})
