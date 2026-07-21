@@ -29,6 +29,7 @@ opt.wildmode= { 'longest:full', 'full' }
 opt.wildignore = { '*/target/*' }
 
 vim.lsp.enable { 'lua_ls', 'rust_analyzer' }
+vim.diagnostic.config { severity_sort = true }
 
 local autocmd = vim.api.nvim_create_autocmd
 
@@ -59,6 +60,9 @@ local function map(lhs, rhs, modes)
 end
 
 map('<leader>e', ':Ex<CR>')
+map('<leader>o', ':browse ol<CR>')
+map('<leader>b', ':ls<CR>:b<Space>')
+map('<leader>f', ':find<Space>')
 map('<leader>t', ':tabedit %<CR>')
 map('<leader>x', ':tabclose<CR>')
 map('<leader>y', '"+y', {'n', 'v'})
