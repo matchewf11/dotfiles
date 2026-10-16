@@ -1,0 +1,16 @@
+source ~/.gmail_pass
+
+set folder = "imaps://imap.gmail.com:993"
+set smtp_url = "smtps://matchewf11@gmail.com@smtp.gmail.com:465/"
+
+set imap_user = "matchewf11@gmail.com"
+
+set spoolfile = "+INBOX"
+set record = "+Sent"
+set trash = "+Trash"
+set postponed = "+Drafts"
+
+set from = "matchewf11@gmail.com"
+set realname = "Matthew Franchini"
+
+mailboxes =INBOX =Sent =Trash =Drafts
