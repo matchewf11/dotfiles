@@ -31,7 +31,7 @@ opt.wildignore = {
 }
 
 vim.diagnostic.config { severity_sort = true }
-vim.lsp.enable { 'rust_analyzer' }
+-- vim.lsp.enable { 'rust_analyzer' }
 
 local autocmd = vim.api.nvim_create_autocmd
 
