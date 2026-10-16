@@ -16,9 +16,5 @@ PS1='\W$(__git_ps1 " (%s)") \$ '
 export EDITOR=nvim
 export PATH=$HOME/bin:$PATH
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias vi='nvim'
-
 . "$HOME/.cargo/env"
 [ -f "/home/matchew/.ghcup/env" ] && . "/home/matchew/.ghcup/env"

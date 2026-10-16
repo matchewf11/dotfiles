@@ -14,7 +14,6 @@ o.showtabline = 2
 o.signcolumn = 'yes'
 o.undofile = true
 o.swapfile = false
-o.hlsearch = false
 o.updatetime = 100
 o.timeoutlen = 300
 o.mouse = 'a'
@@ -26,17 +25,15 @@ opt.path:append '**'
 opt.completeopt = { 'noinsert','menuone','noselect','fuzzy' }
 opt.wildoptions = { 'fuzzy' }
 opt.wildmode= { 'longest:full', 'full' }
-opt.wildignore = { '*/target/*' }
+opt.wildignore = {
+    '*/target/*',
+    '*/.git/*',
+}
 
-vim.lsp.enable { 'lua_ls', 'rust_analyzer' }
 vim.diagnostic.config { severity_sort = true }
+vim.lsp.enable { 'rust_analyzer' }
 
 local autocmd = vim.api.nvim_create_autocmd
-
-autocmd('FileType', {
-  pattern = '*',
-  callback = function() pcall(vim.treesitter.start) end,
-})
 
 autocmd('BufWritePre', {
     pattern = '*',
@@ -48,12 +45,10 @@ local function gh(name)
 end
 
 vim.pack.add {
-  gh 'bluz71/vim-moonfly-colors',
   gh 'neovim/nvim-lspconfig',
-  gh 'nvim-treesitter/nvim-treesitter',
 }
 
-vim.cmd.colorscheme 'moonfly'
+vim.cmd.colorscheme 'torte'
 
 local function map(lhs, rhs, modes)
   vim.keymap.set(modes or 'n', lhs, rhs)
@@ -63,9 +58,6 @@ map('<leader>e', ':Ex<CR>')
 map('<leader>o', ':browse ol<CR>')
 map('<leader>b', ':ls<CR>:b<Space>')
 map('<leader>f', ':find<Space>')
+map('<leader>g', ':vim<Space>')
 map('<leader>t', ':tabedit %<CR>')
 map('<leader>x', ':tabclose<CR>')
-map('<leader>y', '"+y', {'n', 'v'})
-map('<leader>d', '"_d', {'n', 'v'})
-map('<leader>p', '"+p')
-map('<leader>c', ':!ctags -R .<cr>')
