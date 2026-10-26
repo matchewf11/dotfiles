@@ -9,5 +9,11 @@ if [ -d "$xinitdir"/xinitrc.d ] ; then
 	unset f
 fi
 
+
 picom --config ~/dotfiles/picom/picom.conf &
+
+# Added to make desktop render on gpu
+export __NV_PRIME_RENDER_OFFLOAD=1
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+
 exec i3
