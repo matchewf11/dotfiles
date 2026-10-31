@@ -21,7 +21,7 @@ augroup END
 
 let mapleader = " "
 nnoremap <leader>e :Ex<CR>
-nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>t :tabedit %<CR>
 nnoremap <leader>x :tabclose<CR>
 nnoremap <leader>g :vim<Space>
 nnoremap <leader>f :find<Space>
