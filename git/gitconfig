@@ -14,6 +14,6 @@
 [url "git@github.com:matchewf11/"]
 	insteadOf = me:
 [merge]
-	tool = nvimdiff
+	tool = vimdiff
 [mergetool]
 	keepBackup = false
