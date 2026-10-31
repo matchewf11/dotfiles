@@ -1,15 +1,14 @@
-let g:netrw_banner = 0
-let g:netrw_list_hide = '^\./$,^\.\./$'
-
 set number relativenumber
 set smartindent autoindent
 set scrolloff=10 laststatus=2 showtabline=2
-set undofile undodir=~/.vim/undo noswapfile updatetime=100 hidden
-set completeopt=noinsert,menuone,noselect,fuzzy
-set timeoutlen=300 mouse=a incsearch
+set undofile undodir=~/.vim/undo hidden
+set incsearch hlsearch
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set path+=** tags=./tags;,tags spell
-set wop=fuzzy wim=longest:full,full wig=*/target/*,*/.git/*
+set completeopt=noinsert,menuone,noselect,fuzzy
+set wildoptions+=fuzzy
+set wildmode+=longest:full,full
+set wildignore+=*/target/*,*/.git/*
 
 syntax enable
 filetype plugin indent on
@@ -18,15 +17,5 @@ augroup delete_trailing_whitespace
   autocmd!
   autocmd BufWritePre * %s/\s\+$//e
 augroup END
-
-let mapleader = " "
-nnoremap <leader>e :Ex<CR>
-nnoremap <leader>t :tabedit %<CR>
-nnoremap <leader>x :tabclose<CR>
-nnoremap <leader>g :vim<Space>
-nnoremap <leader>f :find<Space>
-nnoremap <leader>o :browse ol<CR>
-nnoremap <leader>b :ls<CR>:b<Space>
-tnoremap <Esc><Esc> <C-\><C-n>
 
 colorscheme torte
