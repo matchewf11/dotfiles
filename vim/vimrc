@@ -8,7 +8,7 @@ set undofile undodir=~/.vim/undo noswapfile updatetime=100 hidden
 set completeopt=noinsert,menuone,noselect,fuzzy
 set timeoutlen=300 mouse=a incsearch
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
-set path+=** tags=./tags;,tags
+set path+=** tags=./tags;,tags spell
 set wop=fuzzy wim=longest:full,full wig=*/target/*,*/.git/*
 
 syntax enable
