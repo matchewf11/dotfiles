@@ -1,7 +1,7 @@
 set number relativenumber
 set undofile undodir=~/.vim
 set hidden
-set shiftwidth=4
+set shiftwidth=4 autoindent
 
 syntax enable
 filetype plugin indent on
